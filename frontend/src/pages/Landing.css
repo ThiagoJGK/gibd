@@ -1,0 +1,150 @@
+.landing-container {
+  padding: 120px 5% 80px; /* Space for fixed nav */
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.hero-section {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-title {
+  font-size: 5rem;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.text-orange {
+  color: var(--accent-vibrant-orange);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.mr-2 {
+  margin-right: 8px;
+}
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.stat-card {
+  padding: 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-card h3 {
+  font-size: 3rem;
+  color: var(--accent-vibrant-orange);
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.mission-card {
+  height: 100%;
+  justify-content: center;
+  padding: 48px;
+}
+
+.mission-card p {
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.news-item {
+  padding: 24px;
+}
+
+.news-date {
+  font-size: 0.85rem;
+  color: var(--accent-vibrant-orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.news-item h4 {
+  font-size: 1.25rem;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.news-item p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+}
