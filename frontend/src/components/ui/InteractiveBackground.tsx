@@ -8,8 +8,15 @@ export function InteractiveBackground() {
     let currentY = window.innerHeight / 2;
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
+    let isMobile = window.innerWidth <= 768;
+
+    const handleResize = () => {
+      isMobile = window.innerWidth <= 768;
+    };
+    window.addEventListener('resize', handleResize);
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (isMobile) return;
       targetX = e.clientX;
       targetY = e.clientY;
     };
@@ -17,11 +24,22 @@ export function InteractiveBackground() {
     window.addEventListener('mousemove', handleMouseMove);
 
     let animationFrameId: number;
+    let randomTimer: ReturnType<typeof setTimeout>;
+
+    const pickRandomTarget = () => {
+      if (isMobile) {
+        targetX = Math.random() * window.innerWidth;
+        targetY = Math.random() * window.innerHeight;
+      }
+      randomTimer = setTimeout(pickRandomTarget, 2000 + Math.random() * 3000);
+    };
+
+    pickRandomTarget();
 
     const loop = () => {
-      // Interpolación lineal suave (LERP) para crear el efecto de "estela" o inercia
-      currentX += (targetX - currentX) * 0.05;
-      currentY += (targetY - currentY) * 0.05;
+      const speed = isMobile ? 0.005 : 0.05;
+      currentX += (targetX - currentX) * speed;
+      currentY += (targetY - currentY) * speed;
 
       if (blobRef.current) {
         blobRef.current.style.transform = `translate(${currentX}px, ${currentY}px)`;
@@ -33,7 +51,9 @@ export function InteractiveBackground() {
     loop();
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(randomTimer);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video } from 'lucide-react';
+import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
+import { motion } from 'motion/react';
 
-const MEDIA_TYPES = ['Imagen', 'Video', 'Texto'] as const;
-type MediaType = typeof MEDIA_TYPES[number];
+const MEDIA_CONFIG = [
+  { id: 'Imagen', angle: -35, width: 110 },
+  { id: 'Video', angle: -12, width: 100 },
+  { id: 'Texto', angle: 12, width: 100 },
+  { id: 'Sonido', angle: 35, width: 110 }
+] as const;
 
-const MODELS_BY_MEDIA = {
+type MediaType = typeof MEDIA_CONFIG[number]['id'];
+
+const MODELS_BY_MEDIA: Record<MediaType, string[]> = {
   'Imagen': ['Marcas de Ganado', 'OBC (Satelital)'],
-  'Video': ['Análisis de Comportamiento', 'Sonido / Frecuencia'],
-  'Texto': ['PTAH-Jurídico', 'Archivos NLP']
+  'Video': ['Análisis de Comportamiento', 'Seguimiento de Objetos'],
+  'Texto': ['PTAH-Jurídico', 'Archivos NLP'],
+  'Sonido': ['Análisis de Frecuencia', 'Reconocimiento de Voz', 'Detección de Anomalías']
 };
 
 const SIDEBAR_ITEMS = [
@@ -39,19 +47,83 @@ export function Laboratorio() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeSearchItem, setActiveSearchItem] = useState<number | null>(null);
 
+  const activeConfig = MEDIA_CONFIG.find(m => m.id === activeMediaType) || MEDIA_CONFIG[0];
+
   return (
     <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen flex flex-col">
-      {/* Media Type Toggle */}
-      <div className="flex gap-1 md:gap-2 p-1.5 bg-background-base rounded-full border border-border-organic w-full md:w-fit mb-8 shadow-sm mx-auto overflow-x-auto no-scrollbar justify-start md:justify-center">
-        {MEDIA_TYPES.map(media => (
-          <button 
-            key={media}
-            className={`shrink-0 flex-1 md:flex-none px-4 md:px-8 py-2.5 rounded-full font-bold text-sm transition-all whitespace-nowrap ${activeMediaType === media ? 'bg-primary-container text-on-primary-container shadow-sm' : 'text-text-secondary hover:text-text-primary'}`} 
-            onClick={() => handleMediaTypeChange(media)}
+      {/* Pivot Dial Selector */}
+      <div className="relative w-full max-w-[500px] h-[250px] mx-auto mb-16 mt-4 flex justify-center overflow-visible">
+        {/* Pivot Base */}
+        <div className="absolute bottom-0 w-14 h-14 rounded-full bg-[#1A1124]/95 border border-[#3A234A] shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex items-center justify-center z-30">
+          <div className="w-5 h-5 rounded-full bg-white/10 shadow-inner border border-white/5"></div>
+        </div>
+
+        {/* Texts on Arc (Background) */}
+        {MEDIA_CONFIG.map((media) => {
+          const isActive = activeMediaType === media.id;
+          return (
+            <div 
+              key={media.id}
+              onClick={() => handleMediaTypeChange(media.id)}
+              className="absolute bottom-[28px] left-1/2 cursor-pointer z-10 transition-all duration-300 flex items-center justify-center"
+              style={{ 
+                width: media.width,
+                height: 48,
+                marginLeft: -(media.width / 2),
+                marginBottom: -24,
+                transformOrigin: "center center",
+                transform: `rotate(${media.angle}deg) translateY(-200px)` 
+              }}
+            >
+              <span className={`block font-black text-[13px] md:text-[15px] tracking-[0.2em] uppercase transition-all duration-500 text-center ${
+                isActive 
+                  ? 'text-primary-container drop-shadow-[0_0_12px_rgba(255,85,0,0.8)] scale-110' 
+                  : 'text-text-secondary/30 hover:text-text-secondary/60'
+              }`}>
+                {media.id}
+              </span>
+            </div>
+          );
+        })}
+
+        {/* Rotating Arm (Foreground) */}
+        <motion.div
+          initial={false}
+          animate={{ rotate: activeConfig.angle }}
+          transition={{ type: "spring", stiffness: 220, damping: 20 }}
+          className="absolute bottom-[28px] origin-bottom flex flex-col items-center justify-start z-20 pointer-events-none"
+          style={{ height: 200, width: 60 }} // height is the radius
+        >
+          {/* Pill Head (The Hole) */}
+          <motion.div
+            initial={false}
+            animate={{ width: activeConfig.width }}
+            transition={{ type: "spring", stiffness: 220, damping: 20 }}
+            className="h-[48px] rounded-full border-[8px] border-[#1A1124]/95 flex items-center justify-center relative z-20"
+            style={{ 
+              marginTop: -24, // perfectly centers on the 200px radius
+              boxShadow: '0 12px 30px rgba(0,0,0,0.7), inset 0 4px 12px rgba(0,0,0,0.9)',
+              background: 'transparent' // Real hole
+            }}
           >
-            {media}
-          </button>
-        ))}
+             <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none" style={{ margin: '-8px' }}></div>
+          </motion.div>
+          {/* Curved Neck */}
+          <motion.div 
+            initial={false}
+            animate={{ width: activeConfig.width - 28 }}
+            transition={{ type: "spring", stiffness: 220, damping: 20 }}
+            className="flex-1 -mt-[2px] w-full bg-[#1A1124]/95 backdrop-blur-md relative z-10"
+            style={{
+              WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M 30 100 C 30 50, 0 30, 0 0 L 100 0 C 100 30, 70 50, 70 100 Z'/%3E%3C/svg%3E")`,
+              maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M 30 100 C 30 50, 0 30, 0 0 L 100 0 C 100 30, 70 50, 70 100 Z'/%3E%3C/svg%3E")`,
+              WebkitMaskSize: '100% 100%',
+              maskSize: '100% 100%'
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50"></div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Category Row (Models) */}
@@ -165,7 +237,7 @@ export function Laboratorio() {
                   </div>
                 </div>
                 <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
-                  <span className="font-semibold text-sm text-text-secondary">Análisis de Frecuencia (Audio)</span>
+                  <span className="font-semibold text-sm text-text-secondary">Seguimiento Multiobjeto</span>
                   <div className="w-10 h-6 bg-surface-deep border border-border-organic rounded-full relative">
                     <div className="w-4 h-4 bg-text-secondary rounded-full absolute left-1 top-1"></div>
                   </div>
@@ -201,7 +273,7 @@ export function Laboratorio() {
                   Soporte para MP4, AVI, o extractos de audio. Los modelos buscarán secuencias temporales anómalas o patrones específicos.
                 </p>
               </div>
-              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="video/*,audio/*" />
+              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="video/*" />
             </article>
 
             <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
@@ -273,6 +345,87 @@ export function Laboratorio() {
               </div>
             </div>
           </section>
+        </div>
+      )}
+
+      {activeMediaType === 'Sonido' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full animate-fade-in">
+          {/* Sidebar Controls */}
+          <div className="lg:col-span-4 flex flex-col gap-8 w-full">
+            {/* Configuration Card */}
+            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+              <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración de Audio</h2>
+              <div className="flex justify-between items-center mb-4">
+                <label className="font-semibold text-sm text-text-secondary">Umbral de Ruido (dB)</label>
+                <span className="text-primary-container font-bold text-3xl">-35</span>
+              </div>
+              <input
+                type="range"
+                min="-60"
+                max="0"
+                defaultValue="-35"
+                className="w-full mt-2"
+              />
+              <p className="mt-4 text-sm text-text-secondary leading-relaxed">
+                Filtra frecuencias de fondo para potenciar la precisión de la inferencia del modelo.
+              </p>
+            </article>
+
+            {/* Status Card */}
+            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+              <div className="flex items-center gap-4 mb-4">
+                <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+                <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
+              </div>
+              <p className="text-text-secondary text-sm">GPU A100 | Latencia 9ms | VRAM 64%</p>
+            </article>
+          </div>
+
+          {/* Main Canvas Area */}
+          <div className="lg:col-span-8 flex flex-col gap-8 w-full">
+            {/* Upload Area for Audio */}
+            <article 
+              className="relative group cursor-pointer w-full"
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+            >
+              <div className={`bg-surface-deep border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-secondary-container' : 'border-border-organic group-hover:border-primary-container'}`}>
+                <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <AudioLines className="text-primary-container w-12 h-12" />
+                </div>
+                <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Archivo de Sonido</h3>
+                <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
+                  Formatos soportados: MP3, WAV. Se generará un espectrograma y se ejecutará una red neuronal recurrente.
+                </p>
+                {/* Liquid Waveform */}
+                <div className="flex items-center gap-1.5 mt-8 h-12 justify-center">
+                  {[...Array(16)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="w-1.5 bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,85,0,0.5)]"
+                      animate={{
+                        height: [12, 48, 16, 32, 12][i % 5],
+                      }}
+                      transition={{
+                        duration: 1.2 + (i % 3) * 0.2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="audio/*" />
+            </article>
+
+            <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+              <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Analizar Espectrograma</span>
+              <Sparkles className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -1,0 +1,8 @@
+# Backups and temporary files
+Contexto/Nueva app.zip
+Contexto/NuevaAppTemp/
+node_modules/
+dist/
+.env
+.env*.local
+*.log
