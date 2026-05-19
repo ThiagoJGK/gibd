@@ -116,6 +116,25 @@ export function Laboratorio() {
               <h2>Módulo {LAB_MODELS.find(m => m.id === activeModel)?.label} en desarrollo.</h2>
             </div>
           )}
+
+          {/* Reference Inspiration Section */}
+          <section className="inspiration-section fade-in-up">
+            <h4 className="inspiration-title">Inspiración de Referencia</h4>
+            <div className="inspiration-grid">
+              <div className="inspiration-card pill-shape">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAnKG6Zsl4FZOrlhof0HSaEMgu1fTJ21VcBiVxCDu1PCcs8RixieYZfQGgdIFTzxHrEnIuH9PZCAG8umu0LhTKmiY8SO1SxrmJFlOUJa_x82LPfS2lemdGMXbwvcXZnFIirjwHLoigFJnNMQAzsIxmzqqth6AYreOjnMpJneGHZVxbhnNo5ewOMSvJat2d3S7ENB7xyVWffRQqHGfBPgMZly0a6RbTLsXLCJxRH0T38dEONLu67HwGPmZB-cpVwfEbo_l2f4E0m0c" alt="Referencia 1" />
+              </div>
+              <div className="inspiration-card pill-shape">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaNxVCUkV1zq5TjhTYv5oYOemqRnt4VcFnrcrcHVUkwYVlcZX3VxvkZ6N8f4nctOnkDMDGXHcr_ZhfOMaFKGdU2gQUUcFkKcp8Ryy8l83x_TFm8RNPoEvzgClFAS7fZ7WRi8ZJMhe0b0qt_CzTSJllgoiTDW1HxubaNPIqOi5QKeiIz6JKFbq-YZaKSjxBqPXUX9LbIUPD-cKWl146PNYKGLH2-bkdQlp2cQ5CukLyu8UblPtFHuEakkja7fxrdEIQ6MrDHILcYA8" alt="Referencia 2" />
+              </div>
+              <div className="inspiration-card pill-shape">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiqTUmRcQ_D5YHQkGdpBN95kWJoH5zlaNTmnBm4wNBOj_MEmfoJC-7jpx-eaYeddlZNimERmQxQVFYVq8-n-xX5IEQ97YaW2l7TKkGfQ9J3y-mjI7aIZX7ZgAPYLb1d2xkEf35Gr0PUjAXs-88-wXzsJ4ySPYcUN9zv2l0Pm7p9q6_iBZkHkAltzV0VTy78FpfFgyQFQrFvRX4NvCsMsoPVqehRgZ4I2Ndld6KxhLDTdV7jMGGOoEIAT-YD_mETjPAyXHHh3fE1M8" alt="Referencia 3" />
+              </div>
+              <div className="inspiration-card pill-shape">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIIzVhor0geVVwCFjltkZYlQfwDpiCfLGtLSA1JFTYTfTMMG-jAfahYwS_64iHbi_RBx3adFmvbh1ILBWb38_N7QFD3fa0tMTWMIqhd2EVusAWYEdNHgsowwU7Z_deEH1GGuaRzth1MAuhXtIpqh9OXpGD5Flnpc_go3dqwJfS72KkG5-N4wlyx19o5exNn3K5hzldyUdh-A2SnZ2sKwXhHX-Gr0hymyN8ItapW9b93ukKMkNcjsV-WabF0N6WcnOh2QMNDzK3USA" alt="Referencia 4" />
+              </div>
+            </div>
+          </section>
         </div>
 
         {/* Sidebar Configuration */}
