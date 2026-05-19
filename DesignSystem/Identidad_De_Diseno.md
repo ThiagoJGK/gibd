@@ -7,12 +7,12 @@ Este documento establece las normativas visuales, estéticas y técnicas para la
 El diseño se apoya en un contraste fuerte entre fondos profundos, verdes orgánicos y acentos de alta energía.
 
 *   **Negro Base (Fondo Principal):** `#0A0A0A` (Un negro casi puro, ideal para pantallas OLED y contraste infinito).
-*   **Verde Bosque (Color Secundario / Fondos de tarjetas / Superficies):** `#152B1E` a `#22402E` (Verde profundo, orgánico pero elegante. Sirve para diferenciar secciones del fondo negro sin ser disruptivo).
+*   **Morado Profundo (Color Secundario / Fondos de tarjetas / Superficies):** `#1A1124` a `#261633` (Morado profundo, orgánico pero elegante. Sirve para diferenciar secciones del fondo negro sin ser disruptivo).
 *   **Naranja Vibrante (Acento / Call to Action / Decoraciones):** `#FF5500` (Naranja puro, eléctrico y sumamente llamativo. Usado en botones principales, decoraciones, gradientes de fondo y elementos clave).
 *   **Neutros de Soporte (Texto y Bordes):**
     *   Texto Principal: `#F2F2F2` (Blanco suave para no cansar la vista).
     *   Texto Secundario: `#A3A3A3` (Gris medio para jerarquía menor).
-    *   Bordes "Flat": `#333333` o `#2D4C3B` (Para delimitar contenedores sin usar sombras).
+    *   Bordes "Flat" / Orgánicos: `#3A234A` a `#333333` (Para delimitar contenedores sin usar sombras).
 
 ## 2. Tipografía (Escala y Emparejamiento)
 

@@ -22,17 +22,15 @@ export function Articulos() {
     if (!query.trim()) return;
     
     setIsSearching(true);
-    // TODO: Connect with PTAH-Jurídico FastAPI endpoint
     setTimeout(() => {
       setIsSearching(false);
-      // Simulate selecting a document as result
       setActiveDoc(3); 
     }, 1500);
   };
 
   return (
     <div className="articulos-layout fade-in-up">
-      {/* Sidebar - Loaded Articles */}
+      {/* Sidebar - Loaded Articles (Horizontal on Mobile, Vertical on Desktop) */}
       <aside className="articulos-sidebar">
         <div className="sidebar-header">
           <h2>Artículos Cargados</h2>
@@ -43,10 +41,12 @@ export function Articulos() {
           {MOCK_DOCS.map(doc => (
             <div 
               key={doc.id} 
-              className={`doc-item pill-shape ${activeDoc === doc.id ? 'active' : ''}`}
+              className={`doc-item ${activeDoc === doc.id ? 'active' : ''}`}
               onClick={() => setActiveDoc(doc.id)}
             >
-              <FileText size={18} className="doc-icon" />
+              <div className="doc-icon-wrapper">
+                <FileText size={20} className="doc-icon" />
+              </div>
               <div className="doc-info">
                 <span className="doc-title">{doc.title}</span>
                 <span className="doc-type">{doc.type}</span>
@@ -60,7 +60,6 @@ export function Articulos() {
       <main className="articulos-main">
         <div className="main-content-wrapper">
           
-          {/* Empty State / Content */}
           <div className="content-display flex-center">
             {activeDoc ? (
               <div className="doc-detail fade-in-up">
@@ -75,28 +74,33 @@ export function Articulos() {
                 </div>
               </div>
             ) : (
-              <h2 className="empty-state-text">
-                Escribe una consulta para buscar artículos vía API o selecciona uno del panel lateral.
-              </h2>
+              <div className="empty-state">
+                <Search size={64} className="empty-state-icon" />
+                <h2 className="empty-state-text">
+                  Escribe una consulta para buscar artículos vía API o selecciona uno del panel.
+                </h2>
+              </div>
             )}
           </div>
 
-          {/* Search Bar at bottom */}
-          <form className="search-bar-container" onSubmit={handleSearch}>
-            <div className="input-wrapper pill-shape">
-              <Search size={24} className="search-icon" />
-              <input 
-                type="text" 
-                placeholder="Escribe tu consulta aquí (PTAH-Jurídico API)..." 
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="search-input"
-              />
-            </div>
-            <Button size="lg" variant="primary" type="submit" disabled={isSearching || !query.trim()}>
-              {isSearching ? 'Buscando...' : 'Buscar (API)'}
-            </Button>
-          </form>
+          {/* Search Bar Block */}
+          <div className="search-block">
+            <form className="search-bar-container" onSubmit={handleSearch}>
+              <div className="input-wrapper pill-shape glass-panel">
+                <Search size={24} className="search-icon" />
+                <input 
+                  type="text" 
+                  placeholder="Escribe tu consulta aquí (PTAH-Jurídico)..." 
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="search-input"
+                />
+              </div>
+              <Button size="massive" variant="primary" type="submit" disabled={isSearching || !query.trim()} className="search-btn">
+                {isSearching ? 'Buscando...' : 'Buscar (API)'}
+              </Button>
+            </form>
+          </div>
           
         </div>
       </main>
