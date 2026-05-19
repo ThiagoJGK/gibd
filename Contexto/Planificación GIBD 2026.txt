@@ -1,0 +1,74 @@
+﻿Objetivos para el Primer Año (Abril 2026 – Marzo 2027)
+Objetivo General del año
+Preparar las bases técnicas del proyecto: actualizar conocimientos del equipo, preparar datasets, extraer características iniciales de todas las modalidades (imágenes, texto, sonido y video), comenzar el diseño de abstracciones semánticas (principalmente por reducción dimensional y generación) y avanzar en los dos primeros productos tecnológicos (marcas de ganado y PTAH-Jurídico).
+Objetivos Específicos del Primer Año
+1. Preparar el equipo de trabajo y actualizar conocimientos en las tecnologías clave (Transformers, modelos generativos, few-shot learning, grafos de escena, etc.).
+2. Preparar y curar bases de datos para sonido y video (y reforzar las existentes de imágenes y texto).
+3. Extraer características profundas para las cuatro modalidades usando modelos preentrenados y arquitecturas específicas (Siamesas/Triplet Loss, Transformers, etc.).
+4. Iniciar el diseño e implementación de abstracciones semánticas por reducción dimensional y generación (principalmente en imágenes, sonido y video).
+5. Avanzar en el Producto 1 (buscador de marcas de ganado) y Producto 2 (PTAH-Jurídico).
+6. Realizar los primeros experimentos de entrenamiento y evaluación, y planificar publicaciones.
+7. Fortalecer la vinculación con actores externos (oficinas de marcas, municipios, UADER, etc.).
+Lista de Tareas Principales del Primer Año
+Dividí las tareas en 4 trimestres aproximados para que sea más fácil de seguir (el proyecto arranca el 01/04/2026).
+Abril – Mayo 2026 (Preparación y Puesta a Punto)
+* Actualización de conocimientos del equipo (talleres internos sobre Transformers, modelos generativos, few-shot/one-shot learning, grafos, etc.).
+* Revisión bibliográfica actualizada y organización de la bibliografía del grupo.
+* Configuración del entorno de desarrollo (servidores con GPU, repositorio Git, entornos virtuales, TensorBoard, etc.).
+* Planificación detallada de experimentos y definición de métricas comunes.
+* Inicio de contactos para vinculación (oficinas de marcas, UADER, municipios para inundaciones).
+Junio – Agosto 2026 (Preparación de Datos y Extracción Inicial)
+* Preparación de la BD de sonido para entrenamiento (2 meses).
+* Preparación de la BD de video para entrenamiento (2 meses).
+* Refuerzo/limpieza de las bases de imágenes (marcas de ganado, pinturas, etc.) y texto (normativa).
+* Extracción de características de sonido usando espectrogramas + modelos preentrenados (3 meses).
+* Extracción de características de video usando modelos preentrenados (3 meses).
+Septiembre – Diciembre 2026 (Extracción Avanzada + Primeros Productos)
+* Extracción de características de sonido usando Redes Siamesas/Triplet Loss/Transformers (4 meses).
+* Extracción de características de video usando Redes Siamesas/Triplet Loss con CNN 3D (4 meses).
+* Entrenamiento, experimentación y obtención de resultados iniciales en sonido (2 meses: oct-nov).
+* Entrenamiento, experimentación y obtención de resultados en video (3 meses: sep-dic).
+* Diseño y desarrollo del Producto 1: prototipo mejorado de búsqueda de marcas de ganado (3 meses: oct-dic).
+* Avance en abstracciones semánticas por reducción dimensional y generación (inicio en imágenes y sonido).
+* Primeros experimentos de robustez y few-shot learning.
+Enero – Marzo 2027 (Cierre de Año + Publicaciones)
+* Análisis de resultados y documentación.
+* Avance en el Producto 2: Diseño y desarrollo de prototipo PTAH-Jurídico (3 meses: ene-mar).
+* Vinculación con actores (oficinas rurales, universidades, municipios) y definición de convenios (feb-abr, pero inicio en este período).
+* Preparación de artículos para congresos/jornadas (CACIC 2026 u otros).
+* Evaluación intermedia del año y planificación del año 2.
+División de Tareas en 4 Subgrupos de Becarios
+Propongo dividir a los becarios en 4 subgrupos temáticos (idealmente de 2-3 becarios cada uno, según la cantidad que tengas). Cada subgrupo tiene un foco principal, pero todos participan de las actividades transversales (reuniones semanales, talleres y experimentos comunes).
+Subgrupo 1: Modalidad Sonido (Audio)
+* Preparación de la BD de sonido.
+* Extracción de características con espectrogramas + modelos preentrenados.
+* Extracción avanzada con Siamesas/Triplet Loss y Transformers.
+* Entrenamiento y experimentación en sonido.
+* Contribuir a abstracciones semánticas de sonido (reducción dimensional y generación).
+* Apoyo en experimentos de robustez y few-shot para audio.
+Subgrupo 2: Modalidad Video
+* Preparación de la BD de video.
+* Extracción de características con modelos preentrenados.
+* Extracción avanzada con Siamesas/Triplet Loss y CNN 3D.
+* Entrenamiento y experimentación en video.
+* Contribuir a abstracciones semánticas de video (reducción dimensional).
+* Apoyo en tareas de temporalidad y robustez.
+Subgrupo 3: Abstracciones Semánticas y Modelos Generativos
+* Investigación y pruebas de técnicas de reducción dimensional (PCA, UMAP, autoencoders, etc.).
+* Implementación de modelos generativos (VAE, GAN, etc.) para abstracción de imágenes, sonido y video.
+* Generación de representaciones compactas e interpretables.
+* Experimentación con abstracciones por generación y simplificación semántica.
+* Apoyo transversal en todos los dominios para la fase de abstracción.
+Subgrupo 4: Aplicaciones y Productos (Transferencia + Texto/Imágenes)
+* Mejora y desarrollo del Producto 1 (buscador de marcas de ganado).
+* Desarrollo del Producto 2 (PTAH-Jurídico – foco en texto).
+* Experimentación con few-shot/one-shot classification usando las abstracciones.
+* Evaluación de métricas (mAP, Precision@K, F1, robustez).
+* Preparación de datasets de imágenes y texto existentes.
+* Apoyo en vinculación, documentación y preparación de publicaciones.
+Actividades transversales para todos los subgrupos
+* Participar en talleres de actualización de conocimientos.
+* Reuniones semanales de seguimiento y seminarios internos.
+* Contribuir a la documentación y reproducibilidad de experimentos.
+* Apoyo en pruebas de robustez y análisis de resultados.
+Esta división permite que cada subgrupo tenga responsabilidad clara, pero al mismo tiempo haya colaboración (por ejemplo, el subgrupo de abstracciones ayuda a todos, y el de aplicaciones integra los resultados).

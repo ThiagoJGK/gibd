@@ -1,0 +1,7 @@
+{
+  "name": "Explorador GIBD Local",
+  "description": "Una aplicación para explorar y visualizar archivos de texto e imágenes almacenados localmente. Cargue sus directorios y navegue por su contenido.",
+  "requestFramePermissions": [],
+  "prompt": "",
+  "majorCapabilities": []
+}

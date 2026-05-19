@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explorador GIBD Local</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    as="style"
+    onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+  />
+  <style>
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2d3748; /* slate-800 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4a5568; /* slate-600 */
+      border-radius: 4px; /* scrollbar thumb rounding */
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #718096; /* slate-500 */
+    }
+    /* Basic body styling for dark theme (can be overridden by Tailwind on specific elements) */
+    body {
+      background-color: #1a202c; /* slate-900 - default, new page uses #141a1f */
+      color: #e2e8f0; /* slate-200 */
+      /* font-family set by new page or defaults to Inter from existing styles */
+    }
+
+    /* Custom styles for pill aesthetic where Tailwind classes might be verbose or need overrides */
+    .pill-slider::-webkit-slider-thumb {
+      /* Example for custom thumb styling if needed, though accent color often suffices */
+    }
+
+    /* Animations and Glow Effects */
+    @keyframes pulse-glow-sky {
+      0%, 100% { box-shadow: 0 0 5px #0ea5e9, 0 0 10px #0284c7; opacity: 0.9; } /* sky-500, sky-600 */
+      50% { box-shadow: 0 0 15px #38bdf8, 0 0 25px #0ea5e9; opacity: 1; } /* sky-400, sky-500 */
+    }
+    @keyframes pulse-glow-amber {
+      0%, 100% { box-shadow: 0 0 5px #f59e0b, 0 0 10px #d97706; opacity: 0.9; } /* amber-500, amber-600 */
+      50% { box-shadow: 0 0 15px #fbbf24, 0 0 25px #f59e0b; opacity: 1; } /* amber-400, amber-500 */
+    }
+    @keyframes text-pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    @keyframes scale-fade-in {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .button-glow-sky {
+      transition: all 0.3s ease-in-out;
+    }
+    .button-glow-sky:hover, .button-glow-sky:focus-visible {
+      animation: pulse-glow-sky 1.5s infinite;
+      transform: translateY(-2px);
+    }
+    .button-glow-amber {
+      transition: all 0.3s ease-in-out;
+    }
+    .button-glow-amber:hover, .button-glow-amber:focus-visible {
+      animation: pulse-glow-amber 1.5s infinite;
+      transform: translateY(-2px);
+    }
+
+    .tab-active-glow {
+      animation: pulse-glow-sky 2s infinite alternate;
+       box-shadow: 0 0 8px #0ea5e9, 0 0 15px #0284c7; /* sky-500, sky-600 */
+    }
+    
+    .card-hover-glow {
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+    .card-hover-glow:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 0 20px #0369a1; /* sky-700 */
+    }
+
+    .selected-item-glow {
+       box-shadow: 0 0 8px #0ea5e9, 0 0 12px #0284c7; /* sky-500, sky-600 */
+    }
+    
+    .animate-text-pulse {
+      animation: text-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .animate-scale-fade-in {
+      animation: scale-fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .animate-fadeIn { /* General fade-in for cards/sections */
+      animation: scale-fade-in 0.4s ease-out;
+    }
+    .animate-fadeInUp {
+      animation: fadeInUp 0.7s ease-out forwards;
+    }
+
+
+    @keyframes pulse-multicolor-glow {
+      0%, 100% { 
+        box-shadow: 0 0 7px #a855f7, 0 0 12px #ec4899, 0 0 18px #3b82f6; /* purple-500, pink-500, blue-500 */
+        opacity: 0.85; 
+      }
+      50% { 
+        box-shadow: 0 0 12px #c084fc, 0 0 20px #f472b6, 0 0 30px #60a5fa; /* purple-400, pink-400, blue-400 */
+        opacity: 1; 
+      }
+    }
+
+    .button-multicolor-glow {
+      transition: all 0.3s ease-in-out;
+    }
+    .button-multicolor-glow:hover, .button-multicolor-glow:focus-visible {
+      animation: pulse-multicolor-glow 2.5s infinite alternate;
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* Feature Card Animations */
+    @property --start-angle { /* Required for animating custom properties in gradients */
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @keyframes traveling-border-glow-animation {
+      0% { --start-angle: 0deg; }
+      100% { --start-angle: 360deg; }
+    }
+
+    .feature-card-animate-outline {
+      position: relative; /* Needed for pseudo-element positioning */
+    }
+
+    .feature-card-animate-outline.apply-animation::before {
+      content: "";
+      position: absolute;
+      left: -2px; 
+      top: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      border-radius: inherit; /* Inherits from the card's rounded-2xl */
+      padding: 2px; /* Creates space for the "border" that will be masked */
+      background: conic-gradient(
+        from var(--start-angle),
+        transparent 0deg,
+        transparent 315deg,     
+        rgba(96, 165, 250, 0.2) 320deg, /* Faint blue tail start */
+        rgba(14, 165, 233, 0.7) 330deg, /* Brighter sky blue head */
+        rgba(96, 165, 250, 0.2) 340deg, /* Faint blue tail end */
+        transparent 345deg,
+        transparent 360deg
+      );
+      animation: traveling-border-glow-animation 2s linear forwards;
+      z-index: 0; /* Above card background but below content if content has z-index */
+      box-sizing: border-box;
+      pointer-events: none;
+      
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; /* For Webkit browsers */
+              mask: 
+        linear-gradient(#fff 0 0) content-box, /* Transparent content area */
+        linear-gradient(#fff 0 0); /* Full shape */
+      mask-composite: exclude; /* Standard property - keep only the border area */
+    }
+
+    @keyframes card-shine-animation {
+      0% { transform: translateX(-150%) skewX(-30deg); opacity: 0; }
+      50% { opacity: 0.6; } /* Shine becomes visible */
+      100% { transform: translateX(150%) skewX(-30deg); opacity: 0; }
+    }
+
+    .feature-card-animate-shine {
+      position: relative; /* Already on feature-card-animate-outline */
+      overflow: hidden; /* Important for the shine effect */
+    }
+
+    .feature-card-animate-shine.apply-animation::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0; 
+      width: 60%; /* Width of the shine */
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%, 
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: translateX(-150%) skewX(-30deg); /* Initial off-screen position */
+      animation: card-shine-animation 1.5s ease-in-out forwards;
+      animation-delay: 0.1s; /* Slight delay */
+      z-index: 1; /* Above card content but below interactive elements if any */
+      pointer-events: none;
+    }
+
+    .scroll-fade-blur-top::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 15vh; /* Increased height for smoother fade */
+      /* Smoother gradient using the exact HomePage background color */
+      background: linear-gradient(to bottom, 
+        rgba(16, 29, 35, 1) 0%,    /* #101d23 solid */
+        rgba(16, 29, 35, 0.95) 20%, 
+        rgba(16, 29, 35, 0.8) 40%,
+        rgba(16, 29, 35, 0.5) 65%, 
+        rgba(16, 29, 35, 0) 100%  /* Transparent */
+      );
+      backdrop-filter: blur(5px); /* Increased blur */
+      -webkit-backdrop-filter: blur(5px);
+      pointer-events: none;
+      z-index: 40; 
+      opacity: 0; /* Initially hidden */
+      visibility: hidden; /* Initially hidden */
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Smooth transition */
+    }
+
+    /* Activation class for the scroll effect */
+    .scroll-effect-active .scroll-fade-blur-top::before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!-- React app will be injected here -->
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

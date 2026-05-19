@@ -1,0 +1,30 @@
+.pill-tabs-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.pill-tab {
+  background-color: var(--surface-forest-green);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-green);
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.pill-tab:hover {
+  background-color: var(--surface-forest-green-hover);
+  color: var(--text-main);
+}
+
+.pill-tab.active {
+  background-color: var(--accent-vibrant-orange);
+  color: #fff;
+  border-color: var(--accent-vibrant-orange);
+}

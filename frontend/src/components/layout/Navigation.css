@@ -1,0 +1,91 @@
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--surface-forest-green);
+  border: 1px solid var(--border-green);
+  padding: 8px 16px;
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  z-index: 100;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Minor shadow just to separate from the pure black background when scrolling */
+}
+
+.nav-logo {
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--accent-vibrant-orange);
+  padding-left: 16px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  color: var(--text-main);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: var(--surface-forest-green-hover);
+}
+
+.nav-link.active {
+  background-color: var(--accent-vibrant-orange);
+  color: #fff;
+}
+
+.settings-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-btn:hover {
+  background-color: var(--surface-forest-green-hover);
+  color: var(--text-main);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .nav-container {
+    top: auto;
+    bottom: 24px;
+    padding: 8px;
+  }
+  
+  .nav-logo {
+    display: none;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .nav-link span, .settings-btn span {
+    display: none;
+  }
+  
+  .nav-link, .settings-btn {
+    padding: 12px 16px;
+  }
+}
