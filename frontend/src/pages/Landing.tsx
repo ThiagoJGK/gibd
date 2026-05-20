@@ -4,19 +4,19 @@ import { LogoUTN } from '../components/ui/LogoUTN';
 
 const NEWS_ITEMS = [
   {
-    date: '24 May 2024',
-    title: 'Nuevo modelo de Redes Siamesas para Marcas de Ganado desplegado con 98% de precisión.',
-    tag: 'Despliegue'
-  },
-  {
-    date: '10 May 2024',
-    title: 'Paper aceptado en Congreso Nacional de Ciencias de la Computación (CACIC).',
+    date: 'Nov 2024',
+    title: 'Presentación en CoNaIISI 2024 de la investigación en Recuperación de Información de Reglamentación Académica en Español utilizando NLP.',
     tag: 'Publicación'
   },
   {
-    date: '02 Abr 2024',
-    title: 'Inicio del desarrollo del módulo de Análisis Semántico y NLP para la plataforma PTAH.',
+    date: 'Oct 2024',
+    title: 'Aceptación y publicación en ARGENCON 2024 del paper "Advanced Variable Tuning and Biases in Chatbot Models: Analysis of the PTAH Prototype".',
     tag: 'Investigación'
+  },
+  {
+    date: 'Oct 2024',
+    title: 'Exposición en CACIC 2024: "Image Feature Extraction for Similarity Searching Using Transfer Learning with ResNet".',
+    tag: 'Conferencia'
   }
 ];
 
@@ -70,15 +70,15 @@ export function Landing() {
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
             <FileText className="w-8 h-8 text-primary-container" />
           </div>
-          <h4 className="text-4xl font-black text-text-primary mb-2">+25</h4>
-          <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Papers Publicados</p>
+          <h4 className="text-4xl font-black text-text-primary mb-2">+35</h4>
+          <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Papers y Publicaciones</p>
         </div>
         <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
             <Brain className="w-8 h-8 text-primary-container" />
           </div>
           <h4 className="text-4xl font-black text-text-primary mb-2">4</h4>
-          <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Modelos IA Operativos</p>
+          <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Proyectos UTN-PID Activos</p>
         </div>
         <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
@@ -142,39 +142,39 @@ export function Landing() {
 
       {/* Módulos de Investigación Vigentes */}
       <section className="mb-20">
-        <h2 className="text-3xl md:text-5xl font-black text-center mb-12">Módulos de <span className="text-primary-container">Investigación</span></h2>
+        <h2 className="text-3xl md:text-5xl font-black text-center mb-12">Líneas de <span className="text-primary-container">Investigación</span></h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Sparkles className="w-6 h-6 text-primary-container" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-text-primary">Marcas de Ganado</h3>
-            <p className="text-text-secondary text-sm leading-relaxed">Redes neuronales convolucionales y arquitecturas siamesas para clasificación de marcas en entornos rurales.</p>
+            <h3 className="text-xl font-bold mb-3 text-text-primary">Búsqueda por Similitud</h3>
+            <p className="text-text-secondary text-sm leading-relaxed">Aprendizaje métrico profundo y redes siamesas para la indexación y comparación robusta de imágenes (marcas, tatuajes, logos).</p>
           </div>
           
           <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Scale className="w-6 h-6 text-primary-container" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-text-primary">PTAH Jurídico</h3>
-            <p className="text-text-secondary text-sm leading-relaxed">Modelos de lenguaje natural (NLP) e indexación semántica aplicada a expedientes y doctrina legal.</p>
+            <h3 className="text-xl font-bold mb-3 text-text-primary">NLP y Agentes de IA</h3>
+            <p className="text-text-secondary text-sm leading-relaxed">Modelos de lenguaje natural para la recuperación semántica de normativas académicas y el prototipado del agente conversacional PTAH.</p>
           </div>
           
           <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Network className="w-6 h-6 text-primary-container" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-text-primary">Proyecto OBC</h3>
-            <p className="text-text-secondary text-sm leading-relaxed">Análisis de grandes volúmenes de datos geoespaciales y satelitales mediante Deep Learning.</p>
+            <h3 className="text-xl font-bold mb-3 text-text-primary">Métricas y LudgePI</h3>
+            <p className="text-text-secondary text-sm leading-relaxed">Aplicación de dinámicas lúdicas (gamificación) y minería de datos para el seguimiento transversal y trazabilidad en la gestión de proyectos.</p>
           </div>
 
           <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Radio className="w-6 h-6 text-primary-container" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-text-primary">Análisis de Sonido</h3>
-            <p className="text-text-secondary text-sm leading-relaxed">Detección de patrones anómalos y clasificación de frecuencias en entornos industriales usando IA.</p>
+            <h3 className="text-xl font-bold mb-3 text-text-primary">Bases de Datos KDD</h3>
+            <p className="text-text-secondary text-sm leading-relaxed">Descubrimiento de conocimiento en bases de datos tradicionales y no convencionales, indexación espacial y Big Data masivo.</p>
           </div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const MEDIA_CONFIG = [
   { id: 'Imagen', angle: -35, width: 110 },
@@ -12,10 +12,10 @@ const MEDIA_CONFIG = [
 type MediaType = typeof MEDIA_CONFIG[number]['id'];
 
 const MODELS_BY_MEDIA: Record<MediaType, string[]> = {
-  'Imagen': ['Marcas de Ganado', 'OBC (Satelital)'],
-  'Video': ['Análisis de Comportamiento', 'Seguimiento de Objetos'],
-  'Texto': ['PTAH-Jurídico', 'Archivos NLP'],
-  'Sonido': ['Análisis de Frecuencia', 'Reconocimiento de Voz', 'Detección de Anomalías']
+  'Imagen': ['Marcas de Ganado', 'Búsqueda de Logos', 'Detección de Tatuajes'],
+  'Video': ['Indexación Temporal', 'Seguimiento de Patrones'],
+  'Texto': ['PTAH (Modelos Legales)', 'Reglamentación NLP'],
+  'Sonido': ['Indexación Métrica', 'Análisis de Señales']
 };
 
 const SIDEBAR_ITEMS = [
@@ -441,289 +441,335 @@ export function Laboratorio() {
         </div>
       </section>
 
-      {activeMediaType === 'Imagen' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full">
-          {/* Sidebar Controls */}
-          <div className="lg:col-span-4 flex flex-col gap-8 w-full">
-            {/* Configuration Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración</h2>
-              <div className="flex justify-between items-center mb-4">
-                <label className="font-semibold text-sm text-text-secondary">Top-K Similitudes</label>
-                <span className="text-primary-container font-bold text-3xl">{topK}</span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="50"
-                value={topK}
-                onChange={(e) => setTopK(parseInt(e.target.value))}
-                className="w-full mt-2"
-              />
-              <p className="mt-4 text-sm text-text-secondary leading-relaxed">
-                Ajusta el número de imágenes similares que el motor de Red Siamesa retornará.
-              </p>
-            </article>
-
-            {/* Status Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <div className="flex items-center gap-4 mb-4">
-                <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
-                <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
-              </div>
-              <p className="text-text-secondary text-sm">GPU A100 | Latencia 12ms | VRAM 82%</p>
-            </article>
-          </div>
-
-          {/* Main Canvas Area */}
-          <div className="lg:col-span-8 flex flex-col gap-8 w-full">
-            {/* Upload Area */}
-            <article 
-              className="relative group cursor-pointer w-full"
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-            >
-              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
-                <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Microscope className="text-primary-container w-12 h-12" />
+      <AnimatePresence mode="wait">
+        {activeMediaType === 'Imagen' && (
+          <motion.div
+            key="Imagen"
+            initial={{ opacity: 0, y: 15, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.985 }}
+            transition={{
+              opacity: { duration: 0.18, ease: "easeOut" },
+              y: { type: "spring", stiffness: 200, damping: 25 },
+              scale: { type: "spring", stiffness: 200, damping: 25 }
+            }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full"
+          >
+            {/* Sidebar Controls */}
+            <div className="lg:col-span-4 flex flex-col gap-8 w-full">
+              {/* Configuration Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración</h2>
+                <div className="flex justify-between items-center mb-4">
+                  <label className="font-semibold text-sm text-text-secondary">Top-K Similitudes</label>
+                  <span className="text-primary-container font-bold text-3xl">{topK}</span>
                 </div>
-                <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Imagen de Marca</h3>
-                <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
-                  Arrastra y suelta el archivo aquí o haz clic para explorar. Los algoritmos de visión computacional detectarán patrones únicos.
+                <input
+                  type="range"
+                  min="1"
+                  max="50"
+                  value={topK}
+                  onChange={(e) => setTopK(parseInt(e.target.value))}
+                  className="w-full mt-2"
+                />
+                <p className="mt-4 text-sm text-text-secondary leading-relaxed">
+                  Ajusta el número de imágenes similares que el motor de Red Siamesa retornará.
                 </p>
+              </article>
+
+              {/* Status Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+                  <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
+                </div>
+                <p className="text-text-secondary text-sm">GPU A100 | Latencia 12ms | VRAM 82%</p>
+              </article>
+            </div>
+
+            {/* Main Canvas Area */}
+            <div className="lg:col-span-8 flex flex-col gap-8 w-full">
+              {/* Upload Area */}
+              <article 
+                className="relative group cursor-pointer w-full"
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+              >
+                <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
+                  <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Microscope className="text-primary-container w-12 h-12" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Imagen de Marca</h3>
+                  <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
+                    Arrastra y suelta el archivo aquí o haz clic para explorar. Los algoritmos de visión computacional detectarán patrones únicos.
+                  </p>
+                </div>
+                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+              </article>
+
+              {/* Primary Action Button */}
+              <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Buscar Similitudes (Red Siamesa)</span>
+                <Search className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
+              </button>
+
+              {/* Reference Results Grid */}
+              <section className="mt-8 w-full">
+                <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-6">Inspiración de Referencia</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+                  {REFERENCE_IMAGES.map((src, i) => (
+                    <div key={i} className="aspect-square card-glass-purple rounded-[1.5rem] overflow-hidden group">
+                      <img src={src} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={`Reference ${i+1}`} loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </motion.div>
+        )}
+
+        {activeMediaType === 'Video' && (
+          <motion.div
+            key="Video"
+            initial={{ opacity: 0, y: 15, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.985 }}
+            transition={{
+              opacity: { duration: 0.18, ease: "easeOut" },
+              y: { type: "spring", stiffness: 200, damping: 25 },
+              scale: { type: "spring", stiffness: 200, damping: 25 }
+            }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full"
+          >
+            {/* Sidebar Controls */}
+            <div className="lg:col-span-4 flex flex-col gap-8 w-full">
+              {/* Configuration Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <h2 className="text-2xl font-bold text-primary-container mb-6">Filtros Activos</h2>
+                <div className="flex flex-col gap-4">
+                  <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
+                    <span className="font-semibold text-sm text-text-primary">Detección de Movimiento</span>
+                    <div className="w-10 h-6 bg-primary-container rounded-full relative">
+                      <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
+                    <span className="font-semibold text-sm text-text-secondary">Seguimiento Multiobjeto</span>
+                    <div className="w-10 h-6 bg-[#0d0712]/50 border border-border-organic/40 rounded-full relative">
+                      <div className="w-4 h-4 bg-text-secondary rounded-full absolute left-1 top-1"></div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Status Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+                  <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
+                </div>
+                <p className="text-text-secondary text-sm">GPU A100 | Latencia 18ms | VRAM 94%</p>
+              </article>
+            </div>
+
+            {/* Main Canvas Area */}
+            <div className="lg:col-span-8 flex flex-col gap-8 w-full">
+              {/* Upload Area for Video/Audio */}
+              <article 
+                className="relative group cursor-pointer w-full"
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+              >
+                <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
+                  <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Video className="text-primary-container w-12 h-12" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Archivo Multimedia</h3>
+                  <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
+                    Soporte para MP4, AVI, o extractos de audio. Los modelos buscarán secuencias temporales anómalas o patrones específicos.
+                  </p>
+                </div>
+                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="video/*" />
+              </article>
+
+              <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Procesar Secuencia Temporal</span>
+                <Sparkles className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {activeMediaType === 'Texto' && (
+          <motion.div
+            key="Texto"
+            initial={{ opacity: 0, y: 15, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.985 }}
+            transition={{
+              opacity: { duration: 0.18, ease: "easeOut" },
+              y: { type: "spring", stiffness: 200, damping: 25 },
+              scale: { type: "spring", stiffness: 200, damping: 25 }
+            }}
+            className="flex flex-col md:flex-row gap-6 h-[700px] w-full"
+          >
+            {/* Left Sidebar */}
+            <aside className="w-full md:w-80 flex flex-col gap-4 overflow-hidden hidden md:flex shrink-0">
+              <div className="px-4">
+                <h2 className="text-xl font-bold text-primary-container mb-2">Colección Documental</h2>
+                <div className="h-1 w-12 bg-primary-container rounded-full"></div>
               </div>
-              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
-            </article>
-
-            {/* Primary Action Button */}
-            <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-              <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Buscar Similitudes (Red Siamesa)</span>
-              <Search className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
-            </button>
-
-            {/* Reference Results Grid */}
-            <section className="mt-8 w-full">
-              <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-6">Inspiración de Referencia</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-                {REFERENCE_IMAGES.map((src, i) => (
-                  <div key={i} className="aspect-square card-glass-purple rounded-[1.5rem] overflow-hidden group">
-                    <img src={src} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={`Reference ${i+1}`} loading="lazy" />
+              
+              <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
+                {SIDEBAR_ITEMS.map((item) => (
+                  <div 
+                    key={item.id}
+                    onClick={() => setActiveSearchItem(item.id)}
+                    className={`p-6 rounded-full border cursor-pointer transition-all group flex items-center gap-4 ${item.opacity || ''} ${
+                      activeSearchItem === item.id 
+                        ? 'bg-primary-container/10 border-primary-container' 
+                        : 'btn-glass-inactive border-transparent hover:border-primary-container'
+                    }`}
+                  >
+                    <item.icon className="text-primary-container w-6 h-6 shrink-0" />
+                    <span className="font-semibold text-sm truncate">{item.label}</span>
                   </div>
                 ))}
               </div>
-            </section>
-          </div>
-        </div>
-      )}
+            </aside>
 
-      {activeMediaType === 'Video' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full">
-          {/* Sidebar Controls */}
-          <div className="lg:col-span-4 flex flex-col gap-8 w-full">
-            {/* Configuration Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <h2 className="text-2xl font-bold text-primary-container mb-6">Filtros Activos</h2>
-              <div className="flex flex-col gap-4">
-                <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
-                  <span className="font-semibold text-sm text-text-primary">Detección de Movimiento</span>
-                  <div className="w-10 h-6 bg-primary-container rounded-full relative">
-                    <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
-                  </div>
+            {/* Main Content Area */}
+            <section className="flex-1 flex flex-col card-glass-purple rounded-[3rem] overflow-hidden relative min-h-[500px] md:min-h-0 w-full">
+              {/* Empty State */}
+              <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center h-full pb-32">
+                <div className="w-32 h-32 bg-primary-container/10 rounded-full flex items-center justify-center mb-8 animate-pulse shrink-0">
+                  <Sparkles className="w-16 h-16 text-primary-container" />
                 </div>
-                <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
-                  <span className="font-semibold text-sm text-text-secondary">Seguimiento Multiobjeto</span>
-                  <div className="w-10 h-6 bg-[#0d0712]/50 border border-border-organic/40 rounded-full relative">
-                    <div className="w-4 h-4 bg-text-secondary rounded-full absolute left-1 top-1"></div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            {/* Status Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <div className="flex items-center gap-4 mb-4">
-                <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
-                <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
-              </div>
-              <p className="text-text-secondary text-sm">GPU A100 | Latencia 18ms | VRAM 94%</p>
-            </article>
-          </div>
-
-          {/* Main Canvas Area */}
-          <div className="lg:col-span-8 flex flex-col gap-8 w-full">
-            {/* Upload Area for Video/Audio */}
-            <article 
-              className="relative group cursor-pointer w-full"
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-            >
-              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
-                <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Video className="text-primary-container w-12 h-12" />
-                </div>
-                <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Archivo Multimedia</h3>
-                <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
-                  Soporte para MP4, AVI, o extractos de audio. Los modelos buscarán secuencias temporales anómalas o patrones específicos.
+                <h3 className="text-2xl md:text-[28px] font-bold max-w-lg leading-tight text-text-primary">
+                  Escribe una consulta en lenguaje natural
+                </h3>
+                <p className="mt-4 text-text-secondary max-w-md leading-relaxed">
+                  La red neuronal semántica del GIBD analizará millones de registros en la base de datos distribuida para encontrar correlaciones ocultas en papers o documentos jurídicos.
                 </p>
               </div>
-              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="video/*" />
-            </article>
 
-            <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-              <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Procesar Secuencia Temporal</span>
-              <Sparkles className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {activeMediaType === 'Texto' && (
-        <div className="flex flex-col md:flex-row gap-6 h-[700px] w-full">
-          {/* Left Sidebar */}
-          <aside className="w-full md:w-80 flex flex-col gap-4 overflow-hidden hidden md:flex shrink-0">
-            <div className="px-4">
-              <h2 className="text-xl font-bold text-primary-container mb-2">Colección Documental</h2>
-              <div className="h-1 w-12 bg-primary-container rounded-full"></div>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
-              {SIDEBAR_ITEMS.map((item) => (
-                <div 
-                  key={item.id}
-                  onClick={() => setActiveSearchItem(item.id)}
-                  className={`p-6 rounded-full border cursor-pointer transition-all group flex items-center gap-4 ${item.opacity || ''} ${
-                    activeSearchItem === item.id 
-                      ? 'bg-primary-container/10 border-primary-container' 
-                      : 'btn-glass-inactive border-transparent hover:border-primary-container'
-                  }`}
-                >
-                  <item.icon className="text-primary-container w-6 h-6 shrink-0" />
-                  <span className="font-semibold text-sm truncate">{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </aside>
-
-          {/* Main Content Area */}
-          <section className="flex-1 flex flex-col card-glass-purple rounded-[3rem] overflow-hidden relative min-h-[500px] md:min-h-0 w-full">
-            {/* Empty State */}
-            <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center h-full pb-32">
-              <div className="w-32 h-32 bg-primary-container/10 rounded-full flex items-center justify-center mb-8 animate-pulse shrink-0">
-                <Sparkles className="w-16 h-16 text-primary-container" />
-              </div>
-              <h3 className="text-2xl md:text-[28px] font-bold max-w-lg leading-tight text-text-primary">
-                Escribe una consulta en lenguaje natural
-              </h3>
-              <p className="mt-4 text-text-secondary max-w-md leading-relaxed">
-                La red neuronal semántica del GIBD analizará millones de registros en la base de datos distribuida para encontrar correlaciones ocultas en papers o documentos jurídicos.
-              </p>
-            </div>
-
-            {/* Bottom Input Section */}
-            <div className="p-4 md:p-8 bg-black/40 backdrop-blur-md absolute bottom-0 w-full border-t border-border-organic">
-              <div className="flex flex-col md:flex-row gap-4 items-center">
-                <div className="flex-1 w-full bg-background-base rounded-full border border-border-organic px-8 py-4 flex items-center gap-4 focus-within:border-primary-container transition-colors">
-                  <TerminalSquare className="text-text-secondary w-6 h-6 shrink-0" />
-                  <input 
-                    type="text" 
-                    placeholder="Busca por patrones o conceptos (NLP)..." 
-                    className="bg-transparent border-none outline-none focus:ring-0 w-full text-text-primary placeholder:text-text-secondary font-semibold"
-                  />
-                </div>
-                <button className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10">
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-                  <span className="relative z-10 drop-shadow-md">Buscar (NLP)</span>
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
-      )}
-
-      {activeMediaType === 'Sonido' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full animate-fade-in">
-          {/* Sidebar Controls */}
-          <div className="lg:col-span-4 flex flex-col gap-8 w-full">
-            {/* Configuration Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración de Audio</h2>
-              <div className="flex justify-between items-center mb-4">
-                <label className="font-semibold text-sm text-text-secondary">Umbral de Ruido (dB)</label>
-                <span className="text-primary-container font-bold text-3xl">-35</span>
-              </div>
-              <input
-                type="range"
-                min="-60"
-                max="0"
-                defaultValue="-35"
-                className="w-full mt-2"
-              />
-              <p className="mt-4 text-sm text-text-secondary leading-relaxed">
-                Filtra frecuencias de fondo para potenciar la precisión de la inferencia del modelo.
-              </p>
-            </article>
-
-            {/* Status Card */}
-            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
-              <div className="flex items-center gap-4 mb-4">
-                <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
-                <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
-              </div>
-              <p className="text-text-secondary text-sm">GPU A100 | Latencia 9ms | VRAM 64%</p>
-            </article>
-          </div>
-
-          {/* Main Canvas Area */}
-          <div className="lg:col-span-8 flex flex-col gap-8 w-full">
-            {/* Upload Area for Audio */}
-            <article 
-              className="relative group cursor-pointer w-full"
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-            >
-              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
-                <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <AudioLines className="text-primary-container w-12 h-12" />
-                </div>
-                <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Archivo de Sonido</h3>
-                <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
-                  Formatos soportados: MP3, WAV. Se generará un espectrograma y se ejecutará una red neuronal recurrente.
-                </p>
-                {/* Liquid Waveform */}
-                <div className="flex items-center gap-1.5 mt-8 h-12 justify-center">
-                  {[...Array(16)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="w-1.5 bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,85,0,0.5)]"
-                      animate={{
-                        height: [12, 48, 16, 32, 12][i % 5],
-                      }}
-                      transition={{
-                        duration: 1.2 + (i % 3) * 0.2,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        ease: "easeInOut"
-                      }}
+              {/* Bottom Input Section */}
+              <div className="p-4 md:p-8 bg-black/40 backdrop-blur-md absolute bottom-0 w-full border-t border-border-organic">
+                <div className="flex flex-col md:flex-row gap-4 items-center">
+                  <div className="flex-1 w-full bg-background-base rounded-full border border-border-organic px-8 py-4 flex items-center gap-4 focus-within:border-primary-container transition-colors">
+                    <TerminalSquare className="text-text-secondary w-6 h-6 shrink-0" />
+                    <input 
+                      type="text" 
+                      placeholder="Busca por patrones o concepts (NLP)..." 
+                      className="bg-transparent border-none outline-none focus:ring-0 w-full text-text-primary placeholder:text-text-secondary font-semibold"
                     />
-                  ))}
+                  </div>
+                  <button className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10">
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                    <span className="relative z-10 drop-shadow-md">Buscar (NLP)</span>
+                  </button>
                 </div>
               </div>
-              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="audio/*" />
-            </article>
+            </section>
+          </motion.div>
+        )}
 
-            <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-              <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Analizar Espectrograma</span>
-              <Sparkles className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
-            </button>
-          </div>
-        </div>
-      )}
+        {activeMediaType === 'Sonido' && (
+          <motion.div
+            key="Sonido"
+            initial={{ opacity: 0, y: 15, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.985 }}
+            transition={{
+              opacity: { duration: 0.18, ease: "easeOut" },
+              y: { type: "spring", stiffness: 200, damping: 25 },
+              scale: { type: "spring", stiffness: 200, damping: 25 }
+            }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full"
+          >
+            {/* Sidebar Controls */}
+            <div className="lg:col-span-4 flex flex-col gap-8 w-full">
+              {/* Configuration Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración de Audio</h2>
+                <div className="flex justify-between items-center mb-4">
+                  <label className="font-semibold text-sm text-text-secondary">Umbral de Ruido (dB)</label>
+                  <span className="text-primary-container font-bold text-3xl">-35</span>
+                </div>
+                <input
+                  type="range"
+                  min="-60"
+                  max="0"
+                  defaultValue="-35"
+                  className="w-full mt-2"
+                />
+                <p className="mt-4 text-sm text-text-secondary leading-relaxed">
+                  Filtra frecuencias de fondo para potenciar la precisión de la inferencia del modelo.
+                </p>
+              </article>
+
+              {/* Status Card */}
+              <article className="card-glass-purple rounded-[2rem] p-8 w-full">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+                  <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
+                </div>
+                <p className="text-text-secondary text-sm">GPU A100 | Latencia 9ms | VRAM 64%</p>
+              </article>
+            </div>
+
+            {/* Main Canvas Area */}
+            <div className="lg:col-span-8 flex flex-col gap-8 w-full">
+              {/* Upload Area for Audio */}
+              <article 
+                className="relative group cursor-pointer w-full"
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+              >
+                <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
+                  <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <AudioLines className="text-primary-container w-12 h-12" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Archivo de Sonido</h3>
+                  <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
+                    Formatos soportados: MP3, WAV. Se generará un espectrograma y se ejecutará una red neuronal recurrente.
+                  </p>
+                  {/* Liquid Waveform */}
+                  <div className="flex items-center gap-1.5 mt-8 h-12 justify-center">
+                    {[...Array(16)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-1.5 bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,85,0,0.5)]"
+                        animate={{
+                          height: [12, 48, 16, 32, 12][i % 5],
+                        }}
+                        transition={{
+                          duration: 1.2 + (i % 3) * 0.2,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="audio/*" />
+              </article>
+
+              <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Analizar Espectrograma</span>
+                <Sparkles className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
