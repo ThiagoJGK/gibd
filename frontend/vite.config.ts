@@ -9,6 +9,7 @@ export default defineConfig({
     react()
   ],
   server: {
-    allowedHosts: true
+    allowedHosts: true,
+    host: true
   }
 })

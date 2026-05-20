@@ -42,6 +42,10 @@ export function BottomNav() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
 
+  if (location.pathname === '/') {
+    return null;
+  }
+
   return (
     <motion.nav 
       initial={false}

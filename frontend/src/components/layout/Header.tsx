@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Microscope, BookOpen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { playWaterDrip } from '../../utils/audio';
@@ -6,6 +6,7 @@ import { LogoGIBD } from '../ui/LogoGIBD';
 
 export function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const NAV_ITEMS = [
     { to: "/laboratorio", icon: Microscope, label: "Laboratorio" },

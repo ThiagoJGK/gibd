@@ -365,10 +365,10 @@ export function Papers() {
                     ) : (
                       <motion.div 
                         key="expanded-content"
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -15 }}
-                        transition={{ duration: 0.25 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
                         className="flex flex-col flex-1"
                       >
                         {/* Highlighted View Paper Banner (UXUI Premium Requirement) */}
@@ -402,20 +402,35 @@ export function Papers() {
                           <span>Equipo de Investigación ({paper.authors.length})</span>
                         </h3>
                         
-                        <div className="flex flex-col gap-3">
+                        <motion.div 
+                          className="flex flex-col gap-3"
+                          variants={{
+                            hidden: { opacity: 0 },
+                            show: {
+                              opacity: 1,
+                              transition: { staggerChildren: 0.06 }
+                            }
+                          }}
+                          initial="hidden"
+                          animate="show"
+                        >
                           {paper.authors.map(authorKey => {
                             const author = AUTHORS_DATABASE[authorKey];
                             if (!author) return null;
                             const isAuthorExpanded = expandedAuthorKey === `${paper.id}-${authorKey}`;
 
                             return (
-                              <div 
+                              <motion.div 
                                 key={authorKey}
+                                variants={{
+                                  hidden: { opacity: 0, y: 10 },
+                                  show: { opacity: 1, y: 0, transition: { type: "tween", ease: "easeOut", duration: 0.25 } }
+                                }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setExpandedAuthorKey(isAuthorExpanded ? null : `${paper.id}-${authorKey}`);
                                 }}
-                                className={`bg-background-base/60 border rounded-[1.25rem] p-4 cursor-pointer transition-all duration-300 ${
+                                className={`bg-background-base/60 border rounded-[1.25rem] p-4 cursor-pointer transition-colors duration-300 ${
                                   isAuthorExpanded 
                                     ? 'border-primary-container/40 bg-primary-container/5 shadow-[0_0_15px_rgba(255,85,0,0.04)]' 
                                     : 'border-border-organic/80 hover:border-primary-container/30'
@@ -445,11 +460,14 @@ export function Papers() {
                                 <AnimatePresence>
                                   {isAuthorExpanded && (
                                     <motion.div
-                                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                                      animate={{ height: 'auto', opacity: 1, marginTop: 14 }}
-                                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                                      className="overflow-hidden border-t border-border-organic/60 pt-4 flex flex-wrap gap-2.5"
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: 'auto', opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ type: "tween", duration: 0.2, ease: "easeInOut" }}
+                                      style={{ willChange: "height, opacity", transform: "translateZ(0)" }}
+                                      className="overflow-hidden flex flex-wrap gap-2.5"
                                     >
+                                      <div className="w-full border-t border-border-organic/60 mt-4 pt-4 flex flex-wrap gap-2.5">
                                       <a 
                                         href={`mailto:${author.email}`}
                                         onClick={(e) => e.stopPropagation()}
@@ -468,13 +486,14 @@ export function Papers() {
                                         <ExternalLink className="w-3.5 h-3.5 text-primary" />
                                         <span>LinkedIn</span>
                                       </a>
+                                      </div>
                                     </motion.div>
                                   )}
                                 </AnimatePresence>
-                              </div>
+                              </motion.div>
                             );
                           })}
-                        </div>
+                        </motion.div>
                       </motion.div>
                     )}
                   </AnimatePresence>

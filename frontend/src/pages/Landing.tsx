@@ -29,13 +29,9 @@ export function Landing() {
       {/* 1. Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
         <div className="flex-1 text-center md:text-left">
-          <div className="inline-flex items-center gap-2.5 bg-primary-container/10 border border-primary-container/20 px-4 py-2 rounded-full mb-6">
-            <LogoUTN className="w-4 h-4 text-primary-container glow-icon-orange" />
+          <div className="inline-flex items-center gap-2.5 bg-primary-container/10 border border-primary-container/20 px-4 py-2 rounded-full mb-6 shadow-[0_0_15px_rgba(255,85,0,0.1)]">
+            <LogoUTN className="w-4 h-4 text-primary-container glow-icon-orange animate-pulse" />
             <span className="w-[1px] h-3 bg-primary-container/30"></span>
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
-            </span>
             <span className="text-primary-container font-bold text-xs uppercase tracking-widest">UTN FRCU - Grupo de Investigación</span>
           </div>
           <h1 className="text-4xl md:text-[64px] lg:text-[80px] font-black leading-none mb-6">
@@ -45,20 +41,21 @@ export function Landing() {
           <p className="text-xl md:text-2xl text-text-secondary leading-relaxed mb-10 max-w-2xl mx-auto md:mx-0">
             Somos un equipo de la Universidad Tecnológica Nacional desarrollando soluciones avanzadas e innovadoras con impacto regional y global.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start w-full max-w-2xl mx-auto md:mx-0 mt-8">
             <button 
               onClick={() => navigate('/laboratorio')}
-              className="bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all ripple flex items-center justify-center gap-3"
+              className="flex-1 sm:flex-none relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white px-8 py-4.5 rounded-full font-black text-[15px] tracking-wide hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10 flex items-center justify-center gap-3"
             >
-              <Microscope className="w-6 h-6" />
-              <span>Ir al Laboratorio de IA</span>
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+              <Microscope className="w-5 h-5 relative z-10 group-hover:rotate-12 transition-transform duration-300 drop-shadow-md" />
+              <span className="relative z-10 drop-shadow-md uppercase">Ir al Laboratorio de IA</span>
             </button>
             <button 
               onClick={() => navigate('/papers')}
-              className="bg-surface-deep text-text-primary px-8 py-4 rounded-full font-bold text-lg border border-border-organic hover:bg-secondary-container hover:border-primary-container/50 transition-all ripple flex items-center justify-center gap-3"
+              className="flex-1 sm:flex-none relative group bg-secondary-container/40 backdrop-blur-sm text-text-primary px-8 py-4.5 rounded-full font-bold text-[15px] tracking-wide border border-border-organic hover:border-primary-container/50 hover:bg-primary-container/10 transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(0,0,0,0.2)] hover:shadow-[0_0_20px_rgba(255,85,0,0.15)]"
             >
-              <BookOpen className="w-6 h-6" />
-              <span>Explorar Papers & Artículos</span>
+              <BookOpen className="w-5 h-5 relative z-10 text-primary group-hover:-translate-y-1 transition-transform duration-300" />
+              <span className="relative z-10 uppercase text-primary">Explorar Papers</span>
             </button>
           </div>
         </div>

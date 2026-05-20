@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { RibbonSelector } from '../components/ui/RibbonSelector';
 
 const MEDIA_CONFIG = [
   { id: 'Imagen', angle: -35, width: 110 },
@@ -325,7 +326,15 @@ export function Laboratorio() {
 
 
   return (
-    <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen flex flex-col">
+    <div className="pt-24 pb-24 px-6 max-w-7xl mx-auto min-h-screen flex flex-col">
+      {/* Lab Title */}
+      <div className="text-center mb-8 flex flex-col items-center gap-2 select-none">
+        <h1 className="text-xl md:text-2xl font-black uppercase tracking-[0.2em] text-text-primary drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+          Laboratorio de IA
+        </h1>
+        <div className="w-16 h-[2px] bg-gradient-to-r from-transparent via-[#FF5500] to-transparent mt-1 opacity-70" />
+      </div>
+
       {/* Pivot Dial Selector */}
       <div 
         ref={dialContainerRef}
@@ -422,23 +431,13 @@ export function Laboratorio() {
         </motion.div>
       </div>
 
-      {/* Category Row (Models) */}
+      {/* Category Row (Models Ribbon) */}
       <section className="mb-12">
-        <div className="flex md:flex-wrap gap-4 items-center justify-start md:justify-center overflow-x-auto pb-4 no-scrollbar">
-          {MODELS_BY_MEDIA[activeMediaType].map((model) => (
-            <button
-              key={model}
-              onClick={() => setActiveModel(model)}
-              className={`shrink-0 px-6 py-3 rounded-full font-semibold whitespace-nowrap active:scale-95 transition-all ripple border ${
-                activeModel === model
-                  ? 'bg-primary-container/10 text-primary-container border-primary-container'
-                  : 'btn-glass-inactive text-text-primary hover:bg-[#2D1A39]/50'
-              }`}
-            >
-              {model}
-            </button>
-          ))}
-        </div>
+        <RibbonSelector 
+          options={MODELS_BY_MEDIA[activeMediaType]} 
+          activeOption={activeModel} 
+          onChange={setActiveModel} 
+        />
       </section>
 
       <AnimatePresence mode="wait">
