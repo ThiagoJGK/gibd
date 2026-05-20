@@ -59,7 +59,7 @@ export function RibbonSelector({ options, activeOption, onChange }: RibbonSelect
     onChange(opt);
   };
 
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (_event: any, info: any) => {
     // Dismiss hint forever on first drag
     if (showHint) {
       setShowHint(false);
@@ -150,7 +150,7 @@ function RibbonItem({ option, index, currentX, itemWidth, onClick }: any) {
   const myCenterPosition = -(index * itemWidth);
   
   // Calculate raw distance from center
-  const distance = useTransform(currentX, (val) => Math.abs(val - myCenterPosition));
+  const distance = useTransform(currentX, (val: number) => Math.abs(val - myCenterPosition));
   
   // Map distance to visual properties
   // When perfectly centered (distance 0) -> fully visible, primary color
