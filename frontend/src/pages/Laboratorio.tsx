@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -34,6 +34,146 @@ const REFERENCE_IMAGES = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuDIIzVhor0geVVwCFjltkZYlQfwDpiCfLGtLSA1JFTYTfTMMG-jAfahYwS_64iHbi_RBx3adFmvbh1ILBWb38_N7QFD3fa0tMTWMIqhd2EVusAWYEdNHgsowwU7Z_deEH1GGuaRzth1MAuhXtIpqh9OXpGD5Flnpc_go3dqwJfS72KkG5-N4wlyx19o5exNn3K5hzldyUdh-A2SnZ2sKwXhHX-Gr0hymyN8ItapW9b93ukKMkNcjsV-WabF0N6WcnOh2QMNDzK3USA"
 ];
 
+// Cache global de AudioContext para reducir la presión del recolector de basura (GC) y consumo de RAM
+let cachedAudioCtx: AudioContext | null = null;
+const getAudioCtx = (): AudioContext | null => {
+  if (typeof window === 'undefined') return null;
+  if (!cachedAudioCtx) {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioContextClass) {
+      cachedAudioCtx = new AudioContextClass();
+    }
+  }
+  // Reanudar si el contexto está suspendido (política del navegador)
+  if (cachedAudioCtx && cachedAudioCtx.state === 'suspended') {
+    cachedAudioCtx.resume().catch(() => {});
+  }
+  return cachedAudioCtx;
+};
+
+// Audio feedback físico de alta fidelidad: Clac mecánico ( Cherry MX / Rotary Switch )
+const playMechanicalClick = () => {
+  try {
+    const audioCtx = getAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Componente 1: Transitorio de Impacto Metálico/Plástico (Ruido Blanco Filtrado)
+    const bufferSize = audioCtx.sampleRate * 0.025; // 25ms de transitorio
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const channelData = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      channelData[i] = Math.random() * 2 - 1;
+    }
+
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
+
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(3200, now);
+    noiseFilter.Q.setValueAtTime(1.8, now);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.06, now); // Volumen optimizado y más sutil
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+
+    // Componente 2: Cuerpo de resonancia del interruptor (Frecuencia Media-Baja)
+    const bodyOsc = audioCtx.createOscillator();
+    bodyOsc.type = 'triangle'; // Sonido con armónicos naturales cálidos
+    bodyOsc.frequency.setValueAtTime(480, now);
+    bodyOsc.frequency.exponentialRampToValueAtTime(140, now + 0.06);
+
+    const bodyGain = audioCtx.createGain();
+    bodyGain.gain.setValueAtTime(0.11, now); // Volumen optimizado y más sutil
+    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+    bodyOsc.connect(bodyGain);
+    bodyGain.connect(audioCtx.destination);
+
+    // Componente 3: Golpe bajo sordo (Frecuencia Baja para peso físico)
+    const thudOsc = audioCtx.createOscillator();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(110, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(60, now + 0.09);
+
+    const thudGain = audioCtx.createGain();
+    thudGain.gain.setValueAtTime(0.07, now); // Volumen optimizado y más sutil
+    thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(audioCtx.destination);
+
+    // Reproducción simultánea
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.025);
+    bodyOsc.start(now);
+    bodyOsc.stop(now + 0.06);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.09);
+  } catch (e) {
+    // Ignorar si el navegador bloquea audio sin interacción del usuario
+  }
+};
+
+// Micro-tick metálico/plástico para el engranaje del dial
+const playGearTick = () => {
+  try {
+    const audioCtx = getAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Transitorio de impacto rápido (10ms)
+    const bufferSize = audioCtx.sampleRate * 0.01;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const channelData = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      channelData[i] = Math.random() * 2 - 1;
+    }
+
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
+
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = 'highpass';
+    noiseFilter.frequency.setValueAtTime(4500, now);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.02, now); // Volumen optimizado y más sutil
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+
+    // Resonancia de la rueda dentada
+    const clickOsc = audioCtx.createOscillator();
+    clickOsc.type = 'sine';
+    clickOsc.frequency.setValueAtTime(780, now);
+    clickOsc.frequency.exponentialRampToValueAtTime(320, now + 0.015);
+
+    const clickGain = audioCtx.createGain();
+    clickGain.gain.setValueAtTime(0.03, now); // Volumen optimizado y más sutil
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(audioCtx.destination);
+
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.01);
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.015);
+  } catch (e) {
+    // Ignorar
+  }
+};
+
 export function Laboratorio() {
   const [activeMediaType, setActiveMediaType] = useState<MediaType>('Imagen');
   const [activeModel, setActiveModel] = useState<string>(MODELS_BY_MEDIA['Imagen'][0]);
@@ -41,26 +181,180 @@ export function Laboratorio() {
   const handleMediaTypeChange = (media: MediaType) => {
     setActiveMediaType(media);
     setActiveModel(MODELS_BY_MEDIA[media][0]);
+    
+    // Feedback sonoro "clac" mecánico
+    playMechanicalClick();
+
+    // Feedback háptico físico ultra compatible, seco y contundente de 35ms
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate(35);
+      } catch (err) {
+        // Ignorar
+      }
+    }
   };
   
   const [topK, setTopK] = useState(10);
   const [isDragging, setIsDragging] = useState(false);
   const [activeSearchItem, setActiveSearchItem] = useState<number | null>(null);
 
+  // --- Lógica de Arrastre e Interacción con el Dial ---
+  const dialContainerRef = useRef<HTMLDivElement>(null);
+  const [isDraggingDial, setIsDraggingDial] = useState(false);
+  const [dragAngle, setDragAngle] = useState<number | null>(null);
+  const lastClosestMediaRef = useRef<MediaType | null>(null);
+
+  const getClosestMedia = (angle: number) => {
+    let closest: typeof MEDIA_CONFIG[number] = MEDIA_CONFIG[0];
+    let minDiff = Math.abs(angle - MEDIA_CONFIG[0].angle);
+    MEDIA_CONFIG.forEach((media) => {
+      const diff = Math.abs(angle - media.angle);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = media;
+      }
+    });
+    return closest.id;
+  };
+
+  const currentVisualActive = (isDraggingDial && dragAngle !== null)
+    ? getClosestMedia(dragAngle)
+    : activeMediaType;
+
+  const calculateAngle = (clientX: number, clientY: number) => {
+    if (!dialContainerRef.current) return 0;
+    const rect = dialContainerRef.current.getBoundingClientRect();
+    const pivotX = rect.left + rect.width / 2;
+    const pivotY = rect.bottom - 28; // El pivote está 28px arriba de la base
+    
+    const deltaX = clientX - pivotX;
+    const deltaY = clientY - pivotY;
+    
+    const angleRad = Math.atan2(deltaY, deltaX);
+    let angleDeg = angleRad * (180 / Math.PI);
+    
+    let targetAngle = angleDeg + 90; // Alinear 0 grados arriba verticalmente
+    
+    if (targetAngle < -180) targetAngle += 360;
+    if (targetAngle > 180) targetAngle -= 360;
+    
+    // Rango límite para la experiencia del usuario
+    return Math.max(-55, Math.min(55, targetAngle));
+  };
+
+  const handleStartDrag = (e: React.MouseEvent | React.TouchEvent) => {
+    // Si hace click en una etiqueta, dejamos que el onClick nativo responda
+    if ((e.target as HTMLElement).tagName === 'SPAN') return;
+    
+    setIsDraggingDial(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const angle = calculateAngle(clientX, clientY);
+    setDragAngle(angle);
+  };
+
+  // Bloquear scroll de la página y comportamiento táctil nativo del body durante la interacción con el dial
+  useEffect(() => {
+    if (isDraggingDial) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [isDraggingDial]);
+
+  useEffect(() => {
+    if (!isDraggingDial) return;
+    
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const angle = calculateAngle(clientX, clientY);
+      setDragAngle(angle);
+
+      // Feedback físico (audio de engranaje + vibración marcada) al saltar entre opciones en vivo
+      const closest = getClosestMedia(angle);
+      if (closest !== lastClosestMediaRef.current) {
+        lastClosestMediaRef.current = closest;
+        
+        // Micro-tick sonoro
+        playGearTick();
+        
+        // Vibración háptica nítida de 12ms (suficiente para sentirse sin saturar el motor)
+        if ('vibrate' in navigator) {
+          try {
+            navigator.vibrate(12);
+          } catch (err) {
+            // Ignorar
+          }
+        }
+      }
+    };
+    
+    const handleEnd = () => {
+      setIsDraggingDial(false);
+      if (dragAngle !== null) {
+        const closestId = getClosestMedia(dragAngle);
+        handleMediaTypeChange(closestId);
+      }
+      setDragAngle(null);
+      lastClosestMediaRef.current = null;
+    };
+    
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchmove', handleMove, { passive: true });
+    window.addEventListener('touchend', handleEnd);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
+    };
+  }, [isDraggingDial, dragAngle]);
+
   const activeConfig = MEDIA_CONFIG.find(m => m.id === activeMediaType) || MEDIA_CONFIG[0];
+
 
   return (
     <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen flex flex-col">
       {/* Pivot Dial Selector */}
-      <div className="relative w-full max-w-[500px] h-[250px] mx-auto mb-16 mt-4 flex justify-center overflow-visible">
+      <div 
+        ref={dialContainerRef}
+        className="relative w-full max-w-[500px] h-[250px] mx-auto mb-16 mt-4 flex justify-center overflow-visible select-none"
+      >
         {/* Pivot Base */}
-        <div className="absolute bottom-0 w-14 h-14 rounded-full bg-[#1A1124]/95 border border-[#3A234A] shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex items-center justify-center z-30">
-          <div className="w-5 h-5 rounded-full bg-white/10 shadow-inner border border-white/5"></div>
+        <div 
+          onMouseDown={handleStartDrag}
+          onTouchStart={handleStartDrag}
+          className="absolute bottom-0 w-14 h-14 rounded-full bg-[#1A1124]/95 border border-[#3A234A] shadow-[0_10px_30px_rgba(0,0,0,0.85),_0_0_15px_rgba(255,85,0,0.2)] flex items-center justify-center z-30 transition-all duration-300 cursor-grab active:cursor-grabbing touch-none"
+        >
+          {/* Glowing Orange Axis Light */}
+          <div 
+            className="w-5 h-5 rounded-full bg-gradient-to-br from-[#FF5500] to-[#FF8C00] border border-white/15 transition-all duration-300 relative flex items-center justify-center"
+            style={{
+              transform: isDraggingDial ? 'scale(1.2)' : 'scale(1)',
+              boxShadow: isDraggingDial 
+                ? '0 0 25px rgba(255, 85, 0, 1), inset 0 1px 3px rgba(255, 255, 255, 0.7)' 
+                : '0 0 15px rgba(255, 85, 0, 0.95), inset 0 1px 2px rgba(255, 255, 255, 0.5)'
+            }}
+          >
+            {/* Inner dynamic pulsing ring */}
+            <div className={`absolute inset-0 rounded-full bg-[#FF5500]/40 transition-opacity duration-300 ${isDraggingDial ? 'animate-ping opacity-100' : 'animate-pulse opacity-75'}`} />
+          </div>
         </div>
 
         {/* Texts on Arc (Background) */}
         {MEDIA_CONFIG.map((media) => {
-          const isActive = activeMediaType === media.id;
+          const isActive = currentVisualActive === media.id;
           return (
             <div 
               key={media.id}
@@ -89,16 +383,18 @@ export function Laboratorio() {
         {/* Rotating Arm (Foreground) */}
         <motion.div
           initial={false}
-          animate={{ rotate: activeConfig.angle }}
-          transition={{ type: "spring", stiffness: 220, damping: 20 }}
-          className="absolute bottom-[28px] origin-bottom flex flex-col items-center justify-start z-20 pointer-events-none"
+          animate={{ rotate: dragAngle !== null ? dragAngle : activeConfig.angle }}
+          transition={isDraggingDial ? { type: "tween", duration: 0 } : { type: "spring", stiffness: 220, damping: 20 }}
+          onMouseDown={handleStartDrag}
+          onTouchStart={handleStartDrag}
+          className="absolute bottom-[28px] origin-bottom flex flex-col items-center justify-start z-20 pointer-events-auto cursor-grab active:cursor-grabbing touch-none"
           style={{ height: 200, width: 60 }} // height is the radius
         >
           {/* Pill Head (The Hole) */}
           <motion.div
             initial={false}
             animate={{ width: activeConfig.width }}
-            transition={{ type: "spring", stiffness: 220, damping: 20 }}
+            transition={isDraggingDial ? { type: "tween", duration: 0 } : { type: "spring", stiffness: 220, damping: 20 }}
             className="h-[48px] rounded-full border-[8px] border-[#1A1124]/95 flex items-center justify-center relative z-20"
             style={{ 
               marginTop: -24, // perfectly centers on the 200px radius
@@ -112,8 +408,8 @@ export function Laboratorio() {
           <motion.div 
             initial={false}
             animate={{ width: activeConfig.width - 28 }}
-            transition={{ type: "spring", stiffness: 220, damping: 20 }}
-            className="flex-1 -mt-[2px] w-full bg-[#1A1124]/95 backdrop-blur-md relative z-10"
+            transition={isDraggingDial ? { type: "tween", duration: 0 } : { type: "spring", stiffness: 220, damping: 20 }}
+            className="flex-1 -mt-[2px] w-full bg-[#1A1124]/95 backdrop-blur-sm relative z-10"
             style={{
               WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M 30 100 C 30 50, 0 30, 0 0 L 100 0 C 100 30, 70 50, 70 100 Z'/%3E%3C/svg%3E")`,
               maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M 30 100 C 30 50, 0 30, 0 0 L 100 0 C 100 30, 70 50, 70 100 Z'/%3E%3C/svg%3E")`,
@@ -136,7 +432,7 @@ export function Laboratorio() {
               className={`shrink-0 px-6 py-3 rounded-full font-semibold whitespace-nowrap active:scale-95 transition-all ripple border ${
                 activeModel === model
                   ? 'bg-primary-container/10 text-primary-container border-primary-container'
-                  : 'bg-surface-deep text-text-primary border-border-organic hover:bg-secondary-container'
+                  : 'btn-glass-inactive text-text-primary hover:bg-[#2D1A39]/50'
               }`}
             >
               {model}
@@ -150,7 +446,7 @@ export function Laboratorio() {
           {/* Sidebar Controls */}
           <div className="lg:col-span-4 flex flex-col gap-8 w-full">
             {/* Configuration Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración</h2>
               <div className="flex justify-between items-center mb-4">
                 <label className="font-semibold text-sm text-text-secondary">Top-K Similitudes</label>
@@ -170,7 +466,7 @@ export function Laboratorio() {
             </article>
 
             {/* Status Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <div className="flex items-center gap-4 mb-4">
                 <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
                 <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
@@ -188,7 +484,7 @@ export function Laboratorio() {
               onDragLeave={() => setIsDragging(false)}
               onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
             >
-              <div className={`bg-surface-deep border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-secondary-container' : 'border-border-organic group-hover:border-primary-container'}`}>
+              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
                 <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Microscope className="text-primary-container w-12 h-12" />
                 </div>
@@ -212,8 +508,8 @@ export function Laboratorio() {
               <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-6">Inspiración de Referencia</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
                 {REFERENCE_IMAGES.map((src, i) => (
-                  <div key={i} className="aspect-square bg-surface-deep rounded-[1.5rem] border border-border-organic overflow-hidden group">
-                    <img src={src} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={`Reference ${i+1}`} />
+                  <div key={i} className="aspect-square card-glass-purple rounded-[1.5rem] overflow-hidden group">
+                    <img src={src} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={`Reference ${i+1}`} loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -227,7 +523,7 @@ export function Laboratorio() {
           {/* Sidebar Controls */}
           <div className="lg:col-span-4 flex flex-col gap-8 w-full">
             {/* Configuration Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <h2 className="text-2xl font-bold text-primary-container mb-6">Filtros Activos</h2>
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
@@ -238,7 +534,7 @@ export function Laboratorio() {
                 </div>
                 <div className="flex justify-between items-center bg-background-base p-4 rounded-[1rem] border border-border-organic">
                   <span className="font-semibold text-sm text-text-secondary">Seguimiento Multiobjeto</span>
-                  <div className="w-10 h-6 bg-surface-deep border border-border-organic rounded-full relative">
+                  <div className="w-10 h-6 bg-[#0d0712]/50 border border-border-organic/40 rounded-full relative">
                     <div className="w-4 h-4 bg-text-secondary rounded-full absolute left-1 top-1"></div>
                   </div>
                 </div>
@@ -246,7 +542,7 @@ export function Laboratorio() {
             </article>
 
             {/* Status Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <div className="flex items-center gap-4 mb-4">
                 <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
                 <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
@@ -264,7 +560,7 @@ export function Laboratorio() {
               onDragLeave={() => setIsDragging(false)}
               onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
             >
-              <div className={`bg-surface-deep border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-secondary-container' : 'border-border-organic group-hover:border-primary-container'}`}>
+              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
                 <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Video className="text-primary-container w-12 h-12" />
                 </div>
@@ -302,7 +598,7 @@ export function Laboratorio() {
                   className={`p-6 rounded-full border cursor-pointer transition-all group flex items-center gap-4 ${item.opacity || ''} ${
                     activeSearchItem === item.id 
                       ? 'bg-primary-container/10 border-primary-container' 
-                      : 'bg-surface-deep border-transparent hover:border-primary-container'
+                      : 'btn-glass-inactive border-transparent hover:border-primary-container'
                   }`}
                 >
                   <item.icon className="text-primary-container w-6 h-6 shrink-0" />
@@ -313,7 +609,7 @@ export function Laboratorio() {
           </aside>
 
           {/* Main Content Area */}
-          <section className="flex-1 flex flex-col bg-surface-deep rounded-[3rem] overflow-hidden border border-border-organic relative min-h-[500px] md:min-h-0 w-full">
+          <section className="flex-1 flex flex-col card-glass-purple rounded-[3rem] overflow-hidden relative min-h-[500px] md:min-h-0 w-full">
             {/* Empty State */}
             <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center h-full pb-32">
               <div className="w-32 h-32 bg-primary-container/10 rounded-full flex items-center justify-center mb-8 animate-pulse shrink-0">
@@ -353,7 +649,7 @@ export function Laboratorio() {
           {/* Sidebar Controls */}
           <div className="lg:col-span-4 flex flex-col gap-8 w-full">
             {/* Configuration Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <h2 className="text-2xl font-bold text-primary-container mb-6">Configuración de Audio</h2>
               <div className="flex justify-between items-center mb-4">
                 <label className="font-semibold text-sm text-text-secondary">Umbral de Ruido (dB)</label>
@@ -372,7 +668,7 @@ export function Laboratorio() {
             </article>
 
             {/* Status Card */}
-            <article className="bg-surface-deep rounded-[2rem] p-8 border border-border-organic w-full">
+            <article className="card-glass-purple rounded-[2rem] p-8 w-full">
               <div className="flex items-center gap-4 mb-4">
                 <span className="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
                 <span className="font-semibold text-text-primary">Servidor GIBD: Online</span>
@@ -390,7 +686,7 @@ export function Laboratorio() {
               onDragLeave={() => setIsDragging(false)}
               onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
             >
-              <div className={`bg-surface-deep border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-secondary-container' : 'border-border-organic group-hover:border-primary-container'}`}>
+              <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
                 <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <AudioLines className="text-primary-container w-12 h-12" />
                 </div>

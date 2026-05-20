@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { InteractiveBackground } from './components/ui/InteractiveBackground';
 import { BottomNav } from './components/layout/BottomNav';
 import { Header } from './components/layout/Header';
+import { Footer } from './components/layout/Footer';
 import { Landing } from './pages/Landing';
 import { Laboratorio } from './pages/Laboratorio';
 import { Papers } from './pages/Papers';
@@ -11,15 +12,17 @@ import { AnimatePresence, motion } from 'motion/react';
 function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-      exit={{ opacity: 0, y: -10, scale: 0.99, transition: { duration: 0.15, ease: "easeIn" } }}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.24, ease: [0.215, 0.61, 0.355, 1] }}
       className="w-full h-full"
     >
       {children}
     </motion.div>
   );
 }
+
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -46,6 +49,7 @@ function App() {
         <main className="flex-1 w-full pt-8 pb-24 overflow-hidden">
           <AnimatedRoutes />
         </main>
+        <Footer />
         <BottomNav />
       </div>
     </Router>
@@ -53,3 +57,4 @@ function App() {
 }
 
 export default App;
+

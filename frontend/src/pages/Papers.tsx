@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const CATEGORIES = ['Todos los Papers', 'Computer Vision', 'Machine Learning', 'Big Data'];
 
@@ -75,6 +75,7 @@ export function Papers() {
                 src={paper.image} 
                 alt={paper.title} 
                 className="absolute inset-0 w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                loading="lazy"
               />
             </div>
             

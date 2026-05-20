@@ -83,3 +83,71 @@
   opacity: .3;
   transition: 0s;
 }
+
+/* Premium Orange Glowing Styles */
+.glow-orange {
+  color: #FF5500 !important;
+  text-shadow: 0 0 8px rgba(255, 85, 0, 0.7), 0 0 16px rgba(255, 85, 0, 0.4);
+}
+
+.glow-icon-orange {
+  color: #FF5500 !important;
+  /* Single, highly optimized drop-shadow filter layer instead of multiple nested ones */
+  filter: drop-shadow(0 0 4px rgba(255, 85, 0, 0.65));
+  /* Accelerate rendering using GPU compositing */
+  transform: translateZ(0);
+}
+
+
+.inactive-nav-item {
+  color: #5A4E65 !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.inactive-nav-item:hover {
+  color: #A390B2 !important;
+}
+
+/* 3D Neumorphic Physical Pill Switch */
+.pill-switch-physical {
+  border: 2px solid #2D1A39;
+  background: rgba(13, 7, 18, 0.35);
+  /* Optimized to only 3 highly efficient shadow layers for maximum FPS */
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.08),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.85);
+  
+  /* Force GPU hardware acceleration layer during animations */
+  will-change: transform, width;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimized Glassmorphism Purple Card */
+.card-glass-purple {
+  background: rgba(26, 17, 36, 0.55) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(58, 35, 74, 0.4) !important;
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Glassmorphism sutil para botones y elementos pequeños inactivos */
+.btn-glass-inactive {
+  background: rgba(26, 17, 36, 0.35) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(58, 35, 74, 0.2) !important;
+  /* Sombra sumamente suave y difuminada que se funde por completo con el fondo */
+  box-shadow: 
+    0 4px 12px 0 rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.02) !important;
+  transition: all 0.3s ease;
+}
+
+
+

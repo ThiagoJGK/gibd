@@ -1,6 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Brain, Calendar, FileText, Globe, GraduationCap, Microscope, Network, Radio, Scale, Sparkles, Target, Zap } from 'lucide-react';
+import { BookOpen, Brain, Calendar, FileText, Globe, Microscope, Network, Radio, Scale, Sparkles, Target, Zap } from 'lucide-react';
+import { LogoUTN } from '../components/ui/LogoUTN';
 
 const NEWS_ITEMS = [
   {
@@ -29,10 +29,12 @@ export function Landing() {
       {/* 1. Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
         <div className="flex-1 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 bg-primary-container/10 border border-primary-container/20 px-4 py-2 rounded-full mb-6">
-            <span className="relative flex h-3 w-3">
+          <div className="inline-flex items-center gap-2.5 bg-primary-container/10 border border-primary-container/20 px-4 py-2 rounded-full mb-6">
+            <LogoUTN className="w-4 h-4 text-primary-container glow-icon-orange" />
+            <span className="w-[1px] h-3 bg-primary-container/30"></span>
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary-container"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
             </span>
             <span className="text-primary-container font-bold text-xs uppercase tracking-widest">UTN FRCU - Grupo de Investigación</span>
           </div>
@@ -177,19 +179,7 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Footer Minimalista */}
-      <footer className="border-t border-border-organic pt-12 pb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-        <div className="flex items-center gap-3">
-          <GraduationCap className="w-8 h-8 text-primary-container" />
-          <div className="flex flex-col">
-            <span className="font-bold text-text-primary">UTN FRCU</span>
-            <span className="text-xs font-semibold text-text-secondary uppercase tracking-widest">Concepción del Uruguay</span>
-          </div>
-        </div>
-        <p className="text-text-secondary text-sm max-w-sm">
-          Desarrollado y mantenido por el Grupo de Investigación en Big Data (GIBD) © {new Date().getFullYear()}
-        </p>
-      </footer>
+
     </div>
   );
 }
