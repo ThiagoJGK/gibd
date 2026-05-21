@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Brain, Calendar, FileText, Globe, Microscope, Network, Radio, Scale, Sparkles, Target, Zap } from 'lucide-react';
 import { LogoUTN } from '../components/ui/LogoUTN';
+import { ThreeDLogoUTN } from '../components/ui/ThreeDLogoUTN';
 
 const NEWS_ITEMS = [
   {
@@ -24,10 +25,14 @@ export function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
+    <div className="relative pt-24 md:pt-16 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
+      {/* 3D UTN Logo Point Cloud */}
+      <div className="absolute right-0 -top-28 w-[50%] h-[780px] pointer-events-none z-0 hidden md:block overflow-visible select-none">
+        <ThreeDLogoUTN />
+      </div>
       
       {/* 1. Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
+      <section className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
         <div className="flex-1 text-center md:text-left">
           <div className="inline-flex items-center gap-2.5 bg-primary-container/10 border border-primary-container/20 px-4 py-2 rounded-full mb-6 shadow-[0_0_15px_rgba(255,85,0,0.1)]">
             <LogoUTN className="w-4 h-4 text-primary-container glow-icon-orange animate-pulse" />
@@ -41,7 +46,7 @@ export function Landing() {
           <p className="text-xl md:text-2xl text-text-secondary leading-relaxed mb-10 max-w-2xl mx-auto md:mx-0">
             Somos un equipo de la Universidad Tecnológica Nacional desarrollando soluciones avanzadas e innovadoras con impacto regional y global.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start w-full max-w-2xl mx-auto md:mx-0 mt-8">
+          <div className="hero-buttons-container flex flex-col sm:flex-row gap-4 justify-center md:justify-start w-full max-w-2xl mx-auto md:mx-0 mt-8">
             <button 
               onClick={() => navigate('/laboratorio')}
               className="flex-1 sm:flex-none relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white px-8 py-4.5 rounded-full font-black text-[15px] tracking-wide hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10 flex items-center justify-center gap-3"
@@ -62,22 +67,22 @@ export function Landing() {
       </section>
 
       {/* 2. Panel de Métricas */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-        <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 flex flex-col items-center justify-center text-center">
+      <section className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        <div className="card-glass-purple rounded-[2rem] p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-[1.02] hover:border-primary-container/30 hover:shadow-[0_8px_32px_rgba(255,85,0,0.06)]">
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
             <FileText className="w-8 h-8 text-primary-container" />
           </div>
           <h4 className="text-4xl font-black text-text-primary mb-2">+35</h4>
           <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Papers y Publicaciones</p>
         </div>
-        <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 flex flex-col items-center justify-center text-center">
+        <div className="card-glass-purple rounded-[2rem] p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-[1.02] hover:border-primary-container/30 hover:shadow-[0_8px_32px_rgba(255,85,0,0.06)]">
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
             <Brain className="w-8 h-8 text-primary-container" />
           </div>
           <h4 className="text-4xl font-black text-text-primary mb-2">4</h4>
           <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Proyectos UTN-PID Activos</p>
         </div>
-        <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 flex flex-col items-center justify-center text-center">
+        <div className="card-glass-purple rounded-[2rem] p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-[1.02] hover:border-primary-container/30 hover:shadow-[0_8px_32px_rgba(255,85,0,0.06)]">
           <div className="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center mb-4">
             <Globe className="w-8 h-8 text-primary-container" />
           </div>
@@ -86,9 +91,9 @@ export function Landing() {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
         {/* 3. Misión Institucional */}
-        <section className="lg:col-span-5 bg-surface-deep border border-border-organic rounded-[3rem] p-10 md:p-12 relative overflow-hidden flex flex-col justify-between">
+        <section className="lg:col-span-5 card-glass-purple rounded-[3rem] p-10 md:p-12 relative overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-primary-container/20">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary-container/5 rounded-full blur-3xl"></div>
           
           <div>
@@ -104,7 +109,7 @@ export function Landing() {
         </section>
 
         {/* 4. Últimas Novedades */}
-        <section className="lg:col-span-7 bg-surface-deep border border-border-organic rounded-[3rem] p-10 md:p-12 flex flex-col">
+        <section className="lg:col-span-7 card-glass-purple rounded-[3rem] p-10 md:p-12 flex flex-col transition-all duration-300 hover:border-primary-container/20">
           <h2 className="text-3xl font-bold mb-8 text-text-primary flex items-center gap-3">
             <Zap className="text-primary-container w-8 h-8" />
             Últimas Novedades
@@ -138,11 +143,11 @@ export function Landing() {
       </div>
 
       {/* Módulos de Investigación Vigentes */}
-      <section className="mb-20">
+      <section className="relative z-10 mb-20">
         <h2 className="text-3xl md:text-5xl font-black text-center mb-12">Líneas de <span className="text-primary-container">Investigación</span></h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
+          <div className="card-glass-purple rounded-[2rem] p-8 hover:-translate-y-2 hover:border-primary-container/40 hover:shadow-[0_12px_40px_rgba(255,85,0,0.08)] transition-all duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Sparkles className="w-6 h-6 text-primary-container" />
             </div>
@@ -150,7 +155,7 @@ export function Landing() {
             <p className="text-text-secondary text-sm leading-relaxed">Aprendizaje métrico profundo y redes siamesas para la indexación y comparación robusta de imágenes (marcas, tatuajes, logos).</p>
           </div>
           
-          <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
+          <div className="card-glass-purple rounded-[2rem] p-8 hover:-translate-y-2 hover:border-primary-container/40 hover:shadow-[0_12px_40px_rgba(255,85,0,0.08)] transition-all duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Scale className="w-6 h-6 text-primary-container" />
             </div>
@@ -158,7 +163,7 @@ export function Landing() {
             <p className="text-text-secondary text-sm leading-relaxed">Modelos de lenguaje natural para la recuperación semántica de normativas académicas y el prototipado del agente conversacional PTAH.</p>
           </div>
           
-          <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
+          <div className="card-glass-purple rounded-[2rem] p-8 hover:-translate-y-2 hover:border-primary-container/40 hover:shadow-[0_12px_40px_rgba(255,85,0,0.08)] transition-all duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Network className="w-6 h-6 text-primary-container" />
             </div>
@@ -166,7 +171,7 @@ export function Landing() {
             <p className="text-text-secondary text-sm leading-relaxed">Aplicación de dinámicas lúdicas (gamificación) y minería de datos para el seguimiento transversal y trazabilidad en la gestión de proyectos.</p>
           </div>
 
-          <div className="bg-surface-deep border border-border-organic rounded-[2rem] p-8 hover:-translate-y-2 transition-transform duration-300">
+          <div className="card-glass-purple rounded-[2rem] p-8 hover:-translate-y-2 hover:border-primary-container/40 hover:shadow-[0_12px_40px_rgba(255,85,0,0.08)] transition-all duration-300">
             <div className="w-12 h-12 bg-background-base rounded-full flex items-center justify-center mb-6 border border-border-organic">
               <Radio className="w-6 h-6 text-primary-container" />
             </div>

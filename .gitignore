@@ -6,3 +6,11 @@ dist/
 .env
 .env*.local
 *.log
+
+# Virtual environments and python cache
+venv/
+backend/venv/
+.venv/
+__pycache__/
+*.pyc
+

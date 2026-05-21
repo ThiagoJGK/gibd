@@ -1,4 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Microscope, BookOpen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { playWaterDrip } from '../../utils/audio';
@@ -6,14 +7,58 @@ import { LogoGIBD } from '../ui/LogoGIBD';
 
 export function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isScrolledPast, setIsScrolledPast] = useState(false);
+  const isLandingPage = location.pathname === '/';
 
   const NAV_ITEMS = [
     { to: "/laboratorio", icon: Microscope, label: "Laboratorio" },
     { to: "/papers", icon: BookOpen, label: "Papers" }
   ];
 
+  useEffect(() => {
+    if (!isLandingPage) {
+      setIsScrolledPast(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      // Mobile screen: always show header
+      if (window.innerWidth < 768) {
+        setIsScrolledPast(true);
+        return;
+      }
+
+      // Check if scroll has passed the hero buttons
+      const heroButtons = document.querySelector('.hero-buttons-container');
+      if (heroButtons) {
+        const rect = heroButtons.getBoundingClientRect();
+        // rect.bottom < 80 means the buttons have scrolled above the header zone (80px)
+        setIsScrolledPast(rect.bottom < 80);
+      } else {
+        setIsScrolledPast(window.scrollY > 320);
+      }
+    };
+
+    // Run initially
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [isLandingPage]);
+
+  // If mobile or not landing page or scrolled past, show header. Otherwise, hide.
+  const shouldShow = !isLandingPage || isScrolledPast;
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 py-2 md:py-2.5 bg-surface-deep/80 backdrop-blur-md rounded-full mt-4 mx-auto w-[95%] max-w-4xl border border-border-organic transition-all duration-200 ease-in-out shadow-lg shadow-black/50">
+    <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 py-2 md:py-2.5 bg-surface-deep/80 backdrop-blur-md rounded-full mt-4 mx-auto w-[95%] max-w-4xl border border-border-organic transition-all duration-300 ease-in-out shadow-lg shadow-black/50 ${
+      shouldShow ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-24 opacity-0'
+    }`}>
       <div className="flex items-center gap-2">
         <button 
           onClick={() => {

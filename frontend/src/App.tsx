@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { InteractiveBackground } from './components/ui/InteractiveBackground';
 import { BottomNav } from './components/layout/BottomNav';
 import { Header } from './components/layout/Header';
@@ -24,6 +24,8 @@ function PageWrapper({ children }: { children: React.ReactNode }) {
 }
 
 
+const Admin = React.lazy(() => import('./pages/Admin'));
+
 function AnimatedRoutes() {
   const location = useLocation();
   
@@ -33,6 +35,24 @@ function AnimatedRoutes() {
         <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
         <Route path="/laboratorio" element={<PageWrapper><Laboratorio /></PageWrapper>} />
         <Route path="/papers" element={<PageWrapper><Papers /></PageWrapper>} />
+        <Route 
+          path="/admin" 
+          element={
+            <PageWrapper>
+              <React.Suspense 
+                fallback={
+                  <div className="flex items-center justify-center min-h-[60vh]">
+                    <div className="bg-surface-deep/80 border border-border-organic px-8 py-4 rounded-full text-primary-container font-black text-sm uppercase tracking-widest animate-pulse">
+                      Cargando Panel de Control GIBD...
+                    </div>
+                  </div>
+                }
+              >
+                <Admin />
+              </React.Suspense>
+            </PageWrapper>
+          } 
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>

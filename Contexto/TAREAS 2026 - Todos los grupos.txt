@@ -1,0 +1,354 @@
+﻿Grupo 1 — Sonido
+Rodrigo Rodriguez 
+Objetivo General
+Investigar, desarrollar y evaluar técnicas de búsqueda por similitud de sonido utilizando modelos de representación profunda, aprendizaje métrico y búsqueda semántica sobre distintos tipos de audio.
+Líneas de trabajo
+* Búsqueda por similitud de sonidos cotidianos/eventos acústicos.
+* Búsqueda por similitud musical.
+* Evaluación comparativa con técnicas tipo Shazam y sistemas modernos de embeddings de audio.
+Tipos de sonidos a trabajar
+Sonidos/eventos acústicos
+* Gotas de agua
+* Lluvia
+* Vidrio roto
+* Golpes
+* Explosiones
+* Pasos
+* Sirenas
+* Perros/ladridos
+* Motores
+* Alarmas
+* Sonidos urbanos
+Música
+* Fragmentos de canciones
+* Covers/versiones nuevas
+* Distintas grabaciones de una misma canción
+* Distorsiones, ruido y cambios de calidad
+* Variaciones de tempo o tono
+Tareas
+1. Realizar revisión bibliográfica y análisis del estado del arte.
+2. Investigar técnicas utilizadas en:
+   * Audio retrieval
+   * Music retrieval
+   * Audio fingerprinting
+   * Contrastive learning para audio
+3. Investigar modelos modernos:
+   * AudioCLIP
+   * CLAP
+   * VGGish
+   * YAMNet
+   * AST (Audio Spectrogram Transformer)
+   * OpenL3
+4. Analizar funcionamiento de:
+   * Shazam
+   * Google
+5. Obtener, limpiar y preparar datasets.
+6. Diseñar consultas etiquetadas y ground truth.
+7. Generar pipelines experimentales reproducibles.
+8. Implementar extracción de características:
+   * Espectrogramas
+   * Mel Spectrograms
+   * MFCC
+   * Embeddings profundos
+9. Implementar búsqueda por similitud utilizando:
+   * Cosine similarity
+   * FAISS
+   * ANN
+   * Índices métricos
+10. Evaluar robustez:
+* Ruido
+* Compresión
+* Cambios de volumen
+* Cambios de velocidad
+11. Diseñar e implementar experimentos con:
+* Siamese Networks
+* Triplet Loss
+* Contrastive Learning
+12. Analizar resultados y generar métricas:
+* Precision@K
+* Recall@K
+* mAP
+13. Identificar resultados publicables y redactar papers.
+Posibles aportes novedosos
+* Comparar retrieval clásico vs embeddings modernos multimodales.
+* Evaluar robustez extrema en retrieval de sonido.
+* Investigar reducción dimensional sobre embeddings de audio.
+* Explorar retrieval semántico de eventos acústicos.
+________________
+
+
+Grupo 2 — Video
+León Castiglioni
+Valentino Chiozza
+Franco Gutierrez 
+Mateo Mista
+Franco Rodríguez
+Objetivo General
+Desarrollar técnicas de búsqueda por similitud y clasificación automática de violencia/eventos significativos utilizando representaciones profundas de video.
+Líneas de trabajo
+Línea A — Video Retrieval
+Búsqueda por similitud de videos o fragmentos de video.
+Línea B — Detección de violencia/eventos significativos
+Clasificación automática de:
+* Peleas
+* Robos
+* Accidentes
+* Explosiones
+* Caídas
+* Eventos abruptos
+Tareas
+1. Revisión bibliográfica del estado del arte.
+2. Investigar:
+   * Video retrieval
+   * Action recognition
+   * Violence detection
+   * Event detection
+3. Preparar datasets y ground truth.
+4. Investigar datasets públicos:
+   * UCF-Crime
+   * Hockey Fight
+   * RWF-2000
+   * XD-Violence
+5. Diseñar datasets propios y consultas etiquetadas.
+6. Implementar extracción de características:
+   * CNN 3D
+   * TimeSformer
+   * VideoMAE
+   * ViViT
+   * I3D
+7. Diseñar pipelines temporales.
+8. Implementar búsqueda por similitud de video.
+9. Evaluar:
+   * Robustez
+   * Escalabilidad
+   * Generalización
+10. Implementar clasificación de violencia.
+11. Comparar:
+* Modelos espaciales
+* Modelos temporales
+* Transformers de video
+12. Diseñar experimentos en tiempo real.
+13. Analizar falsos positivos:
+* Juegos
+* Deportes
+* Movimientos bruscos no violentos
+14. Evaluar métricas:
+* Accuracy
+* F1
+* Recall
+* Precision
+* ROC-AUC
+15. Redactar papers y reportes.
+Posibles aportes novedosos
+* Retrieval y detección unificados en un mismo embedding.
+* Detección basada en “cambio abrupto de dinámica”.
+* Few-shot violence detection.
+* Representaciones compactas para video retrieval masivo.
+________________
+
+
+Grupo 3 — Texto
+Objetivo General
+Investigar técnicas modernas de representación semántica y clasificación de texto utilizando embeddings profundos y búsqueda semántica.
+Línea principal
+Comparación entre técnicas previas de análisis de sentimientos y embeddings modernos utilizando BGE-M3.
+Tareas
+1. Releer y documentar el trabajo previo sobre análisis de sentimientos.
+2. Preparar nuevamente la BD de comentarios de películas.
+3. Investigar:
+   * Sentence embeddings
+   * Semantic retrieval
+   * Cross-lingual embeddings
+4. Implementar y evaluar:
+   * BGE-M3
+   * SBERT
+   * BETO
+   * E5
+5. Comparar resultados con modelos anteriores.
+6. Evaluar:
+   * Accuracy
+   * F1
+   * Robustez
+7. Diseñar nuevos experimentos.
+Nuevas líneas sugeridas
+A — Búsqueda semántica
+Construir un sistema capaz de recuperar textos semánticamente similares aunque no compartan palabras.
+B — Clasificación few-shot
+Evaluar clasificación con pocos ejemplos utilizando embeddings modernos.
+C — Clustering semántico
+Agrupar automáticamente comentarios similares.
+D — Detección de similitud textual
+Aplicar embeddings para:
+* detección de plagio
+* recuperación documental
+* recomendación de contenido
+E — Retrieval jurídico
+Explorar aplicaciones futuras para PTAH-Jurídico.
+Tareas adicionales
+1. Diseñar datasets de consultas etiquetadas.
+2. Implementar pipelines de retrieval.
+3. Evaluar reducción dimensional sobre embeddings textuales.
+4. Integrar experimentos con FAISS o índices ANN.
+5. Redactar publicaciones.
+Posibles aportes novedosos
+* Comparación profunda entre embeddings clásicos y modernos.
+* Evaluación semántica en español.
+* Retrieval semántico jurídico.
+* Few-shot semantic classification.
+________________
+
+
+Grupo 4 — Imágenes
+Objetivo General
+Evaluar la capacidad de generalización de técnicas de búsqueda por similitud visual sobre bases masivas y heterogéneas de imágenes.
+Contexto
+Actualmente existen experimentos sobre bases pequeñas y especializadas (~10k imágenes). El objetivo es escalar a una base genérica de aproximadamente 1 millón de imágenes.
+Tareas
+1. Revisar el estado del arte en:
+   * Image retrieval
+   * Visual embeddings
+   * Large-scale retrieval
+2. Preparar consultas etiquetadas y ground truth.
+3. Diseñar protocolos experimentales.
+4. Implementar extracción de características utilizando:
+   * ResNet50
+   * Vision Transformers (ViT)
+   * CLIP
+   * DINOv2
+5. Comparar:
+   * Modelos CNN
+   * Transformers visuales
+6. Implementar búsquedas utilizando:
+   * FAISS
+   * ANN
+   * Índices métricos
+7. Evaluar:
+   * Escalabilidad
+   * Robustez
+   * Tiempo de respuesta
+   * Uso de memoria
+8. Analizar comportamiento en:
+   * imágenes heterogéneas
+   * múltiples categorías
+   * ruido visual
+9. Comparar con resultados previos en:
+   * logos
+   * marcas de ganado
+10. Evaluar impacto de reducción dimensional.
+11. Generar resultados publicables.
+Posibles aportes novedosos
+* Generalización de embeddings sobre dominios heterogéneos.
+* Retrieval masivo multimodal.
+* Comparación ResNet vs ViT a gran escala.
+* Evaluación de degradación al aumentar tamaño y diversidad de la BD.
+________________
+
+
+Grupo 5 — Reducción de la Dimensionalidad
+Objetivo General
+Investigar técnicas de reducción dimensional aplicadas a embeddings de alta dimensionalidad para mejorar almacenamiento, eficiencia y compatibilidad con índices métricos.
+Contexto
+Se trabajará con vectores entre ~700 y ~200.000 dimensiones, buscando reducirlos a menos de 100 dimensiones preservando capacidad discriminativa.
+Tareas
+1. Revisar estado del arte en:
+   * reducción dimensional
+   * compact embeddings
+   * metric indexing
+2. Investigar e implementar:
+   * PCA
+   * UMAP
+   * Autoencoders
+   * VAEs
+   * Random Projection
+   * Product Quantization
+3. Evaluar preservación de similitud.
+4. Integrar reducción dimensional en:
+   * imágenes
+   * texto
+   * audio
+   * video
+5. Repetir experimentos previos sobre:
+   * logos
+   * marcas de ganado
+   * retrieval multimodal
+6. Analizar impacto en:
+   * Precision@K
+   * Recall
+   * mAP
+7. Evaluar:
+   * velocidad
+   * memoria
+   * escalabilidad
+8. Investigar compatibilidad con:
+   * índices métricos
+   * ANN
+   * FAISS
+9. Generar visualizaciones de embeddings.
+10. Analizar separabilidad semántica.
+11. Redactar publicaciones científicas.
+Posibles aportes novedosos
+* Embeddings ultracompactos para retrieval multimodal.
+* Comparación reducción lineal vs no lineal.
+* Evaluación sobre múltiples modalidades.
+* Compatibilidad con índices métricos reales.
+________________
+
+
+Grupo 6 — Desarrollo de Aplicaciones de Búsqueda por Similitud (Web y Móvil)
+Equipo:
+Emanuel Davezac
+Renato Bonín
+Thiago J. Gomez Kehler
+
+Objetivo General
+Diseñar e implementar aplicaciones funcionales web y móviles para búsqueda por similitud utilizando los modelos y bases desarrollados por el proyecto.
+Objetivos específicos
+* Integrar frontend y backend funcional.
+* Implementar búsqueda multimodal.
+* Aplicar metodologías modernas asistidas por IA y agentes.
+Tareas
+1. Revisar prototipos existentes.
+2. Diseñar arquitectura completa:
+   * frontend
+   * backend
+   * APIs
+   * almacenamiento
+3. Implementar aplicación web funcional.
+4. Implementar aplicación móvil funcional.
+5. Integrar:
+   * búsqueda por imágenes
+   * búsqueda textual
+   * futuras búsquedas multimodales
+6. Diseñar sistema de consultas y resultados.
+7. Implementar autenticación y administración básica.
+8. Investigar y aplicar:
+   * agentes de desarrollo
+   * programación asistida por IA
+   * Spec Driven Development
+9. Generar especificaciones formales antes de programar.
+10. Diseñar flujos de trabajo reproducibles.
+11. Documentar arquitectura y decisiones técnicas.
+12. Integrar motores de búsqueda:
+* FAISS
+* APIs internas
+13. Diseñar pruebas de usabilidad y rendimiento.
+14. Implementar logging y monitoreo.
+15. Generar demos funcionales para transferencia tecnológica.
+Tecnologías sugeridas (se pueden cambiar!)
+Backend
+* Python
+* FastAPI
+* Docker
+Frontend Web
+* React / Next.js
+Mobile
+* Flutter o React Native
+Bases vectoriales
+* FAISS
+* Qdrant
+* Milvus
+Posibles aportes novedosos
+* Uso de agentes IA en desarrollo real.
+* Desarrollo guiado por especificaciones.
+* Plataforma multimodal unificada.
+* Retrieval multimodal integrado en tiempo real.
