@@ -1,0 +1,222 @@
+{
+  "main": {
+    "id": "1e0d7a746a3cb1f8",
+    "type": "split",
+    "children": [
+      {
+        "id": "2afe662b0653f206",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "377bd351664fdf82",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
+            "id": "c729849d51a6302c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00 - MOCs (Maps of Content)/GIBD_Home.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "GIBD_Home"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "76cf5f513deaa02e",
+    "type": "split",
+    "children": [
+      {
+        "id": "8af86d4e49f35d23",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8cc9a3f3c00ab494",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "8ec71f4e3f261145",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "a52cb8e83579457b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c565f7a8bb12ebd8",
+    "type": "split",
+    "children": [
+      {
+        "id": "3787a947e0d80a7b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a3391d039cbff6d3",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "00 - MOCs (Maps of Content)/GIBD_Home.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for GIBD_Home"
+            }
+          },
+          {
+            "id": "c9df91132315a9d7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "30 - Código y Notebooks/G4_Imágenes/Similitud_Marcas_CNN_TripletLoss(18.10.2022).md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Similitud_Marcas_CNN_TripletLoss(18.10.2022)"
+            }
+          },
+          {
+            "id": "e12b7851bc736dcb",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "7c5e1769a5589021",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "e642661c3125200a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "30 - Código y Notebooks/G4_Imágenes/Similitud_Marcas_CNN_TripletLoss(18.10.2022).md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Similitud_Marcas_CNN_TripletLoss(18.10.2022)"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "c729849d51a6302c",
+  "lastOpenFiles": [
+    "00 - MOCs (Maps of Content)/G6_Desarrollo.md",
+    "00 - MOCs (Maps of Content)/GIBD_Home.md",
+    "00 - MOCs (Maps of Content)/G4_Imágenes.md",
+    "50 - Archivo Histórico/G3_Texto/GIBD/2025 - Analisis de Sentimientos/Analisis de Sentimientos.md",
+    "00 - MOCs (Maps of Content)/G3_Texto.md",
+    "30 - Código y Notebooks/G4_Imágenes/Similitud_Marcas_CNN_TripletLoss(18.10.2022).md",
+    "Untitled.md",
+    "bounding_boxes.md",
+    "50 - Archivo Histórico/G4_Imágenes/GIBD/ARTICULOS NUESTROS/ML -  Similitud-HWOBC_CNN_Siamesa_2023.md",
+    "00 - MOCs (Maps of Content)/G5_Reducción.md",
+    "50 - Archivo Histórico/General/GIBD/CONAISII  clubes 2023/195- Búsquedas por Similitud de Logos_ Extracción de  Car....md",
+    "30 - Código y Notebooks/Carpetas_Repositorio/Carpeta_GIBD_CONAISII  clubes 2023.md",
+    "20 - Documentos y Papers/G4_Imágenes/2017 - Cattle Brand Recognition using Convolutional Neura....md",
+    "30 - Código y Notebooks/Carpetas_Repositorio/Carpeta_GIBD_BERT - GPT - Llama.md",
+    "00 - MOCs (Maps of Content)/General.md",
+    "50 - Archivo Histórico/G4_Imágenes/GIBD/Tatuajes/80_1_a3.md",
+    "20 - Documentos y Papers/G4_Imágenes/2017 - In Defense of the Triplet Loss for Person Re-Ident....md",
+    "00 - MOCs (Maps of Content)/G2_Video.md",
+    "00 - MOCs (Maps of Content)/G1_Sonido.md",
+    "2026-05-21.md",
+    "Untitled.canvas",
+    "Untitled.base",
+    "50 - Archivo Histórico/G4_Imágenes/GIBD/Tatuajes/17_6_r3.md"
+  ]
+}

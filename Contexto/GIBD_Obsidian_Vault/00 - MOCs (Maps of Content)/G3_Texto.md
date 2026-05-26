@@ -1,0 +1,165 @@
+# Mapa de Contenido (MOC): Grupo 3: Texto
+
+Este documento centraliza toda la información, papers, notebooks y códigos clasificados dentro del grupo **Grupo 3: Texto**.
+
+## 📑 Notas y Documentos Extraídos (Buscable)
+
+### 🟢 Útiles / Actuales
+Sistemas, papers y herramientas listas para la planificación actual:
+*No hay documentos útiles marcados como actuales.*
+
+### 🟡 Borradores y Pruebas
+*No hay borradores en este grupo.*
+
+### 🔴 Archivo Histórico
+- [[Analisis de Sentimientos]] *(Año anterior - Modificado: 2026-02-11)*
+- [[TecnicasdeAnalisisdeSentimientos2021]] *(Año anterior - Modificado: 2025-09-15)*
+- [[CinesArgentinos]] *(Año anterior - Modificado: 2025-09-15)*
+- [[Análisis de Sentimientos]] *(Año anterior - Modificado: 2026-02-11)*
+- [[Preprocesamiento del Texto para entrenar BERT]] *(Año anterior - Modificado: 2023-04-21)*
+- [[BERT - Modelo]] *(Año anterior - Modificado: 2023-04-21)*
+- [[Reglamentacion]] *(Año anterior - Modificado: 2024-03-09)*
+- [[RAG - Documentación]] *(Año anterior - Modificado: 2024-09-13)*
+- [[Llama-3-8b-Finetune-Reglamentación]] *(Año anterior - Modificado: 2024-08-17)*
+- [[2024- SPANISH PRE-TRAINED BERT MODEL]] *(Año anterior - Modificado: 2024-09-12)*
+- [[rag-similares-ollama]] *(Año anterior - Modificado: 2024-09-14)*
+- [[bge-m3_preguntas_similares_individualmente_gpt]] *(Año anterior - Modificado: 2024-09-12)*
+- [[rag-originales-reglamentacion]] *(Año anterior - Modificado: 2024-09-13)*
+- [[2024-Nomic Embed Training a Reproducible Long Context Tex...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024-M3-Embedding_ Multi-Linguality, Multi-Functionality,...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- Attention Is All You Need]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- Retrieval-Augmented Generation for Knowledge-Intens...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- RAFT_ Adapting Language Model to Domain Specific RAG]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- Retrieval-Augmented Generation for Large Language M...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- HOTPOTQA_ A Dataset for Diverse. Explainable]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- Improving Text Embeddings with Large Language Models]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- Sentence-BERT_ Sentence Embeddings using Siamese BE...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- SimCSE_Simple Contrastive Learning of Sentence Embe...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[2024- S2ORC_ The Semantic Scholar Open Research Corpus]] *(Año anterior - Modificado: 2024-09-12)*
+- [[Visualizaciones]] *(Año anterior - Modificado: 2024-08-30)*
+- [[combined-rag-originales-reglamentacion]] *(Año anterior - Modificado: 2024-09-05)*
+- [[CoNaIISI - Búsquedas por Similitud de Logos - Extrayendo ...]] *(Año anterior - Modificado: 2023-10-09)*
+- [[combined-rag-similares-ollama]] *(Año anterior - Modificado: 2024-09-05)*
+- [[2024- GPT-4o System Card]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_bge-m3_solo-consultas-originales]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_nomic-embed-text-v1_solo-consultas-orig...]] *(Año anterior - Modificado: 2024-08-30)*
+- [[Descripción la base de datos, contenido y cantidad de ele...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[Analisis de preguntas no encontradas]] *(Año anterior - Modificado: 2024-09-13)*
+- [[Experimentos realizados]] *(Año anterior - Modificado: 2024-09-13)*
+- [[resultados_bge-m3_solo-consultas-originales_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_beto_solo-consultas-originales]] *(Año anterior - Modificado: 2024-08-29)*
+- [[ds_preguntasSimilares_TRES_nomic-bge]] *(Año anterior - Modificado: 2024-08-31)*
+- [[ds_preguntasSimilares_CINCO_nomic-bge]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_nomic_solo-consultas-originales]] *(Año anterior - Modificado: 2024-08-29)*
+- [[ds_preguntasSimilares_DIEZ_nomic-bge]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_CINCO_bge-m3]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_DIEZ_bge-m3]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_TRES_bge-m3]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_llama3_1_similares_TRES]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_llama3_1_similares_CINCO]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_llama3_1_similares_DIEZ]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_nomic_Llama3_1_similares_10]] *(Año anterior - Modificado: 2024-09-14)*
+- [[resultados_nomic_Llama3_1_similares_3]] *(Año anterior - Modificado: 2024-09-14)*
+- [[resultados_beto_Llama3_1_similares_5]] *(Año anterior - Modificado: 2024-09-14)*
+- [[resultados_beto_Llama3_1_similares_10]] *(Año anterior - Modificado: 2024-09-14)*
+- [[resultados_beto_Llama3_1_similares_3]] *(Año anterior - Modificado: 2024-09-14)*
+- [[resultados_nomic_Llama3_1_similares_5]] *(Año anterior - Modificado: 2024-09-14)*
+- [[beto_gpt4-similares_5_preguntas-individuales_combinadas-p...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[beto_gpt4-similares_10_preguntas-individuales_juntas]] *(Año anterior - Modificado: 2024-09-13)*
+- [[beto_gpt4-similares_5_preguntas-individuales_juntas]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_3_preguntas-individual...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[beto_gpt4-similares_10_preguntas-individuales_combinadas-...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_10_preguntas-individua...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_5_preguntas-individual...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[beto_gpt4-similares_3_preguntas-individuales_combinadas-p...]] *(Año anterior - Modificado: 2024-09-13)*
+- [[beto_gpt4-similares_3_preguntas-individuales_juntas]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_3_preguntas-individual..._2]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_10_preguntas-individua..._2]] *(Año anterior - Modificado: 2024-09-13)*
+- [[nomic-embed-text-v1_gpt4-similares_5_preguntas-individual..._2]] *(Año anterior - Modificado: 2024-09-13)*
+- [[resultados_bge-m3_GPT4o_similares_TRES]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_GPT4o_similares_CINCO]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_GPT4o_similares_DIEZ]] *(Año anterior - Modificado: 2024-09-04)*
+- [[bge-m3_gpt4-similares_3_preguntas-individuales_combinadas...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[bge-m3_gpt4-similares_10_preguntas-individuales_combinada...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[bge-m3_gpt4-similares_5_preguntas-individuales_combinadas...]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_bge-m3_llama3_1_similares_CINCO_2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_llama3_1_similares_DIEZ_2]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_bge-m3_llama3_1_similares_TRES_2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_gpt4-similares_TRES_v2_preguntas-indivi...]] *(Año anterior - Modificado: 2024-09-10)*
+- [[resultados_bge-m3_gpt4-similares_CINCO_v2_preguntas-indiv...]] *(Año anterior - Modificado: 2024-09-10)*
+- [[bge-m3_gpt4-similares_5_preguntas-individuales]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_bge-m3_gpt4-similares_CINCO_preguntas-individu...]] *(Año anterior - Modificado: 2024-09-06)*
+- [[bge-m3_gpt4-similares_10_preguntas-individuales]] *(Año anterior - Modificado: 2024-09-12)*
+- [[bge-m3_gpt4-similares_3_preguntas-individuales]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_bge-m3_gpt4-similares_DIEZ_preguntas-individuales]] *(Año anterior - Modificado: 2024-09-06)*
+- [[resultados_bge-m3_GPT4o_similares_TRES_2]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_gpt4-similares_TRES_preguntas-individuales]] *(Año anterior - Modificado: 2024-09-06)*
+- [[resultados_bge-m3_gpt4-similares_DIEZ_v2_preguntas-indivi...]] *(Año anterior - Modificado: 2024-09-10)*
+- [[resultados_bge-m3_GPT4o_similares_CINCO_2]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_gpt4-similares_CINCO_v2_preguntas-indiv..._2]] *(Año anterior - Modificado: 2024-09-10)*
+- [[resultados_bge-m3_gpt4-similares_CINCO_preguntas-individu..._2]] *(Año anterior - Modificado: 2024-09-06)*
+- [[resultados_bge-m3_gpt4-similares_TRES_preguntas-individuales_2]] *(Año anterior - Modificado: 2024-09-06)*
+- [[resultados_bge-m3_gpt4-similares_DIEZ_preguntas-individuales_2]] *(Año anterior - Modificado: 2024-09-06)*
+- [[resultados_bge-m3_gpt4-similares_TRES_v2_preguntas-indivi..._2]] *(Año anterior - Modificado: 2024-09-10)*
+- [[resultados_bge-m3_gpt4-similares_DIEZ_v2_preguntas-indivi..._2]] *(Año anterior - Modificado: 2024-09-10)*
+- [[bge-m3_gpt4-similares_5_preguntas-individuales_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[bge-m3_gpt4-similares_3_preguntas-individuales_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[bge-m3_gpt4-similares_10_preguntas-individuales_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[resultados_bge-m3_GPT4o_similares_DIEZ_2]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_nomic-embed-text-v1_gpt4-similares_TRES]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_nomic-embed-text-v1_gpt4-similares_CINCO]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_nomic-embed-text-v1_gpt4-similares_DIEZ]] *(Año anterior - Modificado: 2024-09-04)*
+- [[resultados_bge-m3_nomic-embed-text-v1_llama3_1_similares_...]] *(Año anterior - Modificado: 2024-08-31)*
+- [[resultados_bge-m3_nomic-embed-text-v1_llama3_1_similares_..._2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[resultados_bge-m3_nomic-embed-text-v1_llama3_1_similares_..._3]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_DIEZ_nomic]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_TRES_nomic]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_CINCO_bge-m3_2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_TRES_bge-m3_2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_CINCO_nomic]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_DIEZ_bge-m3_2]] *(Año anterior - Modificado: 2024-08-30)*
+- [[ds_preguntasSimilares_TRES_beto]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_CINCO_beto]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_DIEZ_beto]] *(Año anterior - Modificado: 2024-09-14)*
+- [[ds_preguntasSimilares_llama31_DIEZ]] *(Año anterior - Modificado: 2024-08-29)*
+- [[ds_preguntasSimilares_llama31_TRES]] *(Año anterior - Modificado: 2024-08-29)*
+- [[QA_reglamentoConRAG_ORIGINAL]] *(Año anterior - Modificado: 2024-08-29)*
+- [[QA_reglamentoConRAG_preguntasSimilares]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_beto_llama31_individual]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_nomic_llama31_similares_DIEZ]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_nomic_llama31_individual]] *(Año anterior - Modificado: 2024-08-29)*
+- [[resultados_nomic_llama31_similares_TRES]] *(Año anterior - Modificado: 2024-08-29)*
+- [[195-292-1-SM - CoNaIISI - Búsquedas por Similitud de Logo...]] *(Año anterior - Modificado: 2023-10-09)*
+- [[2024- The Llama 3 Herd of Models]] *(Año anterior - Modificado: 2024-09-12)*
+- [[typeinst]] *(Año anterior - Modificado: 2011-07-01)*
+- [[Tareas]] *(Año anterior - Modificado: 2023-07-29)*
+- [[Procesamiento]] *(Año anterior - Modificado: 2023-08-14)*
+- [[148-222-1-SM - CoNaIISI - Construcción de una Función de ...]] *(Año anterior - Modificado: 2023-11-06)*
+- [[CoNaIISI - Construcción de una Función de Distancia para ...]] *(Año anterior - Modificado: 2023-10-09)*
+- [[Paper CONAIISI - HWOBC Chinos (VERSION 1)]] *(Año anterior - Modificado: 2023-09-08)*
+- [[Function Metric Learning (nuevo preprocesamiento)]] *(Año anterior - Modificado: 2023-08-07)*
+- [[TAREAS_2]] *(Año anterior - Modificado: 2023-08-14)*
+- [[Técnicas de generación]] *(Año anterior - Modificado: 2023-12-04)*
+- [[Visualizaciones_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[rag-similares-ollama_2]] *(Año anterior - Modificado: 2024-09-14)*
+- [[bge-m3_preguntas_similares_individualmente_gpt_2]] *(Año anterior - Modificado: 2024-09-12)*
+- [[Prompt_GPT4o_Preguntas_Similares]] *(Año anterior - Modificado: 2024-09-12)*
+- [[viejo CONAIISI_2024-Busqueda de Reglamentacion en el Leng...]] *(Año anterior - Modificado: 2024-09-16)*
+- [[README]] *(Año anterior - Modificado: 2024-08-29)*
+- [[CONAIISI - Formato_autores_CONAIISI_2023]] *(Año anterior - Modificado: 2023-08-14)*
+- [[CONAIISI_2024-Recuperación de Información de Reglamentaci...]] *(Año anterior - Modificado: 2024-09-16)*
+- [[GIBD Texto 2025]] *(Año anterior - Modificado: 2025-09-01)*
+- [[NPL_Reglamento_Dataset_prueba1]] *(Año anterior - Modificado: 2024-08-29)*
+- [[CONAIISI - Formato_papers_estudiantes_2023]] *(Año anterior - Modificado: 2023-08-14)*
+- [[DataSet_preguntasSimilares_survervisado]] *(Año anterior - Modificado: 2024-09-04)*
+- [[PresentacionesConaiisi2023]] *(Año anterior - Modificado: 2023-10-31)*
+- [[CONAIISI_2024-Recuperación de Información de Reglamentaci..._2]] *(Año anterior - Modificado: 2024-09-16)*
+- [[_Reglamento]] *(Año anterior - Modificado: 2024-08-29)*
+- [[rag-originales-reglamentacion_2]] *(Año anterior - Modificado: 2024-09-14)*
+- [[2024- BERT_ Pre-training of Deep Bidirectional Transforme...]] *(Año anterior - Modificado: 2024-09-12)*
+
+## 📂 Carpetas Relacionadas en el Repositorio
+- [[Carpeta_GIBD_2025 - Analisis de Sentimientos]] 📁 `GIBD\2025 - Analisis de Sentimientos`
+- [[Carpeta_GIBD_Procesamiento del Lenguaje Natural]] 📁 `GIBD\Procesamiento del Lenguaje Natural`
+- [[Carpeta_GIBD_BERT - GPT - Llama]] 📁 `GIBD\BERT - GPT - Llama`
+- [[Carpeta_GIBD_Texto 2025]] 📁 `GIBD\Texto 2025`

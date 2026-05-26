@@ -14,3 +14,7 @@ backend/venv/
 __pycache__/
 *.pyc
 
+# Large raw datasets
+Contexto/GIBD ALLDATA/
+
+
