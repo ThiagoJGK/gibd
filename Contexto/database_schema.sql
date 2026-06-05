@@ -91,6 +91,25 @@ INSERT INTO public.miembros_equipo (initials, name, role, email, linkedin) VALUE
 ('PC', 'Dra. Patricia R. Cristaldo', 'Docente Investigadora', 'cristaldop@frcu.utn.edu.ar', 'https://linkedin.com/in/patricia-cristaldo'),
 ('DL', 'Dra. María Daniela López De Luise', 'Docente Investigadora', 'deluisem@frcu.utn.edu.ar', 'https://linkedin.com/in/daniela-lopez-de-luise'),
 ('TG', 'Thiago Gomez Kehler', 'Investigador', 'thiagogomezkehler@frcu.utn.edu.ar', 'https://linkedin.com/in/thiago-gomez-kehler'),
+('MO', 'Maximiliano Olivera', 'Investigador', 'oliveram@frcu.utn.edu.ar', 'https://linkedin.com/in/maximiliano-olivera'),
+('PS', 'Pablo Suarez Lapalma', 'Investigador', 'suarezp@frcu.utn.edu.ar', 'https://linkedin.com/in/pablo-suarez-lapalma'),
+('IM', 'Iara Martinelli', 'Investigadora', 'martinellii@frcu.utn.edu.ar', 'https://linkedin.com/in/iara-martinelli'),
+('MF', 'María Emilia Fernandez', 'Investigadora', 'fernandezm@frcu.utn.edu.ar', 'https://linkedin.com/in/maria-emilia-fernandez'),
 ('LD', 'Luciano Emmanuel Davezac', 'Investigador', 'davezacl@frcu.utn.edu.ar', 'https://linkedin.com/in/luciano-davezac'),
-('LC', 'León Castiglioni', 'Investigador', 'castiglionil@frcu.utn.edu.ar', 'https://linkedin.com/in/leon-castiglioni')
+('ST', 'Sebastián Trossero', 'Investigador', 'trosseros@frcu.utn.edu.ar', 'https://linkedin.com/in/sebastian-trossero'),
+('CA', 'Claudia M. Álvarez', 'Investigadora', 'alvarezc@frcu.utn.edu.ar', 'https://linkedin.com/in/claudia-m-alvarez'),
+('FH', 'Fernando Heit', 'Investigador', 'heitf@frcu.utn.edu.ar', 'https://linkedin.com/in/fernando-heit'),
+('NP', 'Adrián Nicolas Planas', 'Docente Investigador', 'planasn@frcu.utn.edu.ar', 'https://linkedin.com/in/adrian-nicolas-planas'),
+('FV', 'Florencia Zoe Vidal', 'Investigadora', 'vidalf@frcu.utn.edu.ar', 'https://linkedin.com/in/florencia-zoe-vidal'),
+('AB', 'Agustina Bonti', 'Investigadora', 'bontia@frcu.utn.edu.ar', 'https://linkedin.com/in/agustina-bonti'),
+('LT', 'Lucas Francisco Tonelotto', 'Investigador', 'tonelottol@frcu.utn.edu.ar', 'https://linkedin.com/in/lucas-tonelotto'),
+('LC', 'León Castiglioni', 'Investigador', 'castiglionil@frcu.utn.edu.ar', 'https://linkedin.com/in/leon-castiglioni'),
+('FL', 'Federico Lederhos', 'Investigador', 'lederhosf@frcu.utn.edu.ar', 'https://linkedin.com/in/federico-lederhos'),
+('WC', 'Wenceslao Colazo', 'Investigador', 'colazow@frcu.utn.edu.ar', 'https://linkedin.com/in/wenceslao-colazo'),
+('SP', 'Santiago Poerio Val', 'Investigador', 'poerios@frcu.utn.edu.ar', 'https://linkedin.com/in/santiago-poerio'),
+('FS', 'Federico Stauber', 'Docente Investigador', 'stauberf@frcu.utn.edu.ar', 'https://linkedin.com/in/federico-stauber'),
+('LV', 'Luciana G. Valiente', 'Investigadora', 'valientel@frcu.utn.edu.ar', 'https://linkedin.com/in/luciana-valiente'),
+('LP', 'Lucas La Pietra', 'Investigador', 'lapietral@frcu.utn.edu.ar', 'https://linkedin.com/in/lucas-la-pietra'),
+('JH', 'Dr. Jude Hemanth', 'Investigador Externo', 'judehemanth@external.utn.edu.ar', 'https://linkedin.com/in/jude-hemanth')
 ON CONFLICT (initials) DO NOTHING;
+
