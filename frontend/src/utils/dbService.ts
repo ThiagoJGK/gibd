@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+// import { supabase } from './supabaseClient';
 
 // ==========================================
 // MÉTODOS PARA DESARROLLADOR A (MÓDULO NOTICIAS)
@@ -17,7 +17,7 @@ export const getNoticias = async (): Promise<any[]> => {
 /**
  * Guarda una nueva noticia en Supabase o en LocalStorage si está en modo mock.
  */
-export const saveNoticia = async (noticiaForm: any, noticiaFile: File | null): Promise<void> => {
+export const saveNoticia = async (_noticiaForm: any, _noticiaFile: File | null): Promise<void> => {
   // TODO (Desarrollador A): Implementar lógica de guardado
   // Si noticiaFile existe, subirlo a storage ('noticias') y obtener la URL pública.
   // Si está en modo mock, añadir al array 'gibd_mock_noticias' en localStorage.
@@ -53,10 +53,11 @@ export const getPapers = async (): Promise<any[]> => {
 /**
  * Guarda un nuevo paper en Supabase (insertando relaciones M-M) o en LocalStorage en modo mock.
  */
-export const savePaper = async (paperForm: any, paperFile: File | null, selectedAuthors: string[]): Promise<void> => {
+export const savePaper = async (_paperForm: any, _paperFile: File | null, _selectedAuthors: string[]): Promise<void> => {
   // TODO (Desarrollador B): Implementar guardado de paper
   // Si paperFile existe, subirlo a storage ('papers') y obtener la URL pública.
   // Si está en modo mock, añadir a 'gibd_mock_papers' y asociar coautores.
   // Si no, insertar en la tabla 'papers' de Supabase, recuperar el ID asignado,
   // e insertar las filas correspondientes en la tabla intermedia 'paper_authors'.
 };
+
