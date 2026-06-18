@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, ExternalLink, ChevronRight, ArrowLeft, BookOpen, ArrowUpRight, Users, FileText } from 'lucide-react';
+import { Mail, ExternalLink, ChevronRight, ArrowLeft, BookOpen, ArrowUpRight, Users, FileText, RefreshCw } from 'lucide-react';
+import { getPapers, getMiembrosEquipo } from '../utils/dbService';
 
 const CATEGORIES = [
   'Todos los Papers',
@@ -9,237 +10,63 @@ const CATEGORIES = [
   'Gestión de Proyectos'
 ];
 
-const AUTHORS_DATABASE: Record<string, { name: string; role: string; email: string; linkedin: string }> = {
-  AP: {
-    name: 'Mg. Andrés Jorge Pascal',
-    role: 'Docente Investigador',
-    email: 'pascala@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/andres-pascal-gibd'
-  },
-  PC: {
-    name: 'Dra. Patricia R. Cristaldo',
-    role: 'Docente Investigadora',
-    email: 'cristaldop@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/patricia-cristaldo'
-  },
-  DL: {
-    name: 'Dra. María Daniela López De Luise',
-    role: 'Docente Investigadora',
-    email: 'deluisem@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/daniela-lopez-de-luise'
-  },
-  TG: {
-    name: 'Thiago Gomez Kehler',
-    role: 'Investigador',
-    email: 'thiagogomezkehler@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/thiago-gomez-kehler'
-  },
-  MO: {
-    name: 'Maximiliano Olivera',
-    role: 'Investigador',
-    email: 'oliveram@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/maximiliano-olivera'
-  },
-  PS: {
-    name: 'Pablo Suarez Lapalma',
-    role: 'Investigador',
-    email: 'suarezp@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/pablo-suarez-lapalma'
-  },
-  IM: {
-    name: 'Iara Martinelli',
-    role: 'Investigadora',
-    email: 'martinellii@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/iara-martinelli'
-  },
-  MF: {
-    name: 'María Emilia Fernandez',
-    role: 'Investigadora',
-    email: 'fernandezm@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/maria-emilia-fernandez'
-  },
-  LD: {
-    name: 'Luciano Emmanuel Davezac',
-    role: 'Investigador',
-    email: 'davezacl@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/luciano-davezac'
-  },
-  ST: {
-    name: 'Sebastián Trossero',
-    role: 'Investigador',
-    email: 'trosseros@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/sebastian-trossero'
-  },
-  CA: {
-    name: 'Claudia M. Álvarez',
-    role: 'Investigadora',
-    email: 'alvarezc@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/claudia-m-alvarez'
-  },
-  FH: {
-    name: 'Fernando Heit',
-    role: 'Investigador',
-    email: 'heitf@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/fernando-heit'
-  },
-  NP: {
-    name: 'Adrián Nicolas Planas',
-    role: 'Docente Investigador',
-    email: 'planasn@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/adrian-nicolas-planas'
-  },
-  FV: {
-    name: 'Florencia Zoe Vidal',
-    role: 'Investigadora',
-    email: 'vidalf@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/florencia-zoe-vidal'
-  },
-  AB: {
-    name: 'Agustina Bonti',
-    role: 'Investigadora',
-    email: 'bontia@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/agustina-bonti'
-  },
-  LT: {
-    name: 'Lucas Francisco Tonelotto',
-    role: 'Investigador',
-    email: 'tonelottol@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/lucas-tonelotto'
-  },
-  LC: {
-    name: 'León Castiglioni',
-    role: 'Investigador',
-    email: 'castiglionil@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/leon-castiglioni'
-  },
-  FL: {
-    name: 'Federico Lederhos',
-    role: 'Investigador',
-    email: 'lederhosf@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/federico-lederhos'
-  },
-  WC: {
-    name: 'Wenceslao Colazo',
-    role: 'Investigador',
-    email: 'colazow@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/wenceslao-colazo'
-  },
-  SP: {
-    name: 'Santiago Poerio Val',
-    role: 'Investigador',
-    email: 'poerios@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/santiago-poerio'
-  },
-  FS: {
-    name: 'Federico Stauber',
-    role: 'Docente Investigador',
-    email: 'stauberf@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/federico-stauber'
-  },
-  LV: {
-    name: 'Luciana G. Valiente',
-    role: 'Investigadora',
-    email: 'valientel@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/luciana-valiente'
-  },
-  LP: {
-    name: 'Lucas La Pietra',
-    role: 'Investigador',
-    email: 'lapietral@frcu.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/lucas-la-pietra'
-  },
-  JH: {
-    name: 'Dr. Jude Hemanth',
-    role: 'Investigador Externo',
-    email: 'judehemanth@external.utn.edu.ar',
-    linkedin: 'https://linkedin.com/in/jude-hemanth'
-  }
-};
-
-const PAPERS = [
-  {
-    id: 1,
-    title: 'Recuperación de Información de Reglamentación Académica en Español utilizando Modelos del Lenguaje Natural',
-    description: 'Investigación sobre el diseño y la sintonización de modelos de lenguaje natural (NLP) aplicados a la consulta y recuperación semántica de reglamentaciones internas en la UTN FRCU.',
-    category: 'Procesamiento de Lenguaje Natural',
-    date: 'Noviembre 2024 (CoNaIISI 2024)',
-    authors: ['AP', 'MO', 'PS', 'IM', 'MF', 'LD', 'TG'],
-    image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=600&q=80',
-    url: 'https://frcu.utn.edu.ar/index.php/investigacion-gibd/publicaciones-gibd'
-  },
-  {
-    id: 2,
-    title: 'Advanced Variable Tuning and Biases in Chatbot Models: Analysis of the PTAH Prototype',
-    description: 'Análisis profundo de la sintonización de parámetros y mitigación de sesgos en modelos de lenguaje conversacionales aplicados al prototipo de agente de IA legal PTAH.',
-    category: 'Procesamiento de Lenguaje Natural',
-    date: 'Octubre 2024 (IEEE ARGENCON 2024)',
-    authors: ['DL', 'AP', 'ST', 'CA', 'FH'],
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAUz5HeohjVnoyhAg6KncEFARkNJloipi4JUf1HJwj-xeJlZHeFhyTbLzgDXTihDPJ8LCIKm7igHKYi_DJTIb2GitRoy8ujo6YTyrsKDi56gC-VnlajHUggG91nJwNIWi_rdReCl-3Mp90fwwRrX_i0yZfupLvE9issAZFFLhZ-Ev-to5bt9tff8d0hYhP6Q3HmQpboIKHBz7s7wGTyHvfkvOCf2zleFEN3au-ovx6zZbE0W0Q35Wpgp_Smdpi_i8RC9AXNtCcwMtA',
-    url: 'https://ieeexplore.ieee.org/document/10705886'
-  },
-  {
-    id: 3,
-    title: 'Image Feature Extraction for Similarity Searching Using Transfer Learning with ResNet',
-    description: 'Estudio sobre la extracción de descriptores visuales de alta fidelidad mediante transferencia de aprendizaje (ResNet) para optimizar consultas por similitud métrica.',
-    category: 'Búsqueda por Similitud',
-    date: 'Octubre 2024 (CACIC 2024)',
-    authors: ['AP', 'NP', 'FV', 'AB', 'LT', 'LC'],
-    image: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=600&q=80',
-    url: 'http://sedici.unlp.edu.ar/handle/10915/169192'
-  },
-  {
-    id: 4,
-    title: 'Mejorando la Identificación de Marcas de Ganado Vacuno: Redes Siamesas en el Aprendizaje de Funciones de Distancia',
-    description: 'Propuesta para optimizar el reconocimiento automático de marcas de propiedad de ganado vacuno en el sector agropecuario mediante aprendizaje de métricas profundas con redes siamesas.',
-    category: 'Búsqueda por Similitud',
-    date: 'Octubre 2023 (CACIC 2023)',
-    authors: ['FS', 'NP', 'AP'],
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCDCTMSNRdmGwPoJJt3lakXo74CLtLoWQofTTLQAypwRfJwnuhOnYpvrkOKDxzI-WyBVFg6cBWUIWGUfWVuONPPAUSMHM7flamBAdG-qYqA3VAlT84kxFYILpPy4s8-ZZIkVr_7OxJPepwLCsFPx2hlEhGPh3xePYdS03z74moh7YQSupLkl2tHnD5j1W0Ro-jojhjxrOKfFK20aYsJCPtSVUG10fWoXX2Pn4AOBf-LadxDvJ6YAx6SCztarchv953DcGxCDpGAu7A',
-    url: 'http://sedici.unlp.edu.ar/handle/10915/161407'
-  },
-  {
-    id: 5,
-    title: 'Búsqueda por Similitud de Tatuajes Utilizando Preprocesamiento y Transfer Learning',
-    description: 'Desarrollo de un pipeline de preprocesamiento de imágenes combinado con redes convolucionales preentrenadas para la recuperación eficiente de tatuajes forenses.',
-    category: 'Búsqueda por Similitud',
-    date: 'Noviembre 2024 (CoNaIISI 2024)',
-    authors: ['AP', 'NP', 'FL', 'LC', 'WC', 'SP'],
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA3ztg1AqmLHXOfoOI5nzC2Y7E2pnunBI2PnkbHr_0VKsly5ZM4gTCbQnSVg4jROhVrSY0Zc8L3gbcrWHpbVpFoGl8mNgT3YwXvJuhTBUL9TBGbcPFkmvvwZZ-MLTs-R9ymz43NRLYbz4F13IF4iEk_3b8bWqn6k0c1m-onMLDRsWikB-FUkoxxQTKYG3e7ELhzgkqcy3q38eOXtxSg8vo34I8CNsLv-QUy5E6wz37AMijDM3JY9LlQCRj1mqMnkaHlbupffCDrCRA',
-    url: 'https://frcu.utn.edu.ar/index.php/investigacion-gibd/publicaciones-gibd'
-  },
-  {
-    id: 6,
-    title: 'Experiencia Ludificada para el desarrollo de Métricas en Gestión de Proyectos',
-    description: 'Presentación del modelo y prototipo LudgePI, integrando dinámicas lúdicas de gamificación para facilitar la recopilación y análisis transversal de métricas de calidad en proyectos.',
-    category: 'Gestión de Proyectos',
-    date: 'Noviembre 2023 (CoNaIISI 2023)',
-    authors: ['PC', 'DL', 'LT', 'LV'],
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-    url: 'https://frcu.utn.edu.ar/index.php/investigacion-gibd/publicaciones-gibd'
-  },
-  {
-    id: 7,
-    title: 'Metrics for the Systematic Evaluation of Software Project Management Methodologies',
-    description: 'Definición de un marco de métricas transversales basado en minería de datos para evaluar sistemáticamente la alineación y desempeño de metodologías híbridas y ágiles.',
-    category: 'Gestión de Proyectos',
-    date: '2021 (Global Research and Development Journal)',
-    authors: ['PC', 'DL', 'LP', 'AB', 'JH'],
-    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80',
-    url: 'https://www.grdjournals.com/article?paper=GRDJEV06I050009'
-  }
-];
-
 export function Papers() {
+  const [papers, setPapers] = useState<any[]>([]);
+  const [authors, setAuthors] = useState<Record<string, any>>({});
+  const [loading, setLoading] = useState<boolean>(true);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0]);
-  const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
+  const [expandedCardId, setExpandedCardId] = useState<string | number | null>(null);
   const [expandedAuthorKey, setExpandedAuthorKey] = useState<string | null>(null);
 
+  useEffect(() => {
+    let isMounted = true;
+    const loadData = async () => {
+      try {
+        const [fetchedPapers, fetchedAuthors] = await Promise.all([
+          getPapers(),
+          getMiembrosEquipo()
+        ]);
+        
+        if (isMounted) {
+          setPapers(fetchedPapers);
+          // Mapear el array de autores a un diccionario por sus iniciales para búsqueda rápida
+          const authorsRecord = fetchedAuthors.reduce((acc: any, author: any) => {
+            acc[author.initials] = author;
+            return acc;
+          }, {});
+          setAuthors(authorsRecord);
+        }
+      } catch (err) {
+        console.error("Error al cargar la información dinámica de papers:", err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const filteredPapers = activeCategory === 'Todos los Papers'
-    ? PAPERS
-    : PAPERS.filter(paper => paper.category === activeCategory);
+    ? papers
+    : papers.filter(paper => paper.category === activeCategory);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-text-primary">
+        <RefreshCw className="w-10 h-10 text-primary-container animate-spin mb-4" />
+        <p className="font-bold tracking-widest text-xs uppercase text-text-secondary">Cargando Investigaciones y Publicaciones GIBD...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-32 px-6 max-w-7xl mx-auto min-h-screen">
+
       {/* Hero Section */}
       <section className="mb-12">
         <h1 className="text-4xl md:text-[56px] lg:text-[80px] font-black leading-tight mb-6">
@@ -414,8 +241,8 @@ export function Papers() {
                           initial="hidden"
                           animate="show"
                         >
-                          {paper.authors.map(authorKey => {
-                            const author = AUTHORS_DATABASE[authorKey];
+                          {paper.authors.map((authorKey: string) => {
+                            const author = authors[authorKey];
                             if (!author) return null;
                             const isAuthorExpanded = expandedAuthorKey === `${paper.id}-${authorKey}`;
 
@@ -509,11 +336,11 @@ export function Papers() {
                     >
                       {/* Avatar stack with overlaps, clean hover triggers, and descriptive tooltip names */}
                       <div className="flex -space-x-3 overflow-visible shrink-0 self-start sm:self-auto">
-                        {paper.authors.map((author, i) => (
+                        {paper.authors.map((author: string, i: number) => (
                           <div 
                             key={i} 
                             className="w-9 h-9 rounded-full border-2 border-surface-deep bg-background-base flex items-center justify-center text-[10px] font-black text-text-primary relative hover:translate-y-[-4px] hover:z-10 transition-all cursor-pointer shadow-md shadow-black/40"
-                            title={AUTHORS_DATABASE[author]?.name || author}
+                            title={authors[author]?.name || author}
                           >
                             {author}
                           </div>

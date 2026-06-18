@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../utils/supabaseClient';
 import { playWaterDrip, playRubberSnap } from '../utils/audio';
+import { getMiembrosEquipo, getPapers, savePaper, updatePaper, deletePaper } from '../utils/dbService';
 import './Admin.css';
 
 // Interfaces de datos
@@ -63,6 +64,10 @@ export const Admin: React.FC = () => {
   const [paperFile, setPaperFile] = useState<File | null>(null);
   const [paperDragActive, setPaperDragActive] = useState<boolean>(false);
   const [analyzingPaper, setAnalyzingPaper] = useState<boolean>(false);
+  const [papers, setPapers] = useState<any[]>([]);
+  const [loadingPapers, setLoadingPapers] = useState<boolean>(false);
+  const [editingPaperId, setEditingPaperId] = useState<string | number | null>(null);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   // 3. Estado de Monitoreo
   const [backendHealth, setBackendHealth] = useState<{
@@ -117,48 +122,101 @@ export const Admin: React.FC = () => {
     }
   }, []);
 
-  // Cargar autores de Supabase / Mock al autenticarse
+  // Cargar autores y papers de Supabase / Mock al autenticarse
   useEffect(() => {
     if (session) {
       fetchAuthors();
+      fetchPapers();
       checkBackendHealth();
     }
   }, [session, isMockMode]);
 
   const fetchAuthors = async () => {
     setLoadingAuthors(true);
-    if (isMockMode) {
-      // Mock Autores
-      setTimeout(() => {
-        setAuthors([
-          { id: '1', initials: 'AP', name: 'Mg. Andrés Jorge Pascal', role: 'Docente Investigador' },
-          { id: '2', initials: 'PC', name: 'Dra. Patricia R. Cristaldo', role: 'Docente Investigadora' },
-          { id: '3', initials: 'DL', name: 'Dra. María Daniela López De Luise', role: 'Docente Investigadora' },
-          { id: '4', initials: 'TG', name: 'Thiago Gomez Kehler', role: 'Investigador' },
-          { id: '5', initials: 'LD', name: 'Luciano Emmanuel Davezac', role: 'Investigador' },
-          { id: '6', initials: 'LC', name: 'León Castiglioni', role: 'Investigador' }
-        ]);
-        setLoadingAuthors(false);
-      }, 400);
-    } else {
-      try {
-        const { data, error } = await supabase
-          .from('miembros_equipo')
-          .select('id, initials, name, role')
-          .order('name');
-        
-        if (error) throw error;
-        setAuthors(data || []);
-      } catch (err: any) {
-        console.error("Error fetching authors:", err.message);
-        // Fallback a mock si falla la tabla
-        setAuthors([
-          { id: '1', initials: 'AP', name: 'Mg. Andrés Jorge Pascal', role: 'Docente Investigador' },
-          { id: '2', initials: 'TG', name: 'Thiago Gomez Kehler', role: 'Investigador' }
-        ]);
-      } finally {
-        setLoadingAuthors(false);
-      }
+    try {
+      const data = await getMiembrosEquipo();
+      setAuthors(data || []);
+    } catch (err: any) {
+      console.error("Error al cargar co-autores:", err);
+      setErrorMsg("Error al obtener los co-autores de la base de datos.");
+    } finally {
+      setLoadingAuthors(false);
+    }
+  };
+
+  const fetchPapers = async () => {
+    setLoadingPapers(true);
+    try {
+      const data = await getPapers();
+      setPapers(data || []);
+    } catch (err: any) {
+      console.error("Error al cargar papers:", err);
+    } finally {
+      setLoadingPapers(false);
+    }
+  };
+
+  const resetPaperForm = () => {
+    setPaperForm({
+      title: '',
+      description: '',
+      category: 'Inteligencia Artificial',
+      date: '',
+      url: '',
+      imageUrl: '',
+      paperText: ''
+    });
+    setPaperFile(null);
+    setSelectedAuthors([]);
+    setEditingPaperId(null);
+    setIsEditMode(false);
+  };
+
+  const handleEditClick = (paper: any) => {
+    playWaterDrip();
+    setIsEditMode(true);
+    setEditingPaperId(paper.id);
+    
+    // Cargar datos en el formulario
+    setPaperForm({
+      title: paper.title,
+      description: paper.description,
+      category: paper.category,
+      date: paper.date,
+      url: paper.url || '',
+      imageUrl: paper.image && !paper.image.includes('unsplash.com') ? paper.image : '',
+      paperText: ''
+    });
+    
+    // selectedAuthors de Admin.tsx necesita IDs de autores.
+    // paper.authors es un array de iniciales ['AP', 'TG'].
+    // Buscamos los autores correspondientes en nuestra lista cargada 'authors' y obtenemos sus IDs.
+    const selectedAuthorIds = (paper.authors || []).map((initials: string) => {
+      const found = authors.find(a => a.initials === initials);
+      return found ? found.id : null;
+    }).filter(Boolean) as string[];
+
+    setSelectedAuthors(selectedAuthorIds);
+
+    // Desplazar suavemente hasta el formulario
+    const formElement = document.querySelector('.admin-tab-content-container');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleDeleteClick = async (paperId: string | number) => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar este paper científico de forma permanente?')) {
+      return;
+    }
+
+    playWaterDrip();
+    try {
+      await deletePaper(paperId);
+      setSuccessMsg('¡El paper científico ha sido eliminado exitosamente!');
+      fetchPapers();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Error al eliminar el paper.');
     }
   };
 
@@ -439,7 +497,7 @@ export const Admin: React.FC = () => {
     }
   };
 
-  // Guardar Paper
+  // Guardar/Actualizar Paper
   const handleSavePaper = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!paperForm.title || !paperForm.description || !paperForm.category) {
@@ -453,64 +511,21 @@ export const Admin: React.FC = () => {
     playWaterDrip();
 
     try {
-      let finalPdfUrl = paperForm.url;
-      if (paperFile) {
-        finalPdfUrl = await uploadToStorage(paperFile, 'papers');
-      }
-
-      const formattedDate = paperForm.date || new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-
-      if (isMockMode) {
-        // Mock Save
-        console.log("Mock saved paper:", { 
-          ...paperForm, 
-          date: formattedDate, 
-          url: finalPdfUrl,
-          authors: selectedAuthors 
-        });
-        setSuccessMsg('¡Paper simulado guardado correctamente! (Modo Local).');
-        setPaperForm({ title: '', description: '', category: 'Inteligencia Artificial', date: '', url: '', imageUrl: '', paperText: '' });
-        setPaperFile(null);
-        setSelectedAuthors([]);
+      if (isEditMode && editingPaperId !== null) {
+        // Lógica de Modificación (Update)
+        await updatePaper(editingPaperId, paperForm, paperFile, selectedAuthors);
+        setSuccessMsg('¡El paper científico ha sido actualizado exitosamente!');
       } else {
-        // Real Supabase Insert
-        // 1. Insertar en tabla de papers
-        const { data: insertedPaper, error: paperError } = await supabase
-          .from('papers')
-          .insert({
-            title: paperForm.title,
-            description: paperForm.description,
-            category: paperForm.category,
-            date: formattedDate,
-            url: finalPdfUrl,
-            image_url: paperForm.imageUrl.startsWith('AI') ? null : (paperForm.imageUrl || null)
-          })
-          .select()
-          .single();
-
-        if (paperError) throw paperError;
-
-        // 2. Insertar relaciones M-M de autores en paper_authors
-        if (selectedAuthors.length > 0 && insertedPaper) {
-          const relationInserts = selectedAuthors.map(authorId => ({
-            paper_id: insertedPaper.id,
-            author_id: authorId
-          }));
-
-          const { error: authorRelError } = await supabase
-            .from('paper_authors')
-            .insert(relationInserts);
-
-          if (authorRelError) throw authorRelError;
-        }
-
-        setSuccessMsg('¡Paper académico e indexación de autores guardados con éxito!');
-        setPaperForm({ title: '', description: '', category: 'Inteligencia Artificial', date: '', url: '', imageUrl: '', paperText: '' });
-        setPaperFile(null);
-        setSelectedAuthors([]);
+        // Lógica de Creación (Alta)
+        await savePaper(paperForm, paperFile, selectedAuthors);
+        setSuccessMsg('¡El paper científico ha sido indexado y guardado exitosamente!');
       }
+
+      resetPaperForm();
+      fetchPapers();
     } catch (err: any) {
-      setErrorMsg(err.message || 'Error al guardar el paper académico.');
+      console.error(err);
+      setErrorMsg(err.message || 'Error al procesar el paper científico.');
     } finally {
       setSaving(false);
     }
@@ -902,8 +917,12 @@ export const Admin: React.FC = () => {
                       <BookOpen className="w-5 h-5 text-primary-container" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-black uppercase tracking-wider text-text-primary">Indexar Paper Científico</h3>
-                      <p className="text-text-secondary text-xs font-semibold">Agrega un artículo académico y asócialo a sus autores investigadores</p>
+                      <h3 className="text-xl font-black uppercase tracking-wider text-text-primary">
+                        {isEditMode ? "Modificar Paper Científico" : "Indexar Paper Científico"}
+                      </h3>
+                      <p className="text-text-secondary text-xs font-semibold">
+                        {isEditMode ? "Edita la información del paper seleccionado y actualiza sus co-autores" : "Agrega un artículo académico y asócialo a sus autores investigadores"}
+                      </p>
                     </div>
                   </div>
 
@@ -921,6 +940,7 @@ export const Admin: React.FC = () => {
 
                     <div className="flex flex-col gap-3">
                       <textarea 
+                        id="paper-text-ai"
                         rows={3}
                         placeholder="Pega texto del paper aquí para optimizar con IA (Ej: Título, Abstract original, o introducción)..."
                         value={paperForm.paperText}
@@ -933,6 +953,7 @@ export const Admin: React.FC = () => {
                           Requiere GIBD API Gateway levantado en local
                         </span>
                         <motion.button 
+                          id="paper-ai-btn"
                           type="button"
                           onClick={optimizeWithGemini}
                           disabled={analyzingPaper}
@@ -961,6 +982,7 @@ export const Admin: React.FC = () => {
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-black uppercase tracking-widest text-text-secondary">Título del Paper</label>
                         <input 
+                          id="paper-title"
                           type="text" 
                           placeholder="Ej: Advanced Variable Tuning and Biases..."
                           value={paperForm.title}
@@ -974,6 +996,7 @@ export const Admin: React.FC = () => {
                         <div className="flex flex-col gap-2">
                           <label className="text-xs font-black uppercase tracking-widest text-text-secondary">Categoría Científica</label>
                           <input 
+                            id="paper-category"
                             type="text" 
                             placeholder="Ej: Big Data, NLP, Metric Learning"
                             value={paperForm.category}
@@ -986,6 +1009,7 @@ export const Admin: React.FC = () => {
                         <div className="flex flex-col gap-2">
                           <label className="text-xs font-black uppercase tracking-widest text-text-secondary">Fecha y Evento</label>
                           <input 
+                            id="paper-date"
                             type="text" 
                             placeholder="Ej: Oct 2024 (ARGENCON 2024)"
                             value={paperForm.date}
@@ -1000,6 +1024,7 @@ export const Admin: React.FC = () => {
                     <div className="flex flex-col gap-2">
                       <label className="text-xs font-black uppercase tracking-widest text-text-secondary">Resumen / Descripción Ejecutiva</label>
                       <textarea 
+                        id="paper-description"
                         rows={4}
                         placeholder="Redacta el resumen que se mostrará en el catálogo web del GIBD."
                         value={paperForm.description}
@@ -1020,6 +1045,7 @@ export const Admin: React.FC = () => {
                             const isSelected = selectedAuthors.includes(author.id);
                             return (
                               <button
+                                id={`paper-author-select-${author.initials}`}
                                 type="button"
                                 key={author.id}
                                 onClick={() => toggleAuthorSelection(author.id)}
@@ -1060,6 +1086,7 @@ export const Admin: React.FC = () => {
                               <p className="text-xs font-bold text-text-primary truncate max-w-[250px]">{paperFile.name}</p>
                               <p className="text-[10px] text-text-secondary mt-1">{(paperFile.size / 1024 / 1024).toFixed(2)} MB</p>
                               <button 
+                                id="paper-file-remove"
                                 type="button" 
                                 onClick={() => setPaperFile(null)}
                                 className="text-[10px] text-[#FF3344] font-black uppercase tracking-widest mt-2 hover:underline"
@@ -1073,6 +1100,7 @@ export const Admin: React.FC = () => {
                               <label className="text-xs text-primary-container font-black uppercase tracking-widest cursor-pointer mt-1.5 hover:underline">
                                 Selecciona un archivo
                                 <input 
+                                  id="paper-file-input"
                                   type="file" 
                                   accept="application/pdf"
                                   className="hidden" 
@@ -1090,6 +1118,7 @@ export const Admin: React.FC = () => {
                         <div className="flex flex-col gap-2">
                           <label className="text-xs font-black uppercase tracking-widest text-text-secondary">O Enlace de Descarga Directa (URL)</label>
                           <input 
+                            id="paper-url"
                             type="url" 
                             placeholder="https://ejemplo.com/paper.pdf"
                             value={paperForm.url}
@@ -1102,6 +1131,7 @@ export const Admin: React.FC = () => {
                         <div className="flex flex-col gap-2">
                           <label className="text-xs font-black uppercase tracking-widest text-text-secondary">Dirección URL de Imagen de Portada (Opcional)</label>
                           <input 
+                            id="paper-image-url"
                             type="text" 
                             placeholder="Sugerido por IA o enlace directo..."
                             value={paperForm.imageUrl}
@@ -1112,8 +1142,19 @@ export const Admin: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-end mt-4">
+                    <div className="flex justify-end gap-4 mt-4">
+                      {isEditMode && (
+                        <button
+                          id="paper-cancel-btn"
+                          type="button"
+                          onClick={resetPaperForm}
+                          className="bg-[#1A1124] border border-border-organic hover:border-primary-container text-text-primary px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all"
+                        >
+                          Cancelar Edición
+                        </button>
+                      )}
                       <motion.button 
+                        id="paper-submit-btn"
                         type="submit"
                         disabled={saving}
                         whileHover={{ scale: 1.02 }}
@@ -1128,12 +1169,80 @@ export const Admin: React.FC = () => {
                         ) : (
                           <>
                             <FileUp className="w-4 h-4" />
-                            Indexar e Inserter Paper
+                            {isEditMode ? "Actualizar Paper" : "Indexar e Insertar Paper"}
                           </>
                         )}
                       </motion.button>
                     </div>
                   </form>
+
+                  {/* Listado de Papers Registrados (CRUD) */}
+                  <div className="border-t border-border-organic/40 pt-8 mt-4">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 bg-primary-container/10 border border-primary-container/20 rounded-full flex items-center justify-center">
+                        <Database className="w-5 h-5 text-primary-container" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-black uppercase tracking-wider text-text-primary">Papers Registrados ({papers.length})</h3>
+                        <p className="text-text-secondary text-xs font-semibold">Modifica o elimina los papers cargados en el sistema</p>
+                      </div>
+                    </div>
+
+                    {loadingPapers ? (
+                      <div className="py-8 text-center text-xs text-text-secondary font-semibold animate-pulse">
+                        Cargando catálogo de papers...
+                      </div>
+                    ) : papers.length === 0 ? (
+                      <div className="py-8 text-center text-xs text-text-secondary font-semibold border border-border-organic border-dashed rounded-[1.5rem] bg-[#050208] text-text-secondary/50">
+                        No hay papers registrados todavía.
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-4">
+                        {papers.map((paper) => (
+                          <div 
+                            key={paper.id} 
+                            className="bg-[#050208] border border-border-organic hover:border-primary-container/30 rounded-[1.5rem] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                                <span className="bg-primary-container/10 border border-primary-container/20 text-primary-container px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider">
+                                  {paper.category}
+                                </span>
+                                <span className="text-text-secondary text-[10px] font-medium">
+                                  {paper.date}
+                                </span>
+                              </div>
+                              <h4 className="font-bold text-text-primary text-sm md:text-base leading-snug truncate">
+                                {paper.title}
+                              </h4>
+                              <p className="text-xs text-text-secondary mt-1 font-medium">
+                                Co-autores: {paper.authors && paper.authors.length > 0 ? paper.authors.join(', ') : 'Ninguno'}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-3.5 shrink-0 self-end sm:self-auto">
+                              <button 
+                                id={`edit-paper-${paper.id}`}
+                                type="button"
+                                onClick={() => handleEditClick(paper)}
+                                className="bg-[#1A1124] border border-border-organic hover:border-primary-container text-text-primary hover:text-primary-container px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all"
+                              >
+                                Editar
+                              </button>
+                              <button 
+                                id={`delete-paper-${paper.id}`}
+                                type="button"
+                                onClick={() => handleDeleteClick(paper.id)}
+                                className="bg-[#0A0A0A] border border-border-organic hover:border-[#FF3344] text-text-secondary hover:text-[#FF8899] px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all"
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               )}
 
