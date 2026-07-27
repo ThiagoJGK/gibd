@@ -1,28 +1,34 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Brain, Calendar, FileText, Globe, Microscope, Network, Radio, Scale, Sparkles, Target, Zap } from 'lucide-react';
+import { BookOpen, Brain, Calendar, FileText, Globe, Microscope, Network, Radio, Scale, Sparkles, Target, Zap, RefreshCw } from 'lucide-react';
 import { LogoUTN } from '../components/ui/LogoUTN';
 import { ThreeDLogoUTN } from '../components/ui/ThreeDLogoUTN';
-
-const NEWS_ITEMS = [
-  {
-    date: 'Nov 2024',
-    title: 'Presentación en CoNaIISI 2024 de la investigación en Recuperación de Información de Reglamentación Académica en Español utilizando NLP.',
-    tag: 'Publicación'
-  },
-  {
-    date: 'Oct 2024',
-    title: 'Aceptación y publicación en ARGENCON 2024 del paper "Advanced Variable Tuning and Biases in Chatbot Models: Analysis of the PTAH Prototype".',
-    tag: 'Investigación'
-  },
-  {
-    date: 'Oct 2024',
-    title: 'Exposición en CACIC 2024: "Image Feature Extraction for Similarity Searching Using Transfer Learning with ResNet".',
-    tag: 'Conferencia'
-  }
-];
+import { getNoticias } from '../utils/dbService';
 
 export function Landing() {
   const navigate = useNavigate();
+  const [newsItems, setNewsItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let active = true;
+    getNoticias()
+      .then((data) => {
+        if (active) {
+          setNewsItems(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error('Error loading news:', err);
+        if (active) {
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <div className="relative pt-24 md:pt-16 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
@@ -65,7 +71,7 @@ export function Landing() {
           </div>
         </div>
       </section>
-
+ 
       {/* 2. Panel de Métricas */}
       <section className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
         <div className="card-glass-purple rounded-[2rem] p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-[1.02] hover:border-primary-container/30 hover:shadow-[0_8px_32px_rgba(255,85,0,0.06)]">
@@ -90,7 +96,7 @@ export function Landing() {
           <p className="text-text-secondary font-semibold uppercase tracking-wider text-sm">Open Access</p>
         </div>
       </section>
-
+ 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
         {/* 3. Misión Institucional */}
         <section className="lg:col-span-5 card-glass-purple rounded-[3rem] p-10 md:p-12 relative overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-primary-container/20">
@@ -107,7 +113,7 @@ export function Landing() {
             Nuestro foco está en resolver problemas reales y locales. Desde sistemas de visión computacional para el reconocimiento de marcas de ganado en entornos rurales de baja conectividad, hasta el procesamiento de lenguaje natural para la indexación semántica jurídica. Buscamos democratizar el acceso a la tecnología avanzada a través de la investigación académica colaborativa.
           </p>
         </section>
-
+ 
         {/* 4. Últimas Novedades */}
         <section className="lg:col-span-7 card-glass-purple rounded-[3rem] p-10 md:p-12 flex flex-col transition-all duration-300 hover:border-primary-container/20">
           <h2 className="text-3xl font-bold mb-8 text-text-primary flex items-center gap-3">
@@ -116,28 +122,59 @@ export function Landing() {
           </h2>
           
           <div className="flex flex-col gap-6 flex-1">
-            {NEWS_ITEMS.map((item, index) => (
-              <article key={index} className="flex gap-6 group">
-                <div className="hidden md:flex flex-col items-center">
-                  <div className="w-3 h-3 bg-primary-container rounded-full mt-2 group-hover:scale-150 transition-transform shadow-[0_0_10px_#FF5500]"></div>
-                  {index !== NEWS_ITEMS.length - 1 && <div className="w-0.5 h-full bg-border-organic mt-2"></div>}
-                </div>
-                <div className="flex-1 bg-background-base p-6 rounded-[1.5rem] border border-border-organic group-hover:border-primary-container/50 transition-colors">
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <span className="text-primary-container font-bold text-xs uppercase tracking-wider bg-primary-container/10 px-3 py-1 rounded-full">
-                      {item.tag}
-                    </span>
-                    <span className="text-text-secondary text-sm font-semibold flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {item.date}
-                    </span>
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-12 text-text-secondary gap-3">
+                <RefreshCw className="w-8 h-8 text-primary-container animate-spin" />
+                <span className="text-xs font-bold uppercase tracking-wider">Cargando novedades...</span>
+              </div>
+            ) : newsItems.length === 0 ? (
+              <div className="text-center py-12 text-text-secondary font-medium">
+                No hay novedades publicadas por el momento.
+              </div>
+            ) : (
+              newsItems.map((item, index) => (
+                <article key={item.id || index} className="flex gap-6 group">
+                  <div className="hidden md:flex flex-col items-center">
+                    <div className="w-3 h-3 bg-primary-container rounded-full mt-2 group-hover:scale-150 transition-transform shadow-[0_0_10px_#FF5500]"></div>
+                    {index !== newsItems.length - 1 && <div className="w-0.5 h-full bg-border-organic mt-2"></div>}
                   </div>
-                  <h3 className="text-lg font-bold text-text-primary leading-snug">
-                    {item.title}
-                  </h3>
-                </div>
-              </article>
-            ))}
+                  <div className="flex-1 bg-background-base p-6 rounded-[1.5rem] border border-border-organic group-hover:border-primary-container/50 transition-colors flex flex-col md:flex-row gap-6 items-start">
+                    {item.image_url && (
+                      <div className="w-full md:w-32 h-32 shrink-0 rounded-[1rem] overflow-hidden border border-border-organic bg-surface-deep">
+                        <img 
+                          src={item.image_url} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            // Si la imagen falla en modo local/mock, ocultar el contenedor
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-3 mb-3">
+                        <span className="text-primary-container font-bold text-xs uppercase tracking-wider bg-primary-container/10 px-3 py-1 rounded-full">
+                          {item.tag}
+                        </span>
+                        <span className="text-text-secondary text-sm font-semibold flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {item.date}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-text-primary leading-snug">
+                        {item.title}
+                      </h3>
+                      {item.content && (
+                        <p className="text-text-secondary text-sm leading-relaxed mt-2.5 font-medium">
+                          {item.content}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))
+            )}
           </div>
         </section>
       </div>

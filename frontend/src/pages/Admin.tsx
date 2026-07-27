@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../utils/supabaseClient';
 import { playWaterDrip, playRubberSnap } from '../utils/audio';
+import { saveNoticia } from '../utils/dbService';
 import './Admin.css';
 
 // Interfaces de datos
@@ -401,37 +402,13 @@ export const Admin: React.FC = () => {
     playWaterDrip();
 
     try {
-      let finalImageUrl = noticiaForm.imageUrl;
-      if (noticiaFile) {
-        finalImageUrl = await uploadToStorage(noticiaFile, 'noticias');
-      }
-
-      const formattedDate = noticiaForm.date || new Date().toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
-
-      if (isMockMode) {
-        // Mock Save
-        console.log("Mock saved news:", { ...noticiaForm, date: formattedDate, image_url: finalImageUrl });
-        setSuccessMsg('¡Noticia simulada creada correctamente! (Modo Local).');
-        // Reset
-        setNoticiaForm({ title: '', content: '', tag: 'Novedad', date: '', imageUrl: '' });
-        setNoticiaFile(null);
-      } else {
-        // Real Supabase Insert
-        const { error } = await supabase
-          .from('noticias')
-          .insert({
-            title: noticiaForm.title,
-            content: noticiaForm.content,
-            tag: noticiaForm.tag,
-            date: formattedDate,
-            image_url: finalImageUrl || null
-          });
-
-        if (error) throw error;
-        setSuccessMsg('¡Noticia publicada exitosamente en la base de datos de Supabase!');
-        setNoticiaForm({ title: '', content: '', tag: 'Novedad', date: '', imageUrl: '' });
-        setNoticiaFile(null);
-      }
+      await saveNoticia(noticiaForm, noticiaFile);
+      setSuccessMsg(isMockMode 
+        ? '¡Noticia simulada creada correctamente! (Modo Local).' 
+        : '¡Noticia publicada exitosamente en la base de datos de Supabase!'
+      );
+      setNoticiaForm({ title: '', content: '', tag: 'Novedad', date: '', imageUrl: '' });
+      setNoticiaFile(null);
     } catch (err: any) {
       setErrorMsg(err.message || 'Error al guardar la noticia.');
     } finally {
