@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { InteractiveBackground } from './components/ui/InteractiveBackground';
 import { BottomNav } from './components/layout/BottomNav';
 import { Header } from './components/layout/Header';

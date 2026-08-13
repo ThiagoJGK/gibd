@@ -99,16 +99,17 @@ export const Admin: React.FC = () => {
       setAuthLoading(false);
     } else {
       // Live Supabase Mode
-      supabase.auth.getSession().then(({ data: { session } }) => {
+      supabase.auth.getSession().then((response: any) => {
+        const { session } = response?.data ?? {};
         setSession(session);
         setAuthLoading(false);
-      }).catch((err) => {
+      }).catch((err: any) => {
         console.error("Error fetching session, falling back to mock mode:", err);
         setIsMockMode(true);
         setAuthLoading(false);
       });
 
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
         setSession(session);
       });
 
