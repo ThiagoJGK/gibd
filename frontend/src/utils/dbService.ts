@@ -1,10 +1,7 @@
-import { supabase } from './supabaseClient';
+import { supabase, hasSupabaseConfig } from './supabaseClient';
 
 // Helper para determinar si se debe correr en modo Mock (Desarrollo Local sin conexión)
-const checkIfMock = (): boolean => {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  return !url || url === '' || url === 'YOUR_SUPABASE_URL' || url.includes('placeholder-project');
-};
+const checkIfMock = (): boolean => !hasSupabaseConfig;
 
 // ==========================================
 // MOCK DATA (SEMILLAS DE RESPALDO LOCAL)

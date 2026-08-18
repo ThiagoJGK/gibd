@@ -3,11 +3,15 @@ import { createClient } from '@supabase/supabase-js';
 // Cargar variables de entorno configuradas en .env.local (o inyectadas por Vercel/Hosting)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const hasSupabaseConfig = Boolean(
+
+export const hasSupabaseConfig = Boolean(
   supabaseUrl &&
   supabaseAnonKey &&
   supabaseUrl !== 'YOUR_SUPABASE_URL' &&
-  !supabaseUrl.includes('placeholder-project')
+  !supabaseUrl.includes('placeholder-project') &&
+  !supabaseUrl.includes('tu-proyecto') &&
+  !supabaseAnonKey.includes('tu-clave') &&
+  !supabaseAnonKey.includes('placeholder')
 );
 
 const mockSupabaseClient = {
