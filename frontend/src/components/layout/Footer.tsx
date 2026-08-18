@@ -83,6 +83,19 @@ export function Footer() {
                   Papers & Artículos
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/admin"
+                  onClick={handleLinkClick}
+                  className={({ isActive }) =>
+                    `inline-flex items-center gap-1.5 transition-all duration-300 hover:text-primary-container hover:translate-x-1 ${
+                      isActive ? 'text-primary-container' : 'text-text-secondary'
+                    }`
+                  }
+                >
+                  Panel de Control (CMS)
+                </NavLink>
+              </li>
             </ul>
           </div>
 

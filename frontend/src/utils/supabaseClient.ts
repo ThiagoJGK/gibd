@@ -6,7 +6,8 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 const hasSupabaseConfig = Boolean(
   supabaseUrl &&
   supabaseAnonKey &&
-  supabaseUrl !== 'YOUR_SUPABASE_URL'
+  supabaseUrl !== 'YOUR_SUPABASE_URL' &&
+  !supabaseUrl.includes('placeholder-project')
 );
 
 const mockSupabaseClient = {

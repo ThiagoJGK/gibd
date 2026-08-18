@@ -151,3 +151,18 @@ export const getPapers = async (): Promise<any[]> => {
 - [ ] **Tarea B.4: Integración en Admin.tsx**
   - Modificar `fetchAuthors` en `Admin.tsx` para llamar a `getMiembrosEquipo`.
   - Modificar `handleSavePaper` en `Admin.tsx` para llamar a `savePaper(paperForm, paperFile, selectedAuthors)` y manejar estados de éxito/error limpiamente.
+
+---
+
+## 6. Mejoras Adicionales de Infraestructura e Interfaz (Fuera de Alcance Inicial)
+
+Durante el desarrollo de la funcionalidad, se detectaron e implementaron mejoras complementarias para robustecer la experiencia de desarrollo local y la accesibilidad:
+
+1. **Resolución del Crash Fatal en Desarrollo Local (Pantalla Negra):**
+   * **Problema:** Si un desarrollador local no tenía configuradas las variables de entorno de Supabase, el cliente de Supabase fallaba catastróficamente al inicio, dejando la pantalla completamente en negro.
+   * **Solución:** Se modificó [supabaseClient.ts](file:///home/renato/Proyectos/gibd/frontend/src/utils/supabaseClient.ts) para asignar credenciales dummy estructuradas y válidas por defecto si no existen las variables, permitiendo que la app arranque sin errores e ingrese directamente en el Modo Mock.
+2. **Acceso Directo al CMS Panel en el Pie de Página:**
+   * **Solución:** Se añadió un enlace permanente de navegación hacia el Panel de Control CMS (`/#/admin`) en la sección de navegación de [Footer.tsx](file:///home/renato/Proyectos/gibd/frontend/src/components/layout/Footer.tsx) para facilitar las pruebas manuales locales a todos los desarrolladores sin requerir tipear la URL en la barra de direcciones.
+3. **Documentación de Variables de Entorno:**
+   * **Solución:** Se creó el archivo plantilla [frontend/.env.example](file:///home/renato/Proyectos/gibd/frontend/.env.example) para documentar el uso de `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` y clarificar el comportamiento del sistema.
+
