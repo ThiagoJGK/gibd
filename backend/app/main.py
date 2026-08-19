@@ -1,11 +1,15 @@
 import os
 import json
 import re
-from fastapi import FastAPI, HTTPException
+import time
+from fastapi import FastAPI, HTTPException, UploadFile, File, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import google.generativeai as genai
 from dotenv import load_dotenv
+
+# Importar el servicio de inferencia siamés
+from app.services.siamese_engine import process_brand_inference
 
 # Cargar variables de entorno
 load_dotenv()
@@ -51,7 +55,6 @@ async def health_check():
 @app.post("/api/v1/ai/analyze-paper", response_model=PaperAnalysisResponse, tags=["Inteligencia Artificial"])
 async def analyze_paper(request: PaperAnalysisRequest):
     if not gemini_key:
-        # En caso de no tener API Key configurada localmente, proveemos un mock funcional de respaldo
         return PaperAnalysisResponse(
             abstract=(
                 "Este artículo de investigación presenta un análisis del estado del arte en la aplicación "
@@ -62,7 +65,6 @@ async def analyze_paper(request: PaperAnalysisRequest):
         )
     
     try:
-        # Configurar el modelo rápido y ligero
         model = genai.GenerativeModel("gemini-1.5-flash")
         
         prompt = f"""
@@ -81,7 +83,6 @@ Debes responder ÚNICAMENTE con un objeto JSON válido que contenga exactamente 
 }}
         """
         
-        # Generar contenido usando JSON mode si es posible o forzando la respuesta estructurada
         response = model.generate_content(
             prompt,
             generation_config={"response_mime_type": "application/json"}
@@ -89,7 +90,6 @@ Debes responder ÚNICAMENTE con un objeto JSON válido que contenga exactamente 
         
         raw_text = response.text.strip()
         
-        # Limpiar posibles bloques de código marcados si Gemini los incluye
         clean_json_match = re.search(r'\{.*\}', raw_text, re.DOTALL)
         if clean_json_match:
             raw_text = clean_json_match.group(0)
@@ -110,6 +110,54 @@ Debes responder ÚNICAMENTE con un objeto JSON válido que contenga exactamente 
         raise HTTPException(
             status_code=500,
             detail=f"Error interno durante la inferencia de Gemini: {str(e)}"
+        )
+
+# Tarea 1.1.2: Endpoint POST de Inferencia de Marcas de Ganado
+@app.post("/api/v1/inference/siamese-brands", tags=["Laboratorio de IA"])
+async def siamese_brands_inference(
+    file: UploadFile = File(...),
+    top_k: int = Query(default=10, ge=1)
+):
+    """
+    Recibe una imagen de marca de ganado (multipart/form-data) y realiza la consulta
+    de similitud con redes siamesas simuladas en base a las marcas registradas.
+    """
+    # Validar formato de archivo básico
+    content_type = file.content_type or ""
+    if not (content_type.startswith("image/") or file.filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))):
+        raise HTTPException(
+            status_code=400,
+            detail="El archivo proporcionado debe ser una imagen válida (PNG, JPG, JPEG o WEBP)."
+        )
+        
+    start_time = time.time()
+    try:
+        # Leer los bytes de la imagen subida
+        image_bytes = await file.read()
+        
+        # Ejecutar la simulación del módulo siamés
+        inference_results = process_brand_inference(image_bytes=image_bytes, top_k=top_k)
+        
+        elapsed_time_ms = (time.time() - start_time) * 1000.0
+        
+        # Loguear tiempo de procesamiento de forma limpia en consola
+        print(f"[Inference] Procesamiento de '{file.filename}' completado con éxito en {elapsed_time_ms:.2f} ms. "
+              f"Resultados retornados: {len(inference_results)} (Top-K: {top_k}).")
+        
+        return {
+            "status": "success",
+            "query_info": {
+                "filename": file.filename,
+                "top_k": top_k,
+                "inference_time_ms": round(elapsed_time_ms, 2)
+            },
+            "results": inference_results
+        }
+    except Exception as e:
+        print(f"[Inference Error] Excepción al realizar la inferencia siamesa: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error interno del servidor durante la inferencia siamesa: {str(e)}"
         )
 
 # Para ejecutar localmente: uvicorn app.main:app --reload
