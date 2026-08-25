@@ -35,7 +35,7 @@ main (producción - despliega automáticamente en Vercel)
 | `feature/obsidian-vault` | ✅ Ya fue mergeada a `main` | Se puede eliminar. Ya cumplió su función. |
 | `feature/noticias` | ✅ Ya fue mergeada | Se puede eliminar. El trabajo de Emmanuel ya está en `main`. |
 | `feature/papers` | ✅ Ya fue mergeado | Se puede eliminar. El trabajo de Renato ya está en `main`. |
-| `dev` | 🆕 **Crear nueva** | Rama de integración para la Fase 1. |
+| `dev` | ✅ Creada e inicializada por Thiago | Rama de integración activa para la Fase 1. |
 
 ---
 
@@ -78,14 +78,9 @@ git checkout -b feature/fase1-laboratorio
 
 ## 3. Flujo Paso a Paso
 
-### Paso 1: Crear la rama `dev` (solo la primera vez)
-```powershell
-git checkout main
-git pull origin main
-git checkout -b dev
-git push origin dev
-```
-**¿Quién lo hace?** Thiago (Tech Lead), una sola vez.
+### Paso 1: Crear la rama `dev` (solo la primera vez) - [✓ COMPLETADO POR THIAGO]
+
+La rama `dev` ya ha sido creada a partir de `main` e inicializada en el repositorio remoto (`origin/dev`). Ningún otro integrante necesita realizar este paso.
 
 ### Paso 2: Cada desarrollador crea su rama feature desde `dev`
 ```powershell
@@ -187,16 +182,9 @@ chore(deps): update supabase-js to v2.48
 
 ---
 
-## 7. ¿Qué hacer con las ramas viejas?
+## 7. ¿Qué hacer con las ramas viejas? - [✓ COMPLETADO POR THIAGO]
 
-Las ramas `feature/noticias`, `feature/papers` y `feature/obsidian-vault` ya fueron integradas a `main` exitosamente. **Se pueden eliminar** para mantener el repositorio limpio:
-
-```powershell
-# Eliminar ramas remotas viejas (lo hace Thiago):
-git push origin --delete feature/noticias
-git push origin --delete feature/papers
-git push origin --delete feature/obsidian-vault
-```
+Las ramas remotas y locales `feature/noticias`, `feature/papers` y `feature/obsidian-vault` **ya han sido eliminadas** por Thiago para mantener el repositorio limpio. Ningún desarrollador tiene que realizar acciones sobre ellas.
 
 ---
 
