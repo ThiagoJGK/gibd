@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RibbonSelector } from '../components/ui/RibbonSelector';
+import { PythonAppWrapper } from '../components/PythonAppWrapper';
 
 const MEDIA_CONFIG = [
   { id: 'Imagen', angle: -35, width: 110 },
@@ -178,6 +179,7 @@ const playGearTick = () => {
 export function Laboratorio() {
   const [activeMediaType, setActiveMediaType] = useState<MediaType>('Imagen');
   const [activeModel, setActiveModel] = useState<string>(MODELS_BY_MEDIA['Imagen'][0]);
+  const [pythonTestUrl, setPythonTestUrl] = useState('http://localhost:8010');
   
   const handleMediaTypeChange = (media: MediaType) => {
     setActiveMediaType(media);
@@ -769,6 +771,39 @@ export function Laboratorio() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <section className="mt-16 w-full border-t border-border-flat pt-10">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary-container">
+              Prueba de integración
+            </p>
+            <h2 className="text-2xl font-bold text-text-primary">Aplicación Python embebida</h2>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setPythonTestUrl('http://localhost:8010')}
+              className={`rounded-full border px-4 py-2 text-sm font-bold transition-colors ${pythonTestUrl === 'http://localhost:8010' ? 'border-primary-container bg-primary-container text-white' : 'border-border-flat text-text-secondary hover:border-primary-container hover:text-text-primary'}`}
+            >
+              URL válida
+            </button>
+            <button
+              type="button"
+              onClick={() => setPythonTestUrl('http://localhost:9999')}
+              className={`rounded-full border px-4 py-2 text-sm font-bold transition-colors ${pythonTestUrl === 'http://localhost:9999' ? 'border-primary-container bg-primary-container text-white' : 'border-border-flat text-text-secondary hover:border-primary-container hover:text-text-primary'}`}
+            >
+              URL caída
+            </button>
+          </div>
+        </div>
+        <PythonAppWrapper
+          key={pythonTestUrl}
+          appUrl={pythonTestUrl}
+          title="Motor de IA de Patentes"
+          onLoad={() => console.info('Aplicación Python cargada')}
+        />
+      </section>
     </div>
   );
 }
