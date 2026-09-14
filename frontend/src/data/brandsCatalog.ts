@@ -1,0 +1,734 @@
+export interface BrandItem {
+  id: string;
+  brand_code: string;
+  name: string;
+  filename: string;
+  image_url: string;
+  jurisdiction: string;
+  description: string;
+  similarity_score?: number;
+  distance?: number;
+}
+
+export const BRANDS_CATALOG: BrandItem[] = [
+  {
+    "id": "brand_1",
+    "brand_code": "1",
+    "name": "Marca Registrada #1",
+    "filename": "1.png",
+    "image_url": "/brands/1.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_102462",
+    "brand_code": "102462",
+    "name": "Marca Registrada #102462",
+    "filename": "102462.png",
+    "image_url": "/brands/102462.png",
+    "jurisdiction": "Entre Ríos - Dpto. Gualeguaychú",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_102474",
+    "brand_code": "102474",
+    "name": "Marca Registrada #102474",
+    "filename": "102474.png",
+    "image_url": "/brands/102474.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_102476",
+    "brand_code": "102476",
+    "name": "Marca Registrada #102476",
+    "filename": "102476.png",
+    "image_url": "/brands/102476.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_102852",
+    "brand_code": "102852",
+    "name": "Marca Registrada #102852",
+    "filename": "102852.png",
+    "image_url": "/brands/102852.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_103285",
+    "brand_code": "103285",
+    "name": "Marca Registrada #103285",
+    "filename": "103285.png",
+    "image_url": "/brands/103285.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_103287",
+    "brand_code": "103287",
+    "name": "Marca Registrada #103287",
+    "filename": "103287.png",
+    "image_url": "/brands/103287.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_108510",
+    "brand_code": "108510",
+    "name": "Marca Registrada #108510",
+    "filename": "108510.png",
+    "image_url": "/brands/108510.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1099",
+    "brand_code": "1099",
+    "name": "Marca Registrada #1099",
+    "filename": "1099.png",
+    "image_url": "/brands/1099.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1100",
+    "brand_code": "1100",
+    "name": "Marca Registrada #1100",
+    "filename": "1100.png",
+    "image_url": "/brands/1100.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1111",
+    "brand_code": "1111",
+    "name": "Marca Registrada #1111",
+    "filename": "1111.png",
+    "image_url": "/brands/1111.png",
+    "jurisdiction": "Entre Ríos - Dpto. Gualeguaychú",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1114",
+    "brand_code": "1114",
+    "name": "Marca Registrada #1114",
+    "filename": "1114.png",
+    "image_url": "/brands/1114.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1126",
+    "brand_code": "1126",
+    "name": "Marca Registrada #1126",
+    "filename": "1126.png",
+    "image_url": "/brands/1126.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1129",
+    "brand_code": "1129",
+    "name": "Marca Registrada #1129",
+    "filename": "1129.png",
+    "image_url": "/brands/1129.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1132",
+    "brand_code": "1132",
+    "name": "Marca Registrada #1132",
+    "filename": "1132.png",
+    "image_url": "/brands/1132.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1135",
+    "brand_code": "1135",
+    "name": "Marca Registrada #1135",
+    "filename": "1135.png",
+    "image_url": "/brands/1135.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1139",
+    "brand_code": "1139",
+    "name": "Marca Registrada #1139",
+    "filename": "1139.png",
+    "image_url": "/brands/1139.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1150",
+    "brand_code": "1150",
+    "name": "Marca Registrada #1150",
+    "filename": "1150.png",
+    "image_url": "/brands/1150.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1167",
+    "brand_code": "1167",
+    "name": "Marca Registrada #1167",
+    "filename": "1167.png",
+    "image_url": "/brands/1167.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1173",
+    "brand_code": "1173",
+    "name": "Marca Registrada #1173",
+    "filename": "1173.png",
+    "image_url": "/brands/1173.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1174",
+    "brand_code": "1174",
+    "name": "Marca Registrada #1174",
+    "filename": "1174.png",
+    "image_url": "/brands/1174.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1178",
+    "brand_code": "1178",
+    "name": "Marca Registrada #1178",
+    "filename": "1178.png",
+    "image_url": "/brands/1178.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1179",
+    "brand_code": "1179",
+    "name": "Marca Registrada #1179",
+    "filename": "1179.png",
+    "image_url": "/brands/1179.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_121206",
+    "brand_code": "121206",
+    "name": "Marca Registrada #121206",
+    "filename": "121206.png",
+    "image_url": "/brands/121206.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1253",
+    "brand_code": "1253",
+    "name": "Marca Registrada #1253",
+    "filename": "1253.png",
+    "image_url": "/brands/1253.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1664",
+    "brand_code": "1664",
+    "name": "Marca Registrada #1664",
+    "filename": "1664.png",
+    "image_url": "/brands/1664.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1668",
+    "brand_code": "1668",
+    "name": "Marca Registrada #1668",
+    "filename": "1668.png",
+    "image_url": "/brands/1668.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1687",
+    "brand_code": "1687",
+    "name": "Marca Registrada #1687",
+    "filename": "1687.png",
+    "image_url": "/brands/1687.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1707",
+    "brand_code": "1707",
+    "name": "Marca Registrada #1707",
+    "filename": "1707.png",
+    "image_url": "/brands/1707.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1710",
+    "brand_code": "1710",
+    "name": "Marca Registrada #1710",
+    "filename": "1710.png",
+    "image_url": "/brands/1710.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1714",
+    "brand_code": "1714",
+    "name": "Marca Registrada #1714",
+    "filename": "1714.png",
+    "image_url": "/brands/1714.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1717",
+    "brand_code": "1717",
+    "name": "Marca Registrada #1717",
+    "filename": "1717.png",
+    "image_url": "/brands/1717.png",
+    "jurisdiction": "Entre Ríos - Dpto. Gualeguaychú",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1724",
+    "brand_code": "1724",
+    "name": "Marca Registrada #1724",
+    "filename": "1724.png",
+    "image_url": "/brands/1724.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1733",
+    "brand_code": "1733",
+    "name": "Marca Registrada #1733",
+    "filename": "1733.png",
+    "image_url": "/brands/1733.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1737",
+    "brand_code": "1737",
+    "name": "Marca Registrada #1737",
+    "filename": "1737.png",
+    "image_url": "/brands/1737.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1742",
+    "brand_code": "1742",
+    "name": "Marca Registrada #1742",
+    "filename": "1742.png",
+    "image_url": "/brands/1742.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1749",
+    "brand_code": "1749",
+    "name": "Marca Registrada #1749",
+    "filename": "1749.png",
+    "image_url": "/brands/1749.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1775",
+    "brand_code": "1775",
+    "name": "Marca Registrada #1775",
+    "filename": "1775.png",
+    "image_url": "/brands/1775.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1777",
+    "brand_code": "1777",
+    "name": "Marca Registrada #1777",
+    "filename": "1777.png",
+    "image_url": "/brands/1777.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1885",
+    "brand_code": "1885",
+    "name": "Marca Registrada #1885",
+    "filename": "1885.png",
+    "image_url": "/brands/1885.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1916",
+    "brand_code": "1916",
+    "name": "Marca Registrada #1916",
+    "filename": "1916.png",
+    "image_url": "/brands/1916.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1919",
+    "brand_code": "1919",
+    "name": "Marca Registrada #1919",
+    "filename": "1919.png",
+    "image_url": "/brands/1919.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1922",
+    "brand_code": "1922",
+    "name": "Marca Registrada #1922",
+    "filename": "1922.png",
+    "image_url": "/brands/1922.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1923",
+    "brand_code": "1923",
+    "name": "Marca Registrada #1923",
+    "filename": "1923.png",
+    "image_url": "/brands/1923.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1924",
+    "brand_code": "1924",
+    "name": "Marca Registrada #1924",
+    "filename": "1924.png",
+    "image_url": "/brands/1924.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1926",
+    "brand_code": "1926",
+    "name": "Marca Registrada #1926",
+    "filename": "1926.png",
+    "image_url": "/brands/1926.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_1992",
+    "brand_code": "1992",
+    "name": "Marca Registrada #1992",
+    "filename": "1992.png",
+    "image_url": "/brands/1992.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_2097",
+    "brand_code": "2097",
+    "name": "Marca Registrada #2097",
+    "filename": "2097.png",
+    "image_url": "/brands/2097.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_2238",
+    "brand_code": "2238",
+    "name": "Marca Registrada #2238",
+    "filename": "2238.png",
+    "image_url": "/brands/2238.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_602",
+    "brand_code": "602",
+    "name": "Marca Registrada #602",
+    "filename": "602.png",
+    "image_url": "/brands/602.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_603",
+    "brand_code": "603",
+    "name": "Marca Registrada #603",
+    "filename": "603.png",
+    "image_url": "/brands/603.png",
+    "jurisdiction": "Entre Ríos - Dpto. Gualeguaychú",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_617",
+    "brand_code": "617",
+    "name": "Marca Registrada #617",
+    "filename": "617.png",
+    "image_url": "/brands/617.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_622",
+    "brand_code": "622",
+    "name": "Marca Registrada #622",
+    "filename": "622.png",
+    "image_url": "/brands/622.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_630",
+    "brand_code": "630",
+    "name": "Marca Registrada #630",
+    "filename": "630.png",
+    "image_url": "/brands/630.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_642",
+    "brand_code": "642",
+    "name": "Marca Registrada #642",
+    "filename": "642.png",
+    "image_url": "/brands/642.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_676",
+    "brand_code": "676",
+    "name": "Marca Registrada #676",
+    "filename": "676.png",
+    "image_url": "/brands/676.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_679",
+    "brand_code": "679",
+    "name": "Marca Registrada #679",
+    "filename": "679.png",
+    "image_url": "/brands/679.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_680",
+    "brand_code": "680",
+    "name": "Marca Registrada #680",
+    "filename": "680.png",
+    "image_url": "/brands/680.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_691",
+    "brand_code": "691",
+    "name": "Marca Registrada #691",
+    "filename": "691.png",
+    "image_url": "/brands/691.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_713",
+    "brand_code": "713",
+    "name": "Marca Registrada #713",
+    "filename": "713.png",
+    "image_url": "/brands/713.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_728",
+    "brand_code": "728",
+    "name": "Marca Registrada #728",
+    "filename": "728.png",
+    "image_url": "/brands/728.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_732",
+    "brand_code": "732",
+    "name": "Marca Registrada #732",
+    "filename": "732.png",
+    "image_url": "/brands/732.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_735",
+    "brand_code": "735",
+    "name": "Marca Registrada #735",
+    "filename": "735.png",
+    "image_url": "/brands/735.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_78",
+    "brand_code": "78",
+    "name": "Marca Registrada #78",
+    "filename": "78.png",
+    "image_url": "/brands/78.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_82",
+    "brand_code": "82",
+    "name": "Marca Registrada #82",
+    "filename": "82.png",
+    "image_url": "/brands/82.png",
+    "jurisdiction": "Entre Ríos - Dpto. Colón",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_858",
+    "brand_code": "858",
+    "name": "Marca Registrada #858",
+    "filename": "858.png",
+    "image_url": "/brands/858.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_862",
+    "brand_code": "862",
+    "name": "Marca Registrada #862",
+    "filename": "862.png",
+    "image_url": "/brands/862.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_865",
+    "brand_code": "865",
+    "name": "Marca Registrada #865",
+    "filename": "865.png",
+    "image_url": "/brands/865.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_868",
+    "brand_code": "868",
+    "name": "Marca Registrada #868",
+    "filename": "868.png",
+    "image_url": "/brands/868.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_87",
+    "brand_code": "87",
+    "name": "Marca Registrada #87",
+    "filename": "87.png",
+    "image_url": "/brands/87.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_89",
+    "brand_code": "89",
+    "name": "Marca Registrada #89",
+    "filename": "89.png",
+    "image_url": "/brands/89.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_907",
+    "brand_code": "907",
+    "name": "Marca Registrada #907",
+    "filename": "907.png",
+    "image_url": "/brands/907.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_908",
+    "brand_code": "908",
+    "name": "Marca Registrada #908",
+    "filename": "908.png",
+    "image_url": "/brands/908.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_918",
+    "brand_code": "918",
+    "name": "Marca Registrada #918",
+    "filename": "918.png",
+    "image_url": "/brands/918.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_920",
+    "brand_code": "920",
+    "name": "Marca Registrada #920",
+    "filename": "920.png",
+    "image_url": "/brands/920.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_921",
+    "brand_code": "921",
+    "name": "Marca Registrada #921",
+    "filename": "921.png",
+    "image_url": "/brands/921.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_93",
+    "brand_code": "93",
+    "name": "Marca Registrada #93",
+    "filename": "93.png",
+    "image_url": "/brands/93.png",
+    "jurisdiction": "Entre Ríos - Dpto. Uruguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_944",
+    "brand_code": "944",
+    "name": "Marca Registrada #944",
+    "filename": "944.png",
+    "image_url": "/brands/944.png",
+    "jurisdiction": "Corrientes - Dpto. Curuzú Cuatiá",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_96",
+    "brand_code": "96",
+    "name": "Marca Registrada #96",
+    "filename": "96.png",
+    "image_url": "/brands/96.png",
+    "jurisdiction": "Entre Ríos - Dpto. Villaguay",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  },
+  {
+    "id": "brand_961",
+    "brand_code": "961",
+    "name": "Marca Registrada #961",
+    "filename": "961.png",
+    "image_url": "/brands/961.png",
+    "jurisdiction": "Santa Fe - Dpto. Castellanos",
+    "description": "Diseño de hierro de marcar registrado en el archivo oficial del GIBD."
+  }
+];
