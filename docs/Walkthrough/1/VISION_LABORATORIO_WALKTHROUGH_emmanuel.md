@@ -162,7 +162,7 @@ npm run dev
 - [x] Backend verificado: `GET /api/v1/health` → `healthy` con `requirements.txt` apto para Python 3.14.
 - [x] `README.md` con guías de instalación/ejecución de backend y frontend + troubleshooting.
 - [ ] Prueba manual E2E de la UI con backend corriendo (3 casos de la sección 4).
-- [x] Commit y push de los 5 archivos + docs (`a205944`); segundo commit de docs/README/requirements pendiente en esta iteración.
+- [x] Commit y push de los 5 archivos + docs (`a205944`) y segundo commit de documentación (`63f13d5`: README + requirements + esta actualización).
 - [ ] PR hacia la rama base y review.
 
 ---
