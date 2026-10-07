@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
+import { Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RibbonSelector } from '../components/ui/RibbonSelector';
+import { CloudinaryUploader } from '../components/ui/CloudinaryUploader';
+import { CrestResultCard } from '../components/ui/CrestResultCard';
+import { CREST_SAMPLES, type CrestSample } from '../utils/crestSamples';
+import { fetchBrandInference, fetchCrestInference, type InferenceResult } from '../utils/aiService';
 
 const MEDIA_CONFIG = [
   { id: 'Imagen', angle: -35, width: 110 },
@@ -28,12 +32,6 @@ const SIDEBAR_ITEMS = [
   { id: 6, icon: History, label: 'Archivos NLP', opacity: 'opacity-60' },
 ];
 
-const REFERENCE_IMAGES = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAAnKG6Zsl4FZOrlhof0HSaEMgu1fTJ21VcBiVxCDu1PCcs8RixieYZfQGgdIFTzxHrEnIuH9PZCAG8umu0LhTKmiY8SO1SxrmJFlOUJa_x82LPfS2lemdGMXbwvcXZnFIirjwHLoigFJnNMQAzsIxmzqqth6AYreOjnMpJneGHZVxbhnNo5ewOMSvJat2d3S7ENB7xyVWffRQqHGfBPgMZly0a6RbTLsXLCJxRH0T38dEONLu67HwGPmZB-cpVwfEbo_l2f4E0m0c",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCaNxVCUkV1zq5TjhTYv5oYOemqRnt4VcFnrcrcHVUkwYVlcZX3VxvkZ6N8f4nctOnkDMDGXHcr_ZhfOMaFKGdU2gQUUcFkKcp8Ryy8l83x_TFm8RNPoEvzgClFAS7fZ7WRi8ZJMhe0b0qt_CzTSJllgoiTDW1HxubaNPIqOi5QKeiIz6JKFbq-YZaKSjxBqPXUX9LbIUPD-cKWl146PNYKGLH2-bkdQlp2cQ5CukLyu8UblPtFHuEakkja7fxrdEIQ6MrDHILcYA8",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAiqTUmRcQ_D5YHQkGdpBN95kWJoH5zlaNTmnBm4wNBOj_MEmfoJC-7jpx-eaYeddlZNimERmQxQVFYVq8-n-xX5IEQ97YaW2l7TKkGfQ9J3y-mjI7aIZX7ZgAPYLb1d2xkEf35Gr0PUjAXs-88-wXzsJ4ySPYcUN9zv2l0Pm7p9q6_iBZkHkAltzV0VTy78FpfFgyQFQrFvRX4NvCsMsoPVqehRgZ4I2Ndld6KxhLDTdV7jMGGOoEIAT-YD_mETjPAyXHHh3fE1M8",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDIIzVhor0geVVwCFjltkZYlQfwDpiCfLGtLSA1JFTYTfTMMG-jAfahYwS_64iHbi_RBx3adFmvbh1ILBWb38_N7QFD3fa0tMTWMIqhd2EVusAWYEdNHgsowwU7Z_deEH1GGuaRzth1MAuhXtIpqh9OXpGD5Flnpc_go3dqwJfS72KkG5-N4wlyx19o5exNn3K5hzldyUdh-A2SnZ2sKwXhHX-Gr0hymyN8ItapW9b93ukKMkNcjsV-WabF0N6WcnOh2QMNDzK3USA"
-];
 
 // Cache global de AudioContext para reducir la presión del recolector de basura (GC) y consumo de RAM
 let cachedAudioCtx: AudioContext | null = null;
@@ -178,7 +176,14 @@ const playGearTick = () => {
 export function Laboratorio() {
   const [activeMediaType, setActiveMediaType] = useState<MediaType>('Imagen');
   const [activeModel, setActiveModel] = useState<string>(MODELS_BY_MEDIA['Imagen'][0]);
-  
+  const [selectedVisionSubModel, setSelectedVisionSubModel] =
+    useState<'brands' | 'soccer_crests'>('brands');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null);
+  const [queryImageUrl, setQueryImageUrl] = useState<string | null>(null);
+  const [results, setResults] = useState<InferenceResult[]>([]);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   const handleMediaTypeChange = (media: MediaType) => {
     setActiveMediaType(media);
     setActiveModel(MODELS_BY_MEDIA[media][0]);
@@ -199,6 +204,48 @@ export function Laboratorio() {
   const [topK, setTopK] = useState(10);
   const [isDragging, setIsDragging] = useState(false);
   const [activeSearchItem, setActiveSearchItem] = useState<number | null>(null);
+
+  const handleAnalyze = async () => {
+    if (isAnalyzing) return;
+    setIsAnalyzing(true);
+    setResults([]);
+    try {
+      if (selectedVisionSubModel === 'brands') {
+        if (!uploadedFile) return;
+        const response = await fetchBrandInference(uploadedFile, topK);
+        setResults(response.results);
+      } else {
+        const mapSamples = () =>
+          CREST_SAMPLES.map((sample: CrestSample, index) => ({
+            id: sample.id,
+            name: sample.name,
+            country: sample.country,
+            league: sample.league,
+            image_url: sample.imageUrl,
+            similarity_score: Math.max(0, 100 - index * 15),
+            distance: Number((0.1 * index).toFixed(4)),
+          }));
+
+        if (uploadedFile) {
+          try {
+            const response = await fetchCrestInference(uploadedFile, topK);
+            setResults(response.results);
+          } catch (error) {
+            // Endpoint no disponible aún: fallback a muestras locales (subfase 1.2)
+            console.warn('Endpoint de escudos no disponible; se usan muestras locales.', error);
+            setResults(mapSamples());
+          }
+        } else {
+          // Muestras rápidas sin archivo: resultados locales de demostración
+          setResults(mapSamples());
+        }
+      }
+    } catch (error) {
+      console.error('Error en la inferencia:', error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   // --- Lógica de Arrastre e Interacción con el Dial ---
   const dialContainerRef = useRef<HTMLDivElement>(null);
@@ -495,35 +542,142 @@ export function Laboratorio() {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
               >
-                <div className={`card-glass-purple border-2 border-dashed rounded-[3rem] p-12 min-h-[400px] flex flex-col items-center justify-center text-center transition-all duration-300 w-full ${isDragging ? 'border-primary-container bg-[#261633]/60' : 'border-border-organic/40 group-hover:border-primary-container'}`}>
-                  <div className="w-24 h-24 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <Microscope className="text-primary-container w-12 h-12" />
-                  </div>
-                  <h3 className="text-3xl font-bold text-text-primary mb-3">Sube tu Imagen de Marca</h3>
-                  <p className="text-text-secondary max-w-md mx-auto leading-relaxed">
-                    Arrastra y suelta el archivo aquí o haz clic para explorar. Los algoritmos de visión computacional detectarán patrones únicos.
-                  </p>
-                </div>
-                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                <CloudinaryUploader
+                  onImageSelected={(file, previewUrl, url) => {
+                    setUploadedFile(file);
+                    setQueryImageUrl(previewUrl);
+                    setCloudinaryUrl(url ?? null);
+                    setResults([]);
+                  }}
+                  isAnalyzing={isAnalyzing}
+                  disabled={isAnalyzing}
+                  label="Sube la imagen de tu marca o escudo"
+                />
               </article>
 
+              {/* Vision Sub-Model Selector */}
+              <div className="flex items-center gap-2 p-1.5 bg-[#18181B] rounded-full border border-white/10 self-start">
+                <button
+                  onClick={() => setSelectedVisionSubModel('brands')}
+                  className={`px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
+                    selectedVisionSubModel === 'brands'
+                      ? 'bg-[#FF5500] text-white'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Marcas de Ganado
+                </button>
+                <button
+                  onClick={() => setSelectedVisionSubModel('soccer_crests')}
+                  className={`px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
+                    selectedVisionSubModel === 'soccer_crests'
+                      ? 'bg-[#FF5500] text-white'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Escudos de Fútbol
+                </button>
+              </div>
+
+              {cloudinaryUrl && (
+                <span className="self-start px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono">
+                  Cloudinary: imagen lista
+                </span>
+              )}
+
+              {/* Muestras rápidas de escudos (T1.3.4) */}
+              {selectedVisionSubModel === 'soccer_crests' && (
+                <div className="w-full">
+                  <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-3">
+                    Muestras Rápidas
+                  </h4>
+                  <div className="flex gap-3 overflow-x-auto pb-2">
+                    {CREST_SAMPLES.map((sample, index) => (
+                      <motion.button
+                        key={sample.id}
+                        type="button"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        onClick={() => {
+                          setUploadedFile(null);
+                          setCloudinaryUrl(null);
+                          setQueryImageUrl(sample.imageUrl);
+                          setResults([]);
+                        }}
+                        className={`flex-shrink-0 w-24 p-2 rounded-2xl border transition-all text-left ${
+                          queryImageUrl === sample.imageUrl
+                            ? 'border-[#FF5500]/60 bg-[#FF5500]/10'
+                            : 'border-white/10 bg-[#121214] hover:border-white/25'
+                        }`}
+                      >
+                        <img
+                          src={sample.imageUrl}
+                          alt={sample.name}
+                          className="w-full aspect-square object-cover rounded-xl"
+                          loading="lazy"
+                        />
+                        <span className="block mt-2 text-xs text-text-primary font-semibold truncate">
+                          {sample.name}
+                        </span>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Primary Action Button */}
-              <button className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10">
+              <button
+                onClick={handleAnalyze}
+                disabled={
+                  isAnalyzing ||
+                  (selectedVisionSubModel === 'brands'
+                    ? !uploadedFile
+                    : !uploadedFile && !queryImageUrl)
+                }
+                className="w-full relative group bg-gradient-to-r from-primary-container to-[#ff8c00] py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 hover:scale-[1.02] active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)] border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-                <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">Buscar Similitudes (Red Siamesa)</span>
+                <span className="relative z-10 text-xl md:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                  {isAnalyzing
+                    ? 'Analizando...'
+                    : selectedVisionSubModel === 'brands'
+                      ? 'Buscar Similitudes'
+                      : 'Buscar Escudos Similares'}
+                </span>
                 <Search className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
               </button>
 
-              {/* Reference Results Grid */}
+              {/* Results Grid */}
               <section className="mt-8 w-full">
-                <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-6">Inspiración de Referencia</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-                  {REFERENCE_IMAGES.map((src, i) => (
-                    <div key={i} className="aspect-square card-glass-purple rounded-[1.5rem] overflow-hidden group">
-                      <img src={src} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={`Reference ${i+1}`} loading="lazy" />
-                    </div>
-                  ))}
-                </div>
+                <h4 className="font-semibold text-sm text-text-secondary uppercase tracking-widest mb-6">Resultados de Búsqueda</h4>
+                {results.length === 0 ? (
+                  <p className="text-text-secondary text-sm">
+                    Sube una imagen y ejecuta el análisis para ver los resultados aquí.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                    {results.map((result, i) => (
+                      <motion.div
+                        key={result.id}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.05 }}
+                        className="stagger-child"
+                      >
+                        <CrestResultCard
+                          name={result.name}
+                          country={result.country || 'País no especificado'}
+                          league={result.league || 'Liga no especificada'}
+                          queryImageUrl={queryImageUrl || ''}
+                          resultImageUrl={result.image_url}
+                          similarityScore={result.similarity_score}
+                          distance={result.distance}
+                          clubLogoUrl={result.logo_url}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </section>
             </div>
           </motion.div>
