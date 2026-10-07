@@ -1,11 +1,15 @@
 import os
 import json
 import re
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List, Dict, Any, Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
+
+from app.services.crests_engine import crests_engine
+from app.services.cloudinary_service import upload_query_image
 
 # Cargar variables de entorno
 load_dotenv()
@@ -38,14 +42,56 @@ class PaperAnalysisResponse(BaseModel):
     abstract: str
     image_prompt: str
 
+class CrestMatchResponse(BaseModel):
+    id: str
+    item_code: str
+    name: str
+    filename: str
+    image_url: str
+    similarity_score: float
+    distance: float
+    metadata: Dict[str, Any]
+
 # Endpoint de Salud (Health Check)
 @app.get("/api/v1/health", tags=["Mantenimiento"])
 async def health_check():
     return {
         "status": "healthy",
         "service": "GIBD API Gateway",
-        "gemini_active": gemini_key is not None
+        "gemini_active": gemini_key is not None,
+        "crests_indexed": 150
     }
+
+# Endpoint de Catálogo
+@app.get("/api/v1/crests/catalog", tags=["Visión Computacional"])
+async def get_crests_catalog():
+    return crests_engine.catalog
+
+# Endpoint de Inferencia
+@app.post("/api/v1/inference/soccer-crests", response_model=List[CrestMatchResponse], tags=["Visión Computacional"])
+async def soccer_crests_inference(
+    file: Optional[UploadFile] = File(None),
+    image_url: Optional[str] = Query(default=None),
+    top_k: int = Query(default=10, ge=1, le=50)
+):
+    if not file and not image_url:
+        raise HTTPException(status_code=400, detail="Debe proporcionar un archivo de imagen o una image_url.")
+        
+    try:
+        if file:
+            image_bytes = await file.read()
+        else:
+            raise HTTPException(status_code=400, detail="Soporte para image_url en progreso.")
+            
+        # Intentar subir la query a Cloudinary (no bloqueante, usa fallback local)
+        upload_query_image(image_bytes)
+        
+        # Realizar búsqueda por similitud
+        results = crests_engine.search(image_bytes, top_k=top_k)
+        return results
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error procesando la inferencia: {str(e)}")
 
 # Endpoint de Análisis de Papers Asistido por IA (Gemini)
 @app.post("/api/v1/ai/analyze-paper", response_model=PaperAnalysisResponse, tags=["Inteligencia Artificial"])

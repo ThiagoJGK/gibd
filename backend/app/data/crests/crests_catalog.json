@@ -1,0 +1,1652 @@
+[
+  {
+    "id": "crest_001",
+    "item_code": "ac-milan",
+    "name": "Ac Milan",
+    "filename": "ac-milan.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/ac-milan.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_002",
+    "item_code": "ajax",
+    "name": "Ajax",
+    "filename": "ajax.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/ajax.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_003",
+    "item_code": "america",
+    "name": "America",
+    "filename": "america.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/america.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_004",
+    "item_code": "angers-sco",
+    "name": "Angers Sco",
+    "filename": "angers-sco.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/angers-sco.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_005",
+    "item_code": "argentinos",
+    "name": "Argentinos",
+    "filename": "argentinos.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/argentinos.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_006",
+    "item_code": "arsenal",
+    "name": "Arsenal",
+    "filename": "arsenal.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/arsenal.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_007",
+    "item_code": "as-monaco",
+    "name": "As Monaco",
+    "filename": "as-monaco.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/as-monaco.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_008",
+    "item_code": "as-saint-etienne",
+    "name": "As Saint Etienne",
+    "filename": "as-saint-etienne.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/as-saint-etienne.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_009",
+    "item_code": "aston-villa",
+    "name": "Aston Villa",
+    "filename": "aston-villa.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/aston-villa.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_010",
+    "item_code": "atalanta",
+    "name": "Atalanta",
+    "filename": "atalanta.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/atalanta.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_011",
+    "item_code": "athletic",
+    "name": "Athletic",
+    "filename": "athletic.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/athletic.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_012",
+    "item_code": "atletico-madrid",
+    "name": "Atletico Madrid",
+    "filename": "atletico-madrid.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/atletico-madrid.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_013",
+    "item_code": "atletico-nacional",
+    "name": "Atletico Nacional",
+    "filename": "atletico-nacional.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/atletico-nacional.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_014",
+    "item_code": "augsburg",
+    "name": "Augsburg",
+    "filename": "augsburg.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/augsburg.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_015",
+    "item_code": "barcelona",
+    "name": "Barcelona",
+    "filename": "barcelona.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/barcelona.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_016",
+    "item_code": "bayern",
+    "name": "Bayern",
+    "filename": "bayern.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/bayern.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_017",
+    "item_code": "belgrano",
+    "name": "Belgrano",
+    "filename": "belgrano.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/belgrano.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_018",
+    "item_code": "blackburn",
+    "name": "Blackburn",
+    "filename": "blackburn.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/blackburn.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_019",
+    "item_code": "boca",
+    "name": "Boca",
+    "filename": "boca.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/boca.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_020",
+    "item_code": "bologna",
+    "name": "Bologna",
+    "filename": "bologna.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/bologna.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_021",
+    "item_code": "botafogo",
+    "name": "Botafogo",
+    "filename": "botafogo.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/botafogo.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_022",
+    "item_code": "bremen",
+    "name": "Bremen",
+    "filename": "bremen.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/bremen.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_023",
+    "item_code": "brentford",
+    "name": "Brentford",
+    "filename": "brentford.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/brentford.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_024",
+    "item_code": "brighton",
+    "name": "Brighton",
+    "filename": "brighton.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/brighton.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_025",
+    "item_code": "brujas",
+    "name": "Brujas",
+    "filename": "brujas.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/brujas.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_026",
+    "item_code": "burnley",
+    "name": "Burnley",
+    "filename": "burnley.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/burnley.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_027",
+    "item_code": "cadiz",
+    "name": "Cadiz",
+    "filename": "cadiz.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/cadiz.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_028",
+    "item_code": "cagliari",
+    "name": "Cagliari",
+    "filename": "cagliari.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/cagliari.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_029",
+    "item_code": "celta",
+    "name": "Celta",
+    "filename": "celta.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/celta.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_030",
+    "item_code": "central",
+    "name": "Central",
+    "filename": "central.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/central.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_031",
+    "item_code": "chelsea",
+    "name": "Chelsea",
+    "filename": "chelsea.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/chelsea.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_032",
+    "item_code": "clermont-foot-63",
+    "name": "Clermont Foot 63",
+    "filename": "clermont-foot-63.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/clermont-foot-63.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_033",
+    "item_code": "colo-colo",
+    "name": "Colo Colo",
+    "filename": "colo-colo.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/colo-colo.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_034",
+    "item_code": "corinthians",
+    "name": "Corinthians",
+    "filename": "corinthians.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/corinthians.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_035",
+    "item_code": "cruzeiro",
+    "name": "Cruzeiro",
+    "filename": "cruzeiro.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/cruzeiro.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_036",
+    "item_code": "crystal-palace",
+    "name": "Crystal Palace",
+    "filename": "crystal-palace.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/crystal-palace.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_037",
+    "item_code": "deportivo-alaves",
+    "name": "Deportivo Alaves",
+    "filename": "deportivo-alaves.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/deportivo-alaves.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_038",
+    "item_code": "deportivo-cali",
+    "name": "Deportivo Cali",
+    "filename": "deportivo-cali.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/deportivo-cali.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_039",
+    "item_code": "dortmund",
+    "name": "Dortmund",
+    "filename": "dortmund.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/dortmund.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_040",
+    "item_code": "dusseldorf",
+    "name": "Dusseldorf",
+    "filename": "dusseldorf.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/dusseldorf.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_041",
+    "item_code": "elche",
+    "name": "Elche",
+    "filename": "elche.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/elche.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_042",
+    "item_code": "empoli",
+    "name": "Empoli",
+    "filename": "empoli.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/empoli.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_043",
+    "item_code": "espanyol",
+    "name": "Espanyol",
+    "filename": "espanyol.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/espanyol.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_044",
+    "item_code": "estac-troyes",
+    "name": "Estac Troyes",
+    "filename": "estac-troyes.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/estac-troyes.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_045",
+    "item_code": "estrella-roja",
+    "name": "Estrella Roja",
+    "filename": "estrella-roja.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/estrella-roja.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_046",
+    "item_code": "estudiantes",
+    "name": "Estudiantes",
+    "filename": "estudiantes.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/estudiantes.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_047",
+    "item_code": "everton",
+    "name": "Everton",
+    "filename": "everton.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/everton.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_048",
+    "item_code": "fc-girondins-de-bordeaux",
+    "name": "Fc Girondins De Bordeaux",
+    "filename": "fc-girondins-de-bordeaux.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fc-girondins-de-bordeaux.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_049",
+    "item_code": "fc-lorient",
+    "name": "Fc Lorient",
+    "filename": "fc-lorient.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fc-lorient.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_050",
+    "item_code": "fc-metz",
+    "name": "Fc Metz",
+    "filename": "fc-metz.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fc-metz.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_051",
+    "item_code": "fc-nantes",
+    "name": "Fc Nantes",
+    "filename": "fc-nantes.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fc-nantes.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_052",
+    "item_code": "ferro",
+    "name": "Ferro",
+    "filename": "ferro.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/ferro.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_053",
+    "item_code": "fiorentina",
+    "name": "Fiorentina",
+    "filename": "fiorentina.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fiorentina.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_054",
+    "item_code": "flamengo",
+    "name": "Flamengo",
+    "filename": "flamengo.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/flamengo.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_055",
+    "item_code": "fluminense",
+    "name": "Fluminense",
+    "filename": "fluminense.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fluminense.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_056",
+    "item_code": "fortaleza",
+    "name": "Fortaleza",
+    "filename": "fortaleza.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/fortaleza.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_057",
+    "item_code": "frankfurt",
+    "name": "Frankfurt",
+    "filename": "frankfurt.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/frankfurt.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_058",
+    "item_code": "freiburg",
+    "name": "Freiburg",
+    "filename": "freiburg.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/freiburg.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_059",
+    "item_code": "furth",
+    "name": "Furth",
+    "filename": "furth.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/furth.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_060",
+    "item_code": "galatasaray",
+    "name": "Galatasaray",
+    "filename": "galatasaray.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/galatasaray.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_061",
+    "item_code": "galaxy",
+    "name": "Galaxy",
+    "filename": "galaxy.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/galaxy.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_062",
+    "item_code": "genoa",
+    "name": "Genoa",
+    "filename": "genoa.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/genoa.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_063",
+    "item_code": "getafe",
+    "name": "Getafe",
+    "filename": "getafe.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/getafe.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_064",
+    "item_code": "gimnasia",
+    "name": "Gimnasia",
+    "filename": "gimnasia.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/gimnasia.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_065",
+    "item_code": "granada",
+    "name": "Granada",
+    "filename": "granada.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/granada.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_066",
+    "item_code": "gremio",
+    "name": "Gremio",
+    "filename": "gremio.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/gremio.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_067",
+    "item_code": "hamburg",
+    "name": "Hamburg",
+    "filename": "hamburg.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/hamburg.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_068",
+    "item_code": "hannover",
+    "name": "Hannover",
+    "filename": "hannover.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/hannover.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_069",
+    "item_code": "hellas-verona",
+    "name": "Hellas Verona",
+    "filename": "hellas-verona.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/hellas-verona.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_070",
+    "item_code": "hertha-bsc-berlin",
+    "name": "Hertha Bsc Berlin",
+    "filename": "hertha-bsc-berlin.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/hertha-bsc-berlin.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_071",
+    "item_code": "hoffenheim",
+    "name": "Hoffenheim",
+    "filename": "hoffenheim.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/hoffenheim.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_072",
+    "item_code": "huracan",
+    "name": "Huracan",
+    "filename": "huracan.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/huracan.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_073",
+    "item_code": "independiente",
+    "name": "Independiente",
+    "filename": "independiente.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/independiente.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_074",
+    "item_code": "inter",
+    "name": "Inter",
+    "filename": "inter.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/inter.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_075",
+    "item_code": "internacional",
+    "name": "Internacional",
+    "filename": "internacional.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/internacional.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_076",
+    "item_code": "juventus",
+    "name": "Juventus",
+    "filename": "juventus.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/juventus.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_077",
+    "item_code": "lanus",
+    "name": "Lanus",
+    "filename": "lanus.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/lanus.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_078",
+    "item_code": "lazio",
+    "name": "Lazio",
+    "filename": "lazio.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/lazio.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_079",
+    "item_code": "leeds-united",
+    "name": "Leeds United",
+    "filename": "leeds-united.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/leeds-united.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_080",
+    "item_code": "leicester-city",
+    "name": "Leicester City",
+    "filename": "leicester-city.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/leicester-city.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_081",
+    "item_code": "levante",
+    "name": "Levante",
+    "filename": "levante.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/levante.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_082",
+    "item_code": "leverkusen",
+    "name": "Leverkusen",
+    "filename": "leverkusen.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/leverkusen.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_083",
+    "item_code": "liverpool",
+    "name": "Liverpool",
+    "filename": "liverpool.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/liverpool.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_084",
+    "item_code": "losc-lille",
+    "name": "Losc Lille",
+    "filename": "losc-lille.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/losc-lille.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_085",
+    "item_code": "luton",
+    "name": "Luton",
+    "filename": "luton.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/luton.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_086",
+    "item_code": "maccabi-haifa",
+    "name": "Maccabi Haifa",
+    "filename": "maccabi-haifa.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/maccabi-haifa.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_087",
+    "item_code": "mainz",
+    "name": "Mainz",
+    "filename": "mainz.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/mainz.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_088",
+    "item_code": "malaga",
+    "name": "Malaga",
+    "filename": "malaga.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/malaga.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_089",
+    "item_code": "mallorca",
+    "name": "Mallorca",
+    "filename": "mallorca.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/mallorca.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_090",
+    "item_code": "manchester-city",
+    "name": "Manchester City",
+    "filename": "manchester-city.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/manchester-city.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_091",
+    "item_code": "manchester-united",
+    "name": "Manchester United",
+    "filename": "manchester-united.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/manchester-united.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_092",
+    "item_code": "millonarios",
+    "name": "Millonarios",
+    "filename": "millonarios.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/millonarios.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_093",
+    "item_code": "mineiro",
+    "name": "Mineiro",
+    "filename": "mineiro.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/mineiro.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_094",
+    "item_code": "moenchengladbach",
+    "name": "Moenchengladbach",
+    "filename": "moenchengladbach.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/moenchengladbach.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_095",
+    "item_code": "montpellier-herault",
+    "name": "Montpellier Herault",
+    "filename": "montpellier-herault.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/montpellier-herault.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_096",
+    "item_code": "nacional",
+    "name": "Nacional",
+    "filename": "nacional.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/nacional.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_097",
+    "item_code": "napoli",
+    "name": "Napoli",
+    "filename": "napoli.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/napoli.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_098",
+    "item_code": "newcastle-united",
+    "name": "Newcastle United",
+    "filename": "newcastle-united.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/newcastle-united.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_099",
+    "item_code": "newells",
+    "name": "Newells",
+    "filename": "newells.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/newells.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_100",
+    "item_code": "norwich-city",
+    "name": "Norwich City",
+    "filename": "norwich-city.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/norwich-city.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_101",
+    "item_code": "nuremberg",
+    "name": "Nuremberg",
+    "filename": "nuremberg.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/nuremberg.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_102",
+    "item_code": "ogc-nice",
+    "name": "Ogc Nice",
+    "filename": "ogc-nice.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/ogc-nice.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_103",
+    "item_code": "olympique-de-marseille",
+    "name": "Olympique De Marseille",
+    "filename": "olympique-de-marseille.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/olympique-de-marseille.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_104",
+    "item_code": "olympique-lyonnais",
+    "name": "Olympique Lyonnais",
+    "filename": "olympique-lyonnais.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/olympique-lyonnais.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_105",
+    "item_code": "osasuna",
+    "name": "Osasuna",
+    "filename": "osasuna.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/osasuna.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_106",
+    "item_code": "palmeiras",
+    "name": "Palmeiras",
+    "filename": "palmeiras.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/palmeiras.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_107",
+    "item_code": "paris-saint-germain",
+    "name": "Paris Saint Germain",
+    "filename": "paris-saint-germain.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/paris-saint-germain.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_108",
+    "item_code": "parma",
+    "name": "Parma",
+    "filename": "parma.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/parma.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_109",
+    "item_code": "peñarol",
+    "name": "Peñarol",
+    "filename": "peñarol.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/peñarol.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_110",
+    "item_code": "platense",
+    "name": "Platense",
+    "filename": "platense.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/platense.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_111",
+    "item_code": "porto",
+    "name": "Porto",
+    "filename": "porto.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/porto.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_112",
+    "item_code": "racing",
+    "name": "Racing",
+    "filename": "racing.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/racing.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_113",
+    "item_code": "rayo-vallecano",
+    "name": "Rayo Vallecano",
+    "filename": "rayo-vallecano.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/rayo-vallecano.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_114",
+    "item_code": "rc-lens",
+    "name": "Rc Lens",
+    "filename": "rc-lens.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/rc-lens.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_115",
+    "item_code": "rc-strasbourg-alsace",
+    "name": "Rc Strasbourg Alsace",
+    "filename": "rc-strasbourg-alsace.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/rc-strasbourg-alsace.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_116",
+    "item_code": "real-betis",
+    "name": "Real Betis",
+    "filename": "real-betis.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/real-betis.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_117",
+    "item_code": "real-madrid",
+    "name": "Real Madrid",
+    "filename": "real-madrid.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/real-madrid.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_118",
+    "item_code": "real-murcia",
+    "name": "Real Murcia",
+    "filename": "real-murcia.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/real-murcia.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_119",
+    "item_code": "real-sociedad",
+    "name": "Real Sociedad",
+    "filename": "real-sociedad.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/real-sociedad.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_120",
+    "item_code": "redbull-leipzig",
+    "name": "Redbull Leipzig",
+    "filename": "redbull-leipzig.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/redbull-leipzig.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_121",
+    "item_code": "roma",
+    "name": "Roma",
+    "filename": "roma.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/roma.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_122",
+    "item_code": "salernitana",
+    "name": "Salernitana",
+    "filename": "salernitana.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/salernitana.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_123",
+    "item_code": "sampdoria",
+    "name": "Sampdoria",
+    "filename": "sampdoria.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/sampdoria.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_124",
+    "item_code": "san-lorenzo",
+    "name": "San Lorenzo",
+    "filename": "san-lorenzo.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/san-lorenzo.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_125",
+    "item_code": "santos",
+    "name": "Santos",
+    "filename": "santos.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/santos.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_126",
+    "item_code": "sassuolo",
+    "name": "Sassuolo",
+    "filename": "sassuolo.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/sassuolo.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_127",
+    "item_code": "schalke",
+    "name": "Schalke",
+    "filename": "schalke.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/schalke.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_128",
+    "item_code": "seattle-sounders",
+    "name": "Seattle Sounders",
+    "filename": "seattle-sounders.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/seattle-sounders.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_129",
+    "item_code": "sevilla",
+    "name": "Sevilla",
+    "filename": "sevilla.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/sevilla.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_130",
+    "item_code": "sheffield",
+    "name": "Sheffield",
+    "filename": "sheffield.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/sheffield.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_131",
+    "item_code": "southampton",
+    "name": "Southampton",
+    "filename": "southampton.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/southampton.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_132",
+    "item_code": "spezia",
+    "name": "Spezia",
+    "filename": "spezia.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/spezia.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_133",
+    "item_code": "sporting-cristal",
+    "name": "Sporting Cristal",
+    "filename": "sporting-cristal.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/sporting-cristal.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_134",
+    "item_code": "stade-brestois-29",
+    "name": "Stade Brestois 29",
+    "filename": "stade-brestois-29.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/stade-brestois-29.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_135",
+    "item_code": "stade-de-reims",
+    "name": "Stade De Reims",
+    "filename": "stade-de-reims.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/stade-de-reims.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_136",
+    "item_code": "stade-rennais-fc",
+    "name": "Stade Rennais Fc",
+    "filename": "stade-rennais-fc.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/stade-rennais-fc.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_137",
+    "item_code": "stuttgart",
+    "name": "Stuttgart",
+    "filename": "stuttgart.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/stuttgart.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_138",
+    "item_code": "the-strongest",
+    "name": "The Strongest",
+    "filename": "the-strongest.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/the-strongest.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_139",
+    "item_code": "torino",
+    "name": "Torino",
+    "filename": "torino.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/torino.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_140",
+    "item_code": "tottenham-hotspur",
+    "name": "Tottenham Hotspur",
+    "filename": "tottenham-hotspur.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/tottenham-hotspur.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_141",
+    "item_code": "udinese",
+    "name": "Udinese",
+    "filename": "udinese.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/udinese.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_142",
+    "item_code": "universitarios",
+    "name": "Universitarios",
+    "filename": "universitarios.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/universitarios.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_143",
+    "item_code": "valencia",
+    "name": "Valencia",
+    "filename": "valencia.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/valencia.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_144",
+    "item_code": "velez",
+    "name": "Velez",
+    "filename": "velez.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/velez.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_145",
+    "item_code": "venezia",
+    "name": "Venezia",
+    "filename": "venezia.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/venezia.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_146",
+    "item_code": "villarreal",
+    "name": "Villarreal",
+    "filename": "villarreal.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/villarreal.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_147",
+    "item_code": "watford",
+    "name": "Watford",
+    "filename": "watford.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/watford.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_148",
+    "item_code": "west-ham-united",
+    "name": "West Ham United",
+    "filename": "west-ham-united.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/west-ham-united.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_149",
+    "item_code": "wolfsburg",
+    "name": "Wolfsburg",
+    "filename": "wolfsburg.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/wolfsburg.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  },
+  {
+    "id": "crest_001",
+    "item_code": "ac-milan",
+    "name": "Ac Milan",
+    "filename": "ac-milan.png",
+    "image_url": "https://res.cloudinary.com/gibd/image/upload/v1/crests/ac-milan.png",
+    "metadata": {
+      "source": "CONAISII 2023",
+      "study": "CNN Marcas"
+    }
+  }
+]
