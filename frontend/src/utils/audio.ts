@@ -1,10 +1,10 @@
 // Cache global de AudioContext para reducir la presión del recolector de basura (GC) y consumo de RAM
 let cachedAudioCtx: AudioContext | null = null;
 
-const getAudioCtx = (): AudioContext | null => {
+export const getAudioCtx = (): AudioContext | null => {
   if (typeof window === 'undefined') return null;
   if (!cachedAudioCtx) {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (AudioContextClass) {
       cachedAudioCtx = new AudioContextClass();
     }
@@ -140,7 +140,125 @@ export const playFrictionTick = () => {
   } catch (e) {}
 };
 
+// Audio feedback físico de alta fidelidad: Clac mecánico (Cherry MX / Rotary Switch)
+export const playMechanicalClick = () => {
+  try {
+    const audioCtx = getAudioCtx();
+    if (!audioCtx) return;
 
+    const now = audioCtx.currentTime;
 
+    // Componente 1: Transitorio de Impacto Metálico/Plástico (Ruido Blanco Filtrado)
+    const bufferSize = audioCtx.sampleRate * 0.025; // 25ms de transitorio
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const channelData = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      channelData[i] = Math.random() * 2 - 1;
+    }
 
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
 
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(3200, now);
+    noiseFilter.Q.setValueAtTime(1.8, now);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.06, now); // Volumen optimizado y más sutil
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+
+    // Componente 2: Cuerpo de resonancia del interruptor (Frecuencia Media-Baja)
+    const bodyOsc = audioCtx.createOscillator();
+    bodyOsc.type = 'triangle'; // Sonido con armónicos naturales cálidos
+    bodyOsc.frequency.setValueAtTime(480, now);
+    bodyOsc.frequency.exponentialRampToValueAtTime(140, now + 0.06);
+
+    const bodyGain = audioCtx.createGain();
+    bodyGain.gain.setValueAtTime(0.11, now); // Volumen optimizado y más sutil
+    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+    bodyOsc.connect(bodyGain);
+    bodyGain.connect(audioCtx.destination);
+
+    // Componente 3: Golpe bajo sordo (Frecuencia Baja para peso físico)
+    const thudOsc = audioCtx.createOscillator();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(110, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(60, now + 0.09);
+
+    const thudGain = audioCtx.createGain();
+    thudGain.gain.setValueAtTime(0.07, now); // Volumen optimizado y más sutil
+    thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(audioCtx.destination);
+
+    // Reproducción simultánea
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.025);
+    bodyOsc.start(now);
+    bodyOsc.stop(now + 0.06);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.09);
+  } catch (e) {
+    // Ignorar si el navegador bloquea audio sin interacción del usuario
+  }
+};
+
+// Micro-tick metálico/plástico para el engranaje del dial
+export const playGearTick = () => {
+  try {
+    const audioCtx = getAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Transitorio de impacto rápido (10ms)
+    const bufferSize = audioCtx.sampleRate * 0.01;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const channelData = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      channelData[i] = Math.random() * 2 - 1;
+    }
+
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
+
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = 'highpass';
+    noiseFilter.frequency.setValueAtTime(4500, now);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.02, now); // Volumen optimizado y más sutil
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+
+    // Resonancia de la rueda dentada
+    const clickOsc = audioCtx.createOscillator();
+    clickOsc.type = 'sine';
+    clickOsc.frequency.setValueAtTime(780, now);
+    clickOsc.frequency.exponentialRampToValueAtTime(320, now + 0.015);
+
+    const clickGain = audioCtx.createGain();
+    clickGain.gain.setValueAtTime(0.03, now); // Volumen optimizado y más sutil
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(audioCtx.destination);
+
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.01);
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.015);
+  } catch (e) {
+    // Ignorar si el navegador bloquea audio antes de la interacción
+  }
+};

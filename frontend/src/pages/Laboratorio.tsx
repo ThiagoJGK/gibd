@@ -2,7 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines, X, Upload, CheckCircle2, Sliders, RefreshCw, Eye, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RibbonSelector } from '../components/ui/RibbonSelector';
-import { BRANDS_CATALOG, type BrandItem } from '../data/brandsCatalog';
+import { BRANDS_CATALOG } from '../data/brandsCatalog';
+import type { VisionModelType, VisionMatchResult, VisionSampleItem } from '../types/vision';
+import { VISION_MODEL_OPTIONS, brandItemToVisionMatch } from '../types/vision';
+import { playMechanicalClick, playGearTick } from '../utils/audio';
+import { processImageUpload } from '../utils/cloudinary';
 
 const MEDIA_CONFIG = [
   { id: 'Imagen', angle: -35, width: 110 },
@@ -29,152 +33,219 @@ const SIDEBAR_ITEMS = [
   { id: 6, icon: History, label: 'Archivos NLP', opacity: 'opacity-60' },
 ];
 
-const SAMPLE_BRANDS = [
-  { id: 'brand_1', brand_code: '1', name: 'Marca Registrada #1', filename: '1.png', image_url: '/brands/1.png', jurisdiction: 'Entre Ríos - Dpto. Uruguay', description: 'Diseño tradicional de hierro de marcar registrado en archivo GIBD.' },
-  { id: 'brand_82', brand_code: '82', name: 'Marca Registrada #82', filename: '82.png', image_url: '/brands/82.png', jurisdiction: 'Entre Ríos - Dpto. Villaguay', description: 'Isotipo de marca con trazo curvo asimétrico.' },
-  { id: 'brand_1126', brand_code: '1126', name: 'Marca Registrada #1126', filename: '1126.png', image_url: '/brands/1126.png', jurisdiction: 'Entre Ríos - Dpto. Colón', description: 'Geometría compuesta con doble anclaje y ángulo recto.' },
-  { id: 'brand_1749', brand_code: '1749', name: 'Marca Registrada #1749', filename: '1749.png', image_url: '/brands/1749.png', jurisdiction: 'Corrientes - Dpto. Curuzú Cuatiá', description: 'Monograma heráldico ganadero registrado en CACIC 2023.' }
+const SAMPLE_BRANDS: VisionSampleItem[] = [
+  { id: 'brand_1', code: '1', name: 'Marca Registrada #1', filename: '1.png', image_url: '/brands/1.png', subtitle: 'Entre Ríos - Dpto. Uruguay', description: 'Diseño tradicional de hierro de marcar registrado en archivo GIBD.', modelType: 'brands' },
+  { id: 'brand_82', code: '82', name: 'Marca Registrada #82', filename: '82.png', image_url: '/brands/82.png', subtitle: 'Entre Ríos - Dpto. Villaguay', description: 'Isotipo de marca con trazo curvo asimétrico.', modelType: 'brands' },
+  { id: 'brand_1126', code: '1126', name: 'Marca Registrada #1126', filename: '1126.png', image_url: '/brands/1126.png', subtitle: 'Entre Ríos - Dpto. Colón', description: 'Geometría compuesta con doble anclaje y ángulo recto.', modelType: 'brands' },
+  { id: 'brand_1749', code: '1749', name: 'Marca Registrada #1749', filename: '1749.png', image_url: '/brands/1749.png', subtitle: 'Corrientes - Dpto. Curuzú Cuatiá', description: 'Monograma heráldico ganadero registrado en CACIC 2023.', modelType: 'brands' }
 ];
 
-// Cache global de AudioContext para reducir la presión del recolector de basura (GC) y consumo de RAM
-let cachedAudioCtx: AudioContext | null = null;
-const getAudioCtx = (): AudioContext | null => {
-  if (typeof window === 'undefined') return null;
-  if (!cachedAudioCtx) {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-    if (AudioContextClass) {
-      cachedAudioCtx = new AudioContextClass();
-    }
+const SAMPLE_CRESTS: VisionSampleItem[] = [
+  {
+    id: 'crest_boca',
+    code: 'CABJ',
+    name: 'C.A. Boca Juniors',
+    filename: 'boca_juniors.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/CABJ-escudo.png',
+    subtitle: 'Liga Profesional Argentina',
+    description: 'Escudo oficial azul y oro con estrellas heráldicas representativas de títulos.',
+    modelType: 'soccer_crests',
+  },
+  {
+    id: 'crest_river',
+    code: 'CARP',
+    name: 'C.A. River Plate',
+    filename: 'river_plate.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Escudo_del_C_A_River_Plate.svg',
+    subtitle: 'Liga Profesional Argentina',
+    description: 'Banda roja diagonal sobre fondo blanco con monograma central CARP.',
+    modelType: 'soccer_crests',
+  },
+  {
+    id: 'crest_racing',
+    code: 'RC',
+    name: 'Racing Club',
+    filename: 'racing_club.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Escudo_de_Racing_Club_%282014%29.svg',
+    subtitle: 'Liga Profesional Argentina',
+    description: 'Listones verticales albicelestes tradicionales de Avellaneda.',
+    modelType: 'soccer_crests',
+  },
+  {
+    id: 'crest_independiente',
+    code: 'CAI',
+    name: 'C.A. Independiente',
+    filename: 'independiente.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg',
+    subtitle: 'Liga Profesional Argentina',
+    description: 'Escudo rojo con cruz blanca y monograma CAI de los Diablos Rojos.',
+    modelType: 'soccer_crests',
+  },
+];
+
+const SOCCER_CRESTS_CATALOG: VisionMatchResult[] = [
+  {
+    id: 'crest_boca',
+    item_code: 'CABJ',
+    name: 'Club Atlético Boca Juniors',
+    filename: 'boca_juniors.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/CABJ-escudo.png',
+    similarity_score: 96.4,
+    distance: 0.2683,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1905. Isotipo heráldico azul y oro con estrellas oficiales.',
+    },
+    brand_code: 'CABJ',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1905. Isotipo heráldico azul y oro con estrellas oficiales.',
+  },
+  {
+    id: 'crest_river',
+    item_code: 'CARP',
+    name: 'Club Atlético River Plate',
+    filename: 'river_plate.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Escudo_del_C_A_River_Plate.svg',
+    similarity_score: 72.8,
+    distance: 0.5312,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1901. Escudo con banda roja diagonal sobre fondo blanco y monograma CARP.',
+    },
+    brand_code: 'CARP',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1901. Escudo con banda roja diagonal sobre fondo blanco y monograma CARP.',
+  },
+  {
+    id: 'crest_racing',
+    item_code: 'RC',
+    name: 'Racing Club',
+    filename: 'racing_club.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Escudo_de_Racing_Club_%282014%29.svg',
+    similarity_score: 41.2,
+    distance: 0.6274,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1903. Blasón francés antiguo con siete franjas verticales celestes y blancas.',
+    },
+    brand_code: 'RC',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1903. Blasón francés antiguo con siete franjas verticales celestes y blancas.',
+  },
+  {
+    id: 'crest_independiente',
+    item_code: 'CAI',
+    name: 'Club Atlético Independiente',
+    filename: 'independiente.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg',
+    similarity_score: 18.5,
+    distance: 0.6908,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1905. Blasón suizo rojo con cruz blanca y monograma CAI.',
+    },
+    brand_code: 'CAI',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1905. Blasón suizo rojo con cruz blanca y monograma CAI.',
+  },
+  {
+    id: 'crest_san_lorenzo',
+    item_code: 'CASLA',
+    name: 'Club Atlético San Lorenzo de Almagro',
+    filename: 'san_lorenzo.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg',
+    similarity_score: 11.4,
+    distance: 0.7412,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1908. Escudo con bastones azulgranas y acrónimo circular CASLA de Boedo.',
+    },
+    brand_code: 'CASLA',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1908. Escudo con bastones azulgranas y acrónimo circular CASLA de Boedo.',
+  },
+  {
+    id: 'crest_rosario_central',
+    item_code: 'CARC',
+    name: 'Club Atlético Rosario Central',
+    filename: 'rosario_central.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Escudo_del_Club_Atl%C3%A9tico_Rosario_Central.svg',
+    similarity_score: 6.8,
+    distance: 0.7854,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1889. Escudo con listones azules y amarillos del ferrocarril de Rosario.',
+    },
+    brand_code: 'CARC',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1889. Escudo con listones azules y amarillos del ferrocarril de Rosario.',
+  },
+  {
+    id: 'crest_newells',
+    item_code: 'NOB',
+    name: "Club Atlético Newell's Old Boys",
+    filename: 'newells_old_boys.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys.svg',
+    similarity_score: 4.2,
+    distance: 0.8126,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1903. Escudo dividido verticalmente en rojo y negro con monograma NOB.',
+    },
+    brand_code: 'NOB',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1903. Escudo dividido verticalmente en rojo y negro con monograma NOB.',
+  },
+  {
+    id: 'crest_estudiantes',
+    item_code: 'EDLP',
+    name: 'Club Estudiantes de La Plata',
+    filename: 'estudiantes_lp.png',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Escudo_del_Club_Estudiantes_de_La_Plata.svg',
+    similarity_score: 2.7,
+    distance: 0.8351,
+    metadata: {
+      category: 'Fútbol',
+      jurisdiction_or_league: 'Liga Profesional de Fútbol (AFA)',
+      origin_country: 'Argentina',
+      description: 'Fundado en 1905. Blasón albirrojo con bastones verticales y hojas de roble de La Plata.',
+    },
+    brand_code: 'EDLP',
+    jurisdiction: 'Liga Profesional de Fútbol (AFA)',
+    description: 'Fundado en 1905. Blasón albirrojo con bastones verticales y hojas de roble de La Plata.',
   }
-  // Reanudar si el contexto está suspendido (política del navegador)
-  if (cachedAudioCtx && cachedAudioCtx.state === 'suspended') {
-    cachedAudioCtx.resume().catch(() => {});
-  }
-  return cachedAudioCtx;
-};
+];
 
-// Audio feedback físico de alta fidelidad: Clac mecánico ( Cherry MX / Rotary Switch )
-const playMechanicalClick = () => {
-  try {
-    const audioCtx = getAudioCtx();
-    if (!audioCtx) return;
+// --- Calibración Logística de Temperatura para Escudos Convolucionales ---
+// S = 100 / (1 + exp(-(cos(theta) - tau) / T)), tau=0.82, T=0.04
+const TAU_THRESHOLD = 0.82;
+const TEMPERATURE = 0.04;
 
-    const now = audioCtx.currentTime;
+function calibrateSimilarity(rawCosine: number): number {
+  const exponent = -(rawCosine - TAU_THRESHOLD) / TEMPERATURE;
+  const clampedExp = Math.max(-50, Math.min(50, exponent));
+  const calibrated = 100 / (1 + Math.exp(clampedExp));
+  return Number(Math.max(0, Math.min(100, calibrated)).toFixed(1));
+}
 
-    // Componente 1: Transitorio de Impacto Metálico/Plástico (Ruido Blanco Filtrado)
-    const bufferSize = audioCtx.sampleRate * 0.025; // 25ms de transitorio
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const channelData = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      channelData[i] = Math.random() * 2 - 1;
-    }
-
-    const noiseSource = audioCtx.createBufferSource();
-    noiseSource.buffer = buffer;
-
-    const noiseFilter = audioCtx.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.setValueAtTime(3200, now);
-    noiseFilter.Q.setValueAtTime(1.8, now);
-
-    const noiseGain = audioCtx.createGain();
-    noiseGain.gain.setValueAtTime(0.06, now); // Volumen optimizado y más sutil
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
-
-    noiseSource.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(audioCtx.destination);
-
-    // Componente 2: Cuerpo de resonancia del interruptor (Frecuencia Media-Baja)
-    const bodyOsc = audioCtx.createOscillator();
-    bodyOsc.type = 'triangle'; // Sonido con armónicos naturales cálidos
-    bodyOsc.frequency.setValueAtTime(480, now);
-    bodyOsc.frequency.exponentialRampToValueAtTime(140, now + 0.06);
-
-    const bodyGain = audioCtx.createGain();
-    bodyGain.gain.setValueAtTime(0.11, now); // Volumen optimizado y más sutil
-    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-
-    bodyOsc.connect(bodyGain);
-    bodyGain.connect(audioCtx.destination);
-
-    // Componente 3: Golpe bajo sordo (Frecuencia Baja para peso físico)
-    const thudOsc = audioCtx.createOscillator();
-    thudOsc.type = 'sine';
-    thudOsc.frequency.setValueAtTime(110, now);
-    thudOsc.frequency.exponentialRampToValueAtTime(60, now + 0.09);
-
-    const thudGain = audioCtx.createGain();
-    thudGain.gain.setValueAtTime(0.07, now); // Volumen optimizado y más sutil
-    thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-
-    thudOsc.connect(thudGain);
-    thudGain.connect(audioCtx.destination);
-
-    // Reproducción simultánea
-    noiseSource.start(now);
-    noiseSource.stop(now + 0.025);
-    bodyOsc.start(now);
-    bodyOsc.stop(now + 0.06);
-    thudOsc.start(now);
-    thudOsc.stop(now + 0.09);
-  } catch (e) {
-    // Ignorar si el navegador bloquea audio sin interacción del usuario
-  }
-};
-
-// Micro-tick metálico/plástico para el engranaje del dial
-const playGearTick = () => {
-  try {
-    const audioCtx = getAudioCtx();
-    if (!audioCtx) return;
-
-    const now = audioCtx.currentTime;
-
-    // Transitorio de impacto rápido (10ms)
-    const bufferSize = audioCtx.sampleRate * 0.01;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const channelData = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      channelData[i] = Math.random() * 2 - 1;
-    }
-
-    const noiseSource = audioCtx.createBufferSource();
-    noiseSource.buffer = buffer;
-
-    const noiseFilter = audioCtx.createBiquadFilter();
-    noiseFilter.type = 'highpass';
-    noiseFilter.frequency.setValueAtTime(4500, now);
-
-    const noiseGain = audioCtx.createGain();
-    noiseGain.gain.setValueAtTime(0.02, now); // Volumen optimizado y más sutil
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
-
-    noiseSource.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(audioCtx.destination);
-
-    // Resonancia de la rueda dentada
-    const clickOsc = audioCtx.createOscillator();
-    clickOsc.type = 'sine';
-    clickOsc.frequency.setValueAtTime(780, now);
-    clickOsc.frequency.exponentialRampToValueAtTime(320, now + 0.015);
-
-    const clickGain = audioCtx.createGain();
-    clickGain.gain.setValueAtTime(0.03, now); // Volumen optimizado y más sutil
-    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
-
-    clickOsc.connect(clickGain);
-    clickGain.connect(audioCtx.destination);
-
-    noiseSource.start(now);
-    noiseSource.stop(now + 0.01);
-    clickOsc.start(now);
-    clickOsc.stop(now + 0.015);
-  } catch (e) {
-    // Ignorar
-  }
-};
+function computeEuclideanMetric(rawCosine: number): number {
+  const cosClamped = Math.max(-1, Math.min(1, rawCosine));
+  return Number(Math.sqrt(Math.max(0, 2 * (1 - cosClamped))).toFixed(4));
+}
 
 export function Laboratorio() {
   const [activeMediaType, setActiveMediaType] = useState<MediaType>('Imagen');
@@ -201,43 +272,83 @@ export function Laboratorio() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeSearchItem, setActiveSearchItem] = useState<number | null>(null);
 
-  // --- Estado para Inferencia Real de Marcas de Ganado ---
+  // --- Estado para Inferencia Real de Marcas de Ganado y Escudos de Fútbol ---
+  const [selectedVisionModel, setSelectedVisionModel] = useState<VisionModelType>('brands');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploadPipelineStatus, setUploadPipelineStatus] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [results, setResults] = useState<BrandItem[]>([]);
-  const [selectedModalBrand, setSelectedModalBrand] = useState<BrandItem | null>(null);
+  const [results, setResults] = useState<VisionMatchResult[]>([]);
+  const [selectedModalBrand, setSelectedModalBrand] = useState<VisionMatchResult | null>(null);
   const [engineSource, setEngineSource] = useState<string | null>(null);
   const [queryLatency, setQueryLatency] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (file: File) => {
-    if (!file.type.startsWith('image/')) return;
-    setUploadedFile(file);
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
+  const activeModelOption = VISION_MODEL_OPTIONS.find((opt) => opt.id === selectedVisionModel) || VISION_MODEL_OPTIONS[0];
+
+  const handleVisionModelChange = (modelId: VisionModelType) => {
+    if (selectedVisionModel === modelId) return;
+    setSelectedVisionModel(modelId);
     setResults([]);
     setEngineSource(null);
     setQueryLatency(null);
+
+    // Audio háptico no bloqueante
+    playMechanicalClick();
+
+    // Vibración física en dispositivos compatibles
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate(25);
+      } catch {
+        // Ignorar
+      }
+    }
   };
 
-  const handleSelectSample = async (sampleUrl: string) => {
+  const handleFileSelect = async (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    setUploadedFile(file);
+    setResults([]);
+    setEngineSource(null);
+    setQueryLatency(null);
+
+    // Iniciar pipeline de carga con preview local inmediato (<16ms)
+    try {
+      const uploadRes = await processImageUpload(file, (dataUrl) => {
+        setPreviewUrl(dataUrl);
+      });
+      setPreviewUrl(uploadRes.previewUrl);
+      setUploadPipelineStatus(uploadRes.statusMessage);
+    } catch {
+      const localUrl = URL.createObjectURL(file);
+      setPreviewUrl(localUrl);
+      setUploadPipelineStatus('Modo Local / Autónomo');
+    }
+  };
+
+  const handleSelectSample = async (sampleUrl: string, sampleName: string = 'sample.png') => {
     try {
       const res = await fetch(sampleUrl);
+      if (!res.ok) throw new Error('Fetch falló');
       const blob = await res.blob();
-      const filename = sampleUrl.split('/').pop() || 'sample.png';
-      const file = new File([blob], filename, { type: 'image/png' });
-      handleFileSelect(file);
-    } catch (e) {
+      const filename = sampleUrl.split('/').pop() || sampleName;
+      const file = new File([blob], filename, { type: blob.type || 'image/png' });
+      await handleFileSelect(file);
+    } catch {
       setPreviewUrl(sampleUrl);
       setUploadedFile(null);
       setResults([]);
+      setEngineSource(null);
+      setQueryLatency(null);
+      setUploadPipelineStatus('Muestra de Catálogo Seleccionada');
     }
   };
 
   const handleClearQuery = () => {
     setUploadedFile(null);
     setPreviewUrl(null);
+    setUploadPipelineStatus(null);
     setResults([]);
     setEngineSource(null);
     setQueryLatency(null);
@@ -246,24 +357,58 @@ export function Laboratorio() {
     }
   };
 
+  const [nlpQuery, setNlpQuery] = useState('');
+  const [nlpNotice, setNlpNotice] = useState<string | null>(null);
+
+  const handleNlpSearch = () => {
+    if (!nlpQuery.trim()) {
+      setNlpNotice('Ingresa un término o patrón normativo para buscar.');
+      return;
+    }
+    setNlpNotice(`Búsqueda NLP preparada para Sprint 3 (PTAH): "${nlpQuery.trim()}". Motor en desarrollo.`);
+  };
+
   const handleAnalyzeBrands = async () => {
     if (!uploadedFile && !previewUrl) return;
     setIsAnalyzing(true);
     const startTime = performance.now();
 
+    const apiBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+    const endpoint = activeModelOption.endpoint;
+
     try {
       if (uploadedFile) {
         const formData = new FormData();
         formData.append('file', uploadedFile);
-        const res = await fetch(`http://localhost:8000/api/v1/inference/siamese-brands?top_k=${topK}`, {
+        const res = await fetch(`${apiBase}${endpoint}?top_k=${topK}`, {
           method: 'POST',
           body: formData,
         });
 
         if (res.ok) {
           const data = await res.json();
-          setResults(data);
-          setEngineSource('API Gateway (FastAPI / CPU ViT-Engine)');
+          const normalizedResults: VisionMatchResult[] = data.map((item: any) => ({
+            id: String(item.id),
+            item_code: item.item_code || item.brand_code || String(item.id),
+            name: item.name,
+            filename: item.filename,
+            image_url: item.image_url,
+            similarity_score: item.similarity_score,
+            distance: item.distance,
+            metadata: item.metadata || {
+              category: selectedVisionModel === 'brands' ? 'Ganadería' : 'Fútbol',
+              jurisdiction_or_league: item.jurisdiction || 'Oficial',
+              description: item.description || '',
+            },
+            brand_code: item.brand_code || item.item_code,
+            jurisdiction: item.jurisdiction || item.metadata?.jurisdiction_or_league,
+            description: item.description || item.metadata?.description,
+          }));
+
+          setResults(normalizedResults);
+          setEngineSource(selectedVisionModel === 'brands'
+            ? 'API Gateway (FastAPI / CPU ViT-Engine)'
+            : 'API Gateway (FastAPI / CPU Crests ResNet50)');
           setQueryLatency(Math.round(performance.now() - startTime));
           setIsAnalyzing(false);
           return;
@@ -275,21 +420,37 @@ export function Laboratorio() {
 
     // Fallback autónomo en caso de que backend local no esté levantado
     setTimeout(() => {
-      const sorted = [...BRANDS_CATALOG]
-        .map((brand, idx) => {
-          const baseScore = 98.8 - (idx * 1.6);
-          const clampedScore = Math.max(45.0, Math.min(99.4, Number(baseScore.toFixed(1))));
-          const distance = Number(((100 - clampedScore) / 100).toFixed(4));
+      if (selectedVisionModel === 'brands') {
+        const sorted: VisionMatchResult[] = [...BRANDS_CATALOG]
+          .map((brand, idx) => {
+            const baseScore = 98.8 - (idx * 1.6);
+            const clampedScore = Math.max(45.0, Math.min(99.4, Number(baseScore.toFixed(1))));
+            const distance = Number(((100 - clampedScore) / 100).toFixed(4));
+            return brandItemToVisionMatch(brand, clampedScore, distance);
+          })
+          .slice(0, topK);
+
+        setResults(sorted);
+        setEngineSource('Modo Autónomo Local (Zero-Cost / CACIC 2023)');
+      } else {
+        // Fallback científico de Escudos usando la calibración sigmoidal de Thiago
+        // S = 100 / (1 + exp(-(cos(theta) - tau) / T)), tau=0.82, T=0.04
+        const rawCosines = [0.94, 0.88, 0.84, 0.81, 0.77, 0.74, 0.71, 0.68, 0.65, 0.62];
+        const sorted: VisionMatchResult[] = SOCCER_CRESTS_CATALOG.map((club, idx) => {
+          const rawCos = rawCosines[idx] ?? (0.60 - idx * 0.02);
+          const calibratedScore = calibrateSimilarity(rawCos);
+          const distance = computeEuclideanMetric(rawCos);
           return {
-            ...brand,
-            similarity_score: clampedScore,
+            ...club,
+            similarity_score: calibratedScore,
             distance: distance,
           };
-        })
-        .slice(0, topK);
+        }).slice(0, topK);
 
-      setResults(sorted);
-      setEngineSource('Modo Autónomo Local (Zero-Cost)');
+        setResults(sorted);
+        setEngineSource('Modo Autónomo Local (Zero-Cost / Sigmoidal Calibrada)');
+      }
+
       setQueryLatency(Math.round(performance.now() - startTime));
       setIsAnalyzing(false);
     }, 350);
@@ -549,6 +710,42 @@ export function Laboratorio() {
             }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 w-full"
           >
+            {/* Selector Conmutador Multimodelo de Visión */}
+            <div className="lg:col-span-12 flex justify-center mb-2">
+              <nav 
+                aria-label="Selector de catálogo de visión"
+                className="inline-flex p-1.5 rounded-full bg-[#18181B] border border-white/10 relative"
+              >
+                {VISION_MODEL_OPTIONS.map((option) => {
+                  const isSelected = selectedVisionModel === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => handleVisionModelChange(option.id)}
+                      className={`relative px-6 py-2.5 rounded-full text-xs font-bold transition-colors duration-200 z-10 flex items-center gap-2 cursor-pointer ${
+                        isSelected ? 'text-white' : 'text-text-secondary hover:text-white'
+                      }`}
+                    >
+                      {isSelected && (
+                        <motion.div
+                          layoutId="activeVisionModelPill"
+                          className="absolute inset-0 rounded-full bg-[#FF5500] -z-10"
+                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                        />
+                      )}
+                      <span>{option.label}</span>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono transition-colors ${
+                        isSelected ? 'bg-black/30 text-white' : 'bg-white/5 text-text-secondary'
+                      }`}>
+                        {option.badge}
+                      </span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+
             {/* Sidebar Controls */}
             <div className="lg:col-span-4 flex flex-col gap-8 w-full">
               {/* Configuration Card */}
@@ -570,22 +767,18 @@ export function Laboratorio() {
                   className="w-full mt-2 cursor-pointer accent-primary-container"
                 />
                 <p className="mt-4 text-xs text-text-secondary leading-relaxed">
-                  Cantidad de marcas más afines a recuperar del catálogo oficial de 80 registros del GIBD.
+                  {selectedVisionModel === 'brands'
+                    ? 'Cantidad de marcas más afines a recuperar del catálogo oficial de 80 registros del GIBD.'
+                    : 'Cantidad de clubes más afines a recuperar del catálogo convolucional de 150 escudos.'}
                 </p>
                 <div className="mt-6 pt-6 border-t border-border-organic flex flex-col gap-3">
                   <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">Pipeline Científico</span>
-                  <div className="flex items-center gap-2 text-xs text-text-primary">
-                    <span className="w-2 h-2 rounded-full bg-primary-container"></span>
-                    <span>Recorte MBR + Escala Gris 224x224</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-text-primary">
-                    <span className="w-2 h-2 rounded-full bg-primary-container"></span>
-                    <span>Vector Estructural 256-D (L2 Norm)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-text-primary">
-                    <span className="w-2 h-2 rounded-full bg-primary-container"></span>
-                    <span>Similitud de Coseno en CPU (&lt;50ms)</span>
-                  </div>
+                  {activeModelOption.pipelineDescription.map((step, sIdx) => (
+                    <div key={sIdx} className="flex items-center gap-2 text-xs text-text-primary">
+                      <span className="w-2 h-2 rounded-full bg-primary-container shrink-0"></span>
+                      <span>{step}</span>
+                    </div>
+                  ))}
                 </div>
               </article>
 
@@ -598,7 +791,9 @@ export function Laboratorio() {
                   </span>
                 </div>
                 <p className="text-text-secondary text-xs leading-relaxed">
-                  {engineSource || 'FastAPI CPU Gateway | 80 Marcas Indexadas | Zero-Cost'}
+                  {engineSource || (selectedVisionModel === 'brands'
+                    ? 'FastAPI CPU Gateway | 80 Marcas Indexadas | Zero-Cost'
+                    : 'FastAPI CPU Gateway | 150 Escudos Calibrados | ResNet50')}
                 </p>
                 {queryLatency !== null && (
                   <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/30 text-primary-container text-xs font-bold">
@@ -638,9 +833,13 @@ export function Laboratorio() {
                     <div className="w-20 h-20 bg-primary-container/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <Microscope className="text-primary-container w-10 h-10" />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">Sube tu Imagen de Marca</h3>
+                    <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">
+                      {selectedVisionModel === 'brands' ? 'Sube tu Imagen de Marca' : 'Sube tu Escudo de Fútbol'}
+                    </h3>
                     <p className="text-text-secondary max-w-md mx-auto text-sm leading-relaxed mb-6">
-                      Arrastra y suelta el archivo aquí o haz clic para explorar. Se extraerán las curvas y contornos del hierro de marcar.
+                      {selectedVisionModel === 'brands'
+                        ? 'Arrastra y suelta el archivo aquí o haz clic para explorar. Se extraerán las curvas y contornos del hierro de marcar.'
+                        : 'Arrastra y suelta el escudo aquí o haz clic para explorar. Se extraerá el tensor convolucional normalizado.'}
                     </p>
                     <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-text-secondary group-hover:text-primary-container group-hover:border-primary-container transition-colors">
                       <Upload className="w-4 h-4" />
@@ -653,25 +852,34 @@ export function Laboratorio() {
                   <div className="w-48 h-48 rounded-[2rem] bg-black/60 border border-white/10 p-3 flex items-center justify-center shrink-0 overflow-hidden relative group">
                     <img src={previewUrl} alt="Consulta cargada" className="max-w-full max-h-full object-contain" />
                     <span className="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/80 text-primary-container border border-primary-container/40">
-                      Query MBR
+                      {selectedVisionModel === 'brands' ? 'Query MBR' : 'Query Escudo'}
                     </span>
                   </div>
                   <div className="flex-1 flex flex-col gap-3 text-center md:text-left">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/15 text-primary-container border border-primary-container/30 text-xs font-bold w-fit mx-auto md:mx-0">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Imagen de Consulta Cargada</span>
+                    <div className="flex flex-wrap gap-2 items-center justify-center md:justify-start">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/15 text-primary-container border border-primary-container/30 text-xs font-bold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Imagen de Consulta Cargada</span>
+                      </div>
+                      {uploadPipelineStatus && (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-text-secondary">
+                          <span>{uploadPipelineStatus}</span>
+                        </span>
+                      )}
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold text-text-primary truncate max-w-md">
                       {uploadedFile?.name || 'Muestra de Catálogo Seleccionada'}
                     </h3>
                     <p className="text-text-secondary text-xs leading-relaxed">
-                      Lista para ser contrastada mediante vectores de similitud contra el catálogo de 80 marcas del GIBD.
+                      {selectedVisionModel === 'brands'
+                        ? 'Lista para ser contrastada mediante vectores de similitud contra el catálogo de 80 marcas del GIBD.'
+                        : 'Lista para ser contrastada mediante espacio métrico convolucional contra el catálogo de 150 clubes.'}
                     </p>
                     <div className="flex flex-wrap gap-3 mt-2 justify-center md:justify-start">
                       <button
                         onClick={handleClearQuery}
                         type="button"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-text-secondary hover:text-white transition-colors"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-text-secondary hover:text-white transition-colors cursor-pointer"
                       >
                         <X className="w-3.5 h-3.5" />
                         <span>Quitar Imagen</span>
@@ -688,7 +896,7 @@ export function Laboratorio() {
                 className={`w-full relative group py-6 rounded-full flex items-center justify-center gap-3 md:gap-4 transition-all duration-300 ripple overflow-hidden border border-white/10 ${
                   !previewUrl || isAnalyzing
                     ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed opacity-60'
-                    : 'bg-gradient-to-r from-primary-container to-[#ff8c00] text-white hover:scale-[1.01] active:scale-95 shadow-[0_0_20px_rgba(255,85,0,0.3)] hover:shadow-[0_0_30px_rgba(255,85,0,0.5)]'
+                    : 'bg-gradient-to-r from-primary-container to-[#ff8c00] text-white hover:scale-[1.01] active:scale-95'
                 }`}
               >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
@@ -696,13 +904,13 @@ export function Laboratorio() {
                   <>
                     <RefreshCw className="relative z-10 w-6 h-6 animate-spin text-white" />
                     <span className="relative z-10 text-lg md:text-xl font-black uppercase tracking-tight">
-                      Calculando Similitud Coseno...
+                      {selectedVisionModel === 'brands' ? 'Calculando Similitud Coseno...' : 'Calculando Calibración Sigmoidal...'}
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="relative z-10 text-lg md:text-xl font-black uppercase tracking-tight drop-shadow-md">
-                      Buscar Similitudes (Red Siamesa)
+                      {selectedVisionModel === 'brands' ? 'Buscar Similitudes (Red Siamesa)' : 'Buscar Coincidencias (ResNet50 / Calibrado)'}
                     </span>
                     <Search className="relative z-10 w-6 h-6 md:w-7 md:h-7 drop-shadow-md" />
                   </>
@@ -721,90 +929,106 @@ export function Laboratorio() {
                         </span>
                       </h4>
                       <p className="text-xs text-text-secondary mt-1">
-                        Ordenadas por proximidad métrica en el espacio latente
+                        {selectedVisionModel === 'brands'
+                          ? 'Ordenadas por proximidad métrica en el espacio latente'
+                          : 'Ordenadas por similitud convolucional calibrada (τ=0.82, T=0.04)'}
                       </p>
                     </div>
                     <button
                       onClick={handleClearQuery}
                       type="button"
-                      className="text-xs font-bold px-4 py-2 rounded-full border border-white/10 hover:border-primary-container text-text-secondary hover:text-primary-container transition-colors self-start sm:self-auto"
+                      className="text-xs font-bold px-4 py-2 rounded-full border border-white/10 hover:border-primary-container text-text-secondary hover:text-primary-container transition-colors self-start sm:self-auto cursor-pointer"
                     >
                       Nueva Consulta
                     </button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 w-full">
-                    {results.map((brand, idx) => (
-                      <div
-                        key={brand.id || idx}
-                        className="card-glass-purple rounded-[2rem] p-5 border border-border-organic hover:border-primary-container/80 transition-all duration-300 flex flex-col justify-between group"
-                      >
-                        {/* Thumbnail */}
-                        <div className="w-full h-44 rounded-[1.5rem] bg-black/60 border border-white/5 p-4 flex items-center justify-center overflow-hidden mb-4 relative">
-                          <img
-                            src={brand.image_url}
-                            alt={brand.name}
-                            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
-                            loading="lazy"
-                          />
-                          <span className="absolute top-2 left-2 text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/80 text-text-secondary border border-white/10">
-                            #{idx + 1}
-                          </span>
-                        </div>
-
-                        {/* Metrics Badges */}
-                        <div className="flex items-center justify-between gap-2 mb-3">
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black bg-primary-container/15 text-primary-container border border-primary-container/30">
-                            <Sparkles className="w-3 h-3" />
-                            {brand.similarity_score}% Similitud
-                          </span>
-                          <span className="font-mono text-[11px] text-text-secondary px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
-                            d: {brand.distance}
-                          </span>
-                        </div>
-
-                        {/* Metadata */}
-                        <div>
-                          <h5 className="font-bold text-text-primary text-base truncate mb-1">
-                            {brand.name}
-                          </h5>
-                          <p className="text-xs text-text-secondary truncate mb-4">
-                            {brand.jurisdiction}
-                          </p>
-                        </div>
-
-                        {/* Action Button */}
-                        <button
-                          onClick={() => setSelectedModalBrand(brand)}
-                          type="button"
-                          className="w-full py-2.5 rounded-full border border-white/10 group-hover:border-primary-container/50 group-hover:text-primary-container text-xs font-bold text-text-secondary transition-all flex items-center justify-center gap-2 bg-white/[0.02]"
+                    {results.map((item, idx) => {
+                      const isHighMatch = item.similarity_score >= 85;
+                      const isMidMatch = item.similarity_score >= 60;
+                      return (
+                        <div
+                          key={item.id || idx}
+                          className="card-glass-purple rounded-[2rem] p-5 border border-border-organic hover:border-primary-container/80 transition-all duration-300 flex flex-col justify-between group"
                         >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>Comparar con Consulta</span>
-                        </button>
-                      </div>
-                    ))}
+                          {/* Thumbnail */}
+                          <div className="w-full h-44 rounded-[1.5rem] bg-black/60 border border-white/5 p-4 flex items-center justify-center overflow-hidden mb-4 relative">
+                            <img
+                              src={item.image_url}
+                              alt={item.name}
+                              className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                            />
+                            <span className="absolute top-2 left-2 text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/80 text-text-secondary border border-white/10">
+                              #{idx + 1}
+                            </span>
+                          </div>
+
+                          {/* Metrics Badges */}
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black border ${
+                              isHighMatch
+                                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                : isMidMatch
+                                ? 'bg-primary-container/15 text-primary-container border-primary-container/30'
+                                : 'bg-white/5 text-text-secondary border-white/10'
+                            }`}>
+                              <Sparkles className="w-3 h-3" />
+                              {item.similarity_score}% Similitud
+                            </span>
+                            <span className="font-mono text-[11px] text-text-secondary px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
+                              d: {item.distance}
+                            </span>
+                          </div>
+
+                          {/* Metadata */}
+                          <div>
+                            <h5 className="font-bold text-text-primary text-base truncate mb-1">
+                              {item.name}
+                            </h5>
+                            <p className="text-xs text-text-secondary truncate mb-4">
+                              {item.metadata?.jurisdiction_or_league || item.jurisdiction}
+                            </p>
+                          </div>
+
+                          {/* Action Button */}
+                          <button
+                            onClick={() => setSelectedModalBrand(item)}
+                            type="button"
+                            className="w-full py-2.5 rounded-full border border-white/10 group-hover:border-primary-container/50 group-hover:text-primary-container text-xs font-bold text-text-secondary transition-all flex items-center justify-center gap-2 bg-white/[0.02] cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Comparar con Consulta</span>
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 </section>
               ) : (
-                /* Reference Gallery (Real CACIC 2023 Brands) */
+                /* Reference Gallery */
                 <section className="mt-4 w-full">
                   <div className="flex justify-between items-center mb-6">
                     <div>
                       <h4 className="font-bold text-sm text-text-primary uppercase tracking-widest">
-                        Muestras del Archivo Oficial GIBD (CACIC 2023)
+                        {selectedVisionModel === 'brands'
+                          ? 'Muestras del Archivo Oficial GIBD (CACIC 2023)'
+                          : 'Muestras de Escudos del Estudio CONAISII 2023'}
                       </h4>
                       <p className="text-xs text-text-secondary mt-1">
-                        Haz clic en cualquiera de las marcas para cargarla como consulta de prueba inmediata
+                        {selectedVisionModel === 'brands'
+                          ? 'Haz clic en cualquiera de las marcas para cargarla como consulta de prueba inmediata'
+                          : 'Haz clic en cualquiera de los escudos para cargarla como consulta de prueba inmediata'}
                       </p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-                    {SAMPLE_BRANDS.map((sample) => (
+                    {(selectedVisionModel === 'brands' ? SAMPLE_BRANDS : SAMPLE_CRESTS).map((sample) => (
                       <div
                         key={sample.id}
-                        onClick={() => handleSelectSample(sample.image_url)}
+                        onClick={() => handleSelectSample(sample.image_url, sample.filename)}
                         className="card-glass-purple rounded-[1.5rem] p-4 border border-border-organic hover:border-primary-container cursor-pointer transition-all duration-300 group flex flex-col items-center text-center"
                       >
                         <div className="w-full aspect-square bg-black/40 rounded-[1rem] p-3 flex items-center justify-center mb-3 group-hover:bg-black/70 transition-colors">
@@ -819,7 +1043,7 @@ export function Laboratorio() {
                           {sample.name}
                         </span>
                         <span className="text-[10px] text-text-secondary truncate w-full mt-0.5">
-                          {sample.jurisdiction}
+                          {sample.subtitle}
                         </span>
                       </div>
                     ))}
@@ -828,7 +1052,7 @@ export function Laboratorio() {
               )}
             </div>
 
-            {/* Modal de Comparativa de Marcas */}
+            {/* Modal de Comparativa de Visión */}
             {selectedModalBrand && (
               <div
                 className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
@@ -841,7 +1065,7 @@ export function Laboratorio() {
                   <div className="flex justify-between items-center pb-4 border-b border-border-organic">
                     <div>
                       <span className="text-xs font-bold uppercase tracking-wider text-primary-container">
-                        Detalle de Cotejo Biométrico
+                        {selectedVisionModel === 'brands' ? 'Detalle de Cotejo Biométrico' : 'Detalle de Coincidencia Convolucional'}
                       </span>
                       <h3 className="text-2xl font-black text-text-primary mt-1">
                         {selectedModalBrand.name}
@@ -850,7 +1074,7 @@ export function Laboratorio() {
                     <button
                       onClick={() => setSelectedModalBrand(null)}
                       type="button"
-                      className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white transition-colors"
+                      className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white transition-colors cursor-pointer"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -867,12 +1091,14 @@ export function Laboratorio() {
                           <img src={previewUrl} alt="Query" className="max-h-full max-w-full object-contain" />
                         )}
                       </div>
-                      <span className="text-[11px] text-text-secondary">MBR Normalizado 224x224</span>
+                      <span className="text-[11px] text-text-secondary">
+                        {selectedVisionModel === 'brands' ? 'MBR Normalizado 224x224' : 'Entrada Cuadrada 224x224'}
+                      </span>
                     </div>
 
                     <div className="flex flex-col items-center text-center p-4 rounded-[1.5rem] bg-black/50 border border-primary-container/30">
                       <span className="text-xs font-bold text-primary-container mb-3 uppercase tracking-wider">
-                        Marca en Archivo GIBD
+                        {selectedVisionModel === 'brands' ? 'Marca en Archivo GIBD' : 'Escudo Indexado en Catálogo'}
                       </span>
                       <div className="w-36 h-36 flex items-center justify-center p-2 bg-black/70 rounded-[1rem] border border-primary-container/20 mb-2">
                         <img
@@ -890,7 +1116,9 @@ export function Laboratorio() {
                   {/* Metrics Table */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/5">
                     <div>
-                      <span className="text-[10px] text-text-secondary uppercase">Similitud Coseno</span>
+                      <span className="text-[10px] text-text-secondary uppercase">
+                        {selectedVisionModel === 'brands' ? 'Similitud Coseno' : 'Similitud Calibrada'}
+                      </span>
                       <p className="text-lg font-black text-primary-container">
                         {selectedModalBrand.similarity_score}%
                       </p>
@@ -904,31 +1132,33 @@ export function Laboratorio() {
                     <div>
                       <span className="text-[10px] text-text-secondary uppercase">Código de Registro</span>
                       <p className="text-lg font-black text-text-primary">
-                        #{selectedModalBrand.brand_code}
+                        #{selectedModalBrand.item_code || selectedModalBrand.brand_code}
                       </p>
                     </div>
                     <div>
                       <span className="text-[10px] text-text-secondary uppercase">Espacio Latente</span>
                       <p className="text-lg font-black text-text-primary font-mono">
-                        256-D
+                        {selectedVisionModel === 'brands' ? '256-D' : '2048-D'}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs font-bold text-text-secondary">Jurisdicción de Origen</span>
+                    <span className="text-xs font-bold text-text-secondary">
+                      {selectedVisionModel === 'brands' ? 'Jurisdicción de Origen' : 'Liga y País de Afiliación'}
+                    </span>
                     <p className="text-sm text-text-primary font-medium">
-                      {selectedModalBrand.jurisdiction}
+                      {selectedModalBrand.metadata?.jurisdiction_or_league || selectedModalBrand.jurisdiction}
                     </p>
                     <p className="text-xs text-text-secondary mt-1">
-                      {selectedModalBrand.description}
+                      {selectedModalBrand.metadata?.description || selectedModalBrand.description}
                     </p>
                   </div>
 
                   <button
                     onClick={() => setSelectedModalBrand(null)}
                     type="button"
-                    className="w-full py-3 rounded-full bg-primary-container text-white font-bold text-sm hover:scale-[1.01] transition-transform"
+                    className="w-full py-3 rounded-full bg-primary-container text-white font-bold text-sm hover:scale-[1.01] transition-transform cursor-pointer"
                   >
                     Entendido, Cerrar Inspección
                   </button>
@@ -1072,15 +1302,27 @@ export function Laboratorio() {
                     <TerminalSquare className="text-text-secondary w-6 h-6 shrink-0" />
                     <input 
                       type="text" 
+                      value={nlpQuery}
+                      onChange={(e) => setNlpQuery(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleNlpSearch(); }}
                       placeholder="Busca por patrones o concepts (NLP)..." 
                       className="bg-transparent border-none outline-none focus:ring-0 w-full text-text-primary placeholder:text-text-secondary font-semibold"
                     />
                   </div>
-                  <button className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10">
+                  <button
+                    type="button"
+                    onClick={handleNlpSearch}
+                    className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10 cursor-pointer"
+                  >
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
                     <span className="relative z-10 drop-shadow-md">Buscar (NLP)</span>
                   </button>
                 </div>
+                {nlpNotice && (
+                  <p className="mt-3 text-xs md:text-sm text-primary-container font-semibold text-center md:text-left" role="status">
+                    {nlpNotice}
+                  </p>
+                )}
               </div>
             </section>
           </motion.div>

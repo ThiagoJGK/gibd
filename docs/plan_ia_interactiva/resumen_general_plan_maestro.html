@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Plan Maestro GIBD 2026 — IA Interactiva en Vivo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #0A0A0A;
+      color: #E4E4E7;
+      font-size: 11.5px;
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Page Canvas */
+    .page {
+      width: 8.5in;
+      height: 11in;
+      padding: 38px 45px 40px 45px;
+      position: relative;
+      page-break-after: always;
+      overflow: hidden;
+      background: #0A0A0A;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Decorative Highlights */
+    .glow-orange {
+      position: absolute;
+      top: -90px;
+      right: -90px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 85, 0, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
+      pointer-events: none;
+    }
+
+    .glow-purple {
+      position: absolute;
+      bottom: -90px;
+      left: -90px;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(10, 10, 10, 0) 70%);
+      pointer-events: none;
+    }
+
+    .top-accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #FF5500 0%, #8B5CF6 50%, #FF5500 100%);
+    }
+
+    /* Header */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      background: #FF5500;
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      letter-spacing: 1px;
+    }
+
+    .inst-text {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #A1A1AA;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* Pill Badges */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pill-orange {
+      background: rgba(255, 85, 0, 0.15);
+      color: #FF5500;
+      border: 1px solid rgba(255, 85, 0, 0.35);
+    }
+
+    .pill-purple {
+      background: rgba(139, 92, 246, 0.15);
+      color: #C4B5FD;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+    }
+
+    .pill-cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: #67E8F9;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+    }
+
+    .pill-green {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6EE7B7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    /* Hero Title */
+    .hero-title-block {
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 23px;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 5px;
+    }
+
+    .hero-subtitle {
+      font-size: 11.5px;
+      color: #A1A1AA;
+      font-weight: 400;
+    }
+
+    /* Metadata Bar */
+    .metadata-strip {
+      background: #121214;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 10.5px;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .meta-label {
+      color: #71717A;
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .meta-val {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: -0.2px;
+    }
+
+    h2 .icon {
+      color: #FF5500;
+    }
+
+    /* Cards */
+    .card {
+      background: #121214;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #FF5500;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-body {
+      color: #D4D4D8;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    /* Pillars */
+    .pillar-card {
+      background: #141416;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 11px;
+      color: #FFFFFF;
+    }
+
+    .pillar-num {
+      width: 18px;
+      height: 18px;
+      background: rgba(255, 85, 0, 0.2);
+      color: #FF5500;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9.5px;
+      font-weight: 800;
+    }
+
+    .pillar-text {
+      color: #A1A1AA;
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+
+    /* Roadmap Timeline */
+    .week-card {
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 10px 12px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .week-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .week-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .week-tasks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .role-task {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+      padding: 6px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .role-badge {
+      font-size: 8.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      display: inline-block;
+    }
+
+    .badge-thiago { color: #FF5500; }
+    .badge-renato { color: #60A5FA; }
+    .badge-emmanuel { color: #34D399; }
+
+    .role-desc {
+      font-size: 10px;
+      color: #D4D4D8;
+      line-height: 1.35;
+    }
+
+    /* Table Styles */
+    .table-custom {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 10.5px;
+    }
+
+    .table-custom th {
+      background: #18181B;
+      color: #FFFFFF;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .table-custom td {
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      background: #121214;
+      color: #D4D4D8;
+    }
+
+    .table-custom tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Validation Flow Boxes */
+    .val-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .val-box {
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .val-box-agent {
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.06) 0%, rgba(18, 18, 20, 0.95) 100%);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .val-box-human {
+      background: linear-gradient(180deg, rgba(255, 85, 0, 0.06) 0%, rgba(18, 18, 20, 0.95) 100%);
+      border-color: rgba(255, 85, 0, 0.3);
+    }
+
+    .val-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .val-title-agent { color: #C4B5FD; }
+    .val-title-human { color: #FFAA80; }
+
+    .val-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 10px;
+    }
+
+    .val-list li {
+      position: relative;
+      padding-left: 14px;
+      line-height: 1.35;
+      color: #E4E4E7;
+    }
+
+    .val-list li::before {
+      content: "•";
+      position: absolute;
+      left: 3px;
+      color: #FF5500;
+      font-weight: bold;
+    }
+
+    /* Member Badge Box */
+    .member-val-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .member-val-item {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      padding: 7px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .member-val-name {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .member-val-desc {
+      font-size: 9px;
+      color: #A1A1AA;
+      line-height: 1.3;
+    }
+
+    /* Footer */
+    .page-footer {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      color: #71717A;
+      font-weight: 600;
+    }
+
+    .brand-accent {
+      color: #FF5500;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1 ==================== -->
+  <div class="page">
+    <div class="top-accent-bar"></div>
+    <div class="glow-orange"></div>
+
+    <div class="header-bar">
+      <div class="logo-container">
+        <span class="logo-badge">GIBD</span>
+        <span class="inst-text">UTN FRCU — Grupo de Investigación en Big Data</span>
+      </div>
+      <div class="header-badges">
+        <span class="pill pill-orange">Sprint 2026</span>
+        <span class="pill pill-purple">Plan Maestro IA</span>
+      </div>
+    </div>
+
+    <div class="hero-title-block">
+      <h1>Plan Maestro GIBD 2026: IA Interactiva en Vivo</h1>
+      <div class="hero-subtitle">Resumen Ejecutivo de Arquitectura, Metodología y Cadencia para Todo el Equipo</div>
+    </div>
+
+    <div class="metadata-strip">
+      <div class="meta-item">
+        <span class="meta-label">Tech Lead / UI-UX</span>
+        <span class="meta-val">Thiago Gomez Kehler</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Backend & IA Engineer</span>
+        <span class="meta-val">Renato Bonín</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Frontend & CMS Admin</span>
+        <span class="meta-val">Emmanuel Davezac</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Horizonte Temporal</span>
+        <span class="meta-val">4 Sprints Semanales</span>
+      </div>
+    </div>
+
+    <h2><span class="icon">🎯</span> 1. ¿Qué Estamos Construyendo y Por Qué Cambiamos el Rumbo?</h2>
+    <div class="card">
+      <div class="card-title">
+        <span>Giro Estratégico: De Portal Institucional a Laboratorio Científico Vivo</span>
+        <span class="pill pill-cyan">Zero-Cost CPU</span>
+      </div>
+      <div class="card-body">
+        El GIBD ha generado investigaciones pioneras en redes siamesas para <strong>marcas de ganado</strong> (CACIC 2023), búsqueda por similitud de <strong>escudos y logos de clubes</strong> (CONAISII 2023), análisis semántico normativo con <strong>PTAH-Jurídico</strong>, recuperación de <strong>eventos acústicos</strong> y <strong>video retrieval</strong>.
+        <br><br>
+        Hasta hoy, el desarrollo web invertía recursos considerables en módulos de noticias y artículos genéricos. <strong>Ese enfoque se pausa por completo</strong>. El nuevo objetivo supremo es construir un <strong>Laboratorio Interactivo de IA en Tiempo Real</strong>, donde docentes, alumnos y evaluadores puedan experimentar en vivo los modelos matemáticos y vectoriales reales del GIBD.
+      </div>
+    </div>
+
+    <h2><span class="icon">⚡</span> 2. Los Cuatro Pilares Fundamentales del Plan</h2>
+    <div class="grid-2">
+      <div class="pillar-card">
+        <div class="pillar-header">
+          <span class="pillar-num">1</span>
+          <span>Autenticidad Científica</span>
+        </div>
+        <div class="pillar-text">
+          Cero mocks y cero simulaciones con hashes aleatorios. Todas las búsquedas emplean matrices de características reales (.npy) y distancias matemáticas verificadas.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header">
+          <span class="pillar-num">2</span>
+          <span>Inferencia Zero-Cost en CPU</span>
+        </div>
+        <div class="pillar-text">
+          Motores altamente optimizados para responder en menos de 150 ms sobre procesadores estándar, sin servidores con GPU dedicadas ni costos ocultos de nube.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header">
+          <span class="pillar-num">3</span>
+          <span>Calibración de Escudos</span>
+        </div>
+        <div class="pillar-text">
+          Corrección del "efecto cono" en CNNs (ReLU). Mediante temperatura logística, eliminamos los porcentajes engañosos del 75-80% para imágenes no afines.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header">
+          <span class="pillar-num">4</span>
+          <span>Almacenamiento Cloudinary</span>
+        </div>
+        <div class="pillar-text">
+          Pipeline de subida ágil con preset unsigned y transformaciones automáticas en el Edge (224x224, WebP, fondo neutro) sin saturar cuotas de Vercel.
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>GIBD WEB 2026 — Documento de Planificación Oficial</span>
+      <span>Página <span class="brand-accent">1</span> de 3</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2 ==================== -->
+  <div class="page">
+    <div class="top-accent-bar"></div>
+    <div class="glow-purple"></div>
+
+    <div class="header-bar">
+      <div class="logo-container">
+        <span class="logo-badge">GIBD</span>
+        <span class="inst-text">UTN FRCU — Cadencia Operativa de Sprints</span>
+      </div>
+      <div class="header-badges">
+        <span class="pill pill-green">Ejecución Paralela</span>
+      </div>
+    </div>
+
+    <h2><span class="icon">🗺️</span> 3. Hoja de Ruta Semana a Semana para el Equipo</h2>
+
+    <!-- Semana 1 -->
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">🟢 SEMANA 1: Escudos Calibrados, Cloudinary y Visión Consolidada</span>
+        <span class="pill pill-orange">Prioridad Inmediata</span>
+      </div>
+      <div class="week-tasks">
+        <div class="role-task">
+          <span class="role-badge badge-thiago">Thiago (Tech Lead)</span>
+          <div class="role-desc">Arquitectura multimodelo en Laboratorio, contratos de visión y setup del preset Cloudinary.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-renato">Renato (Backend)</span>
+          <div class="role-desc">Motor <code>crests_engine.py</code> en CPU, calibración sigmoide y endpoints en FastAPI.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-emmanuel">Emmanuel (Frontend)</span>
+          <div class="role-desc">Componente <code>CloudinaryUploader.tsx</code> y tarjetas <code>CrestResultCard.tsx</code> en Flat UI.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 2 -->
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">🟡 SEMANA 2: Espacio Latente G5 (3D/2D) y Catálogos Expandidos</span>
+        <span class="pill pill-purple">G5 Dimensionalidad</span>
+      </div>
+      <div class="week-tasks">
+        <div class="role-task">
+          <span class="role-badge badge-thiago">Thiago (Tech Lead)</span>
+          <div class="role-desc">Diseño de la experiencia Three.js OLED/Orange y tween de cámara al nodo seleccionado.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-renato">Renato (Backend)</span>
+          <div class="role-desc">Motor <code>projection_engine.py</code> con PCA/UMAP a 2D y 3D, y proyección de query al vuelo.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-emmanuel">Emmanuel (Frontend)</span>
+          <div class="role-desc">Visor <code>EmbeddingViewer3D.tsx</code>, tooltips informativos y drawer lateral de historial.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 3 -->
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">🔵 SEMANA 3: Núcleo de Texto (PTAH-Jurídico) y Audio con Espectrogramas</span>
+        <span class="pill pill-cyan">G1 Sonido & G3 Texto</span>
+      </div>
+      <div class="week-tasks">
+        <div class="role-task">
+          <span class="role-badge badge-thiago">Thiago (Tech Lead)</span>
+          <div class="role-desc">UI de búsqueda jurídica, reproductor acústico dinámico y afinación del dial háptico.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-renato">Renato (Backend)</span>
+          <div class="role-desc">Embeddings ONNX en CPU para PTAH (300 casos) y extracción de firmas MFCC en audio.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-emmanuel">Emmanuel (Frontend)</span>
+          <div class="role-desc">Buscador <code>PtahSearchView.tsx</code> y visualizador Canvas 2D con Web Audio API a 60 FPS.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 4 -->
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">🟣 SEMANA 4: Video Retrieval G2, Auditoría Flat y Despliegue</span>
+        <span class="pill pill-green">Cierre & Release</span>
+      </div>
+      <div class="week-tasks">
+        <div class="role-task">
+          <span class="role-badge badge-thiago">Thiago (Tech Lead)</span>
+          <div class="role-desc">Auditoría pixel-perfect Flat, optimización de chunks en Vite y compuerta final a Git.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-renato">Renato (Backend)</span>
+          <div class="role-desc">Muestreo temporal de keyframes a 1 fps en CPU para dinamismo y suite E2E con pytest.</div>
+        </div>
+        <div class="role-task">
+          <span class="role-badge badge-emmanuel">Emmanuel (Frontend)</span>
+          <div class="role-desc">Reproductor de video con timeline interactivo, auditoría mobile y limpieza F12.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="icon">🔬</span> 4. Los 6 Grupos de Investigación en el Laboratorio</h2>
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th>Nombre del Grupo</th>
+          <th>Avance Científico Real</th>
+          <th>Integración en Laboratorio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>G1</strong></td>
+          <td>Sonido</td>
+          <td>Retrieval de eventos acústicos y similitud musical</td>
+          <td>Espectrogramas en tiempo real y matching por MFCC</td>
+        </tr>
+        <tr>
+          <td><strong>G2</strong></td>
+          <td>Video</td>
+          <td>Detección de dinámica abrupta y violencia por keyframes</td>
+          <td>Reproductor con línea temporal de eventos destacados</td>
+        </tr>
+        <tr>
+          <td><strong>G3</strong></td>
+          <td>Texto</td>
+          <td>Búsqueda semántica jurídica (PTAH-Jurídico)</td>
+          <td>Buscador en lenguaje natural de artículos de leyes</td>
+        </tr>
+        <tr>
+          <td><strong>G4</strong></td>
+          <td>Imágenes</td>
+          <td>Redes siamesas en marcas de ganado y escudos de fútbol</td>
+          <td>Comparador biométrico con porcentajes calibrados</td>
+        </tr>
+        <tr>
+          <td><strong>G5</strong></td>
+          <td>Red. Dimensional</td>
+          <td>Compresión y preservación de similitud métrica</td>
+          <td>Nube de puntos 3D interactiva en Three.js / Canvas</td>
+        </tr>
+        <tr>
+          <td><strong>G6</strong></td>
+          <td>Desarrollo Web/App</td>
+          <td>Thiago, Renato y Emmanuel: Arquitectura y Sistemas</td>
+          <td>Orquestación unificada Flat UI y despliegue Vercel</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>GIBD WEB 2026 — Documento de Planificación Oficial</span>
+      <span>Página <span class="brand-accent">2</span> de 3</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 3 ==================== -->
+  <div class="page">
+    <div class="top-accent-bar"></div>
+    <div class="glow-orange"></div>
+
+    <div class="header-bar">
+      <div class="logo-container">
+        <span class="logo-badge">GIBD</span>
+        <span class="inst-text">UTN FRCU — Calidad y Validación de Equipo</span>
+      </div>
+      <div class="header-badges">
+        <span class="pill pill-orange">Quality Gate</span>
+      </div>
+    </div>
+
+    <h2><span class="icon">🛡️</span> 5. Verificación y Validación (V&V) en Doble Nivel</h2>
+    <p style="color: #A1A1AA; font-size: 10.5px; margin-bottom: 10px;">
+      Para garantizar que ninguna entrega contenga datos simulados ni desvíos estéticos, el sistema aplica una validación estricta en dos escalones:
+    </p>
+
+    <div class="val-container">
+      <div class="val-box val-box-agent">
+        <div class="val-title val-title-agent">
+          <span>🤖 Nivel 1 — Pre-Verificación del Agente</span>
+        </div>
+        <ul class="val-list">
+          <li><strong>Compilación Estricta:</strong> <code>npm run build</code> con código 0 y 0 errores de TypeScript.</li>
+          <li><strong>Pruebas Unitarias Pytest:</strong> 100% de tests aprobados sobre endpoints de inferencia.</li>
+          <li><strong>Consistencia Métrica:</strong> Distancias acotadas, simétricas y porcentajes en rango [0, 100].</li>
+          <li><strong>Benchmark de Latencia:</strong> Inferencia en CPU garantizada en menos de 150-200 ms.</li>
+        </ul>
+      </div>
+
+      <div class="val-box val-box-human">
+        <div class="val-title val-title-human">
+          <span>👥 Nivel 2 — Validación Humana Obligatoria</span>
+        </div>
+        <p style="font-size: 9.5px; color: #D4D4D8; line-height: 1.35; margin-bottom: 4px;">
+          <strong>Todos los integrantes deben ejecutar y documentar su protocolo manual con datos reales:</strong>
+        </p>
+        <div class="member-val-grid">
+          <div class="member-val-item">
+            <div class="member-val-name badge-renato">Renato (Backend)</div>
+            <div class="member-val-desc">Prueba manual con curl/Postman; valida tiempos en CPU y respuestas JSON.</div>
+          </div>
+          <div class="member-val-item">
+            <div class="member-val-name badge-emmanuel">Emmanuel (Frontend)</div>
+            <div class="member-val-desc">Prueba en navegador y móvil real; valida fluidez, sonido y responsividad.</div>
+          </div>
+          <div class="member-val-item">
+            <div class="member-val-name badge-thiago">Thiago (Tech Lead)</div>
+            <div class="member-val-desc">Validación integral E2E, rigor científico y compuerta final para subir a Git.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="icon">📂</span> 6. Directorio de Planes Técnicos Detallados</h2>
+    <div class="card" style="padding: 10px 14px; margin-bottom: 12px;">
+      <div class="card-body" style="font-size: 10.5px;">
+        Cada miembro del equipo cuenta con su especificación técnica semanal detallada en la carpeta <code>docs/plan_ia_interactiva/</code> con contratos Pydantic, TypeScript, fórmulas y checklists:
+        <div style="margin-top: 6px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+          <div style="background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <strong style="color: #FF5500; font-size: 9.5px;">Semana 1</strong><br>
+            <span style="color:#A1A1AA; font-size: 8.5px;">Thiago | Renato | Emma</span>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <strong style="color: #FF5500; font-size: 9.5px;">Semana 2</strong><br>
+            <span style="color:#A1A1AA; font-size: 8.5px;">Thiago | Renato | Emma</span>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <strong style="color: #FF5500; font-size: 9.5px;">Semana 3</strong><br>
+            <span style="color:#A1A1AA; font-size: 8.5px;">Thiago | Renato | Emma</span>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <strong style="color: #FF5500; font-size: 9.5px;">Semana 4</strong><br>
+            <span style="color:#A1A1AA; font-size: 8.5px;">Thiago | Renato | Emma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="icon">👑</span> 7. Compromiso de Calidad y Regla de Git</h2>
+    <div class="card" style="border-color: rgba(255, 85, 0, 0.3); background: rgba(255, 85, 0, 0.03);">
+      <div class="card-body" style="font-size: 10.5px; color: #FFFFFF;">
+        <strong>Regla de Oro de Reprogramación:</strong> Si al llegar a la puesta en común una tarea no cumple los Quality Gates (falla de compilación, mocks inventados o UI rota), <em>se reprograma para la semana siguiente</em>. No se permiten merges forzados.
+        <br><br>
+        <strong>Regla Global Inquebrantable:</strong> Luego de grandes cambios, <strong>preguntar siempre a Thiago si continuar con la subida a Git</strong>. La rama <code>main</code> está conectada a producción y solo recibe código verificado por todo el equipo.
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>GIBD WEB 2026 — Documento de Planificación Oficial</span>
+      <span>Página <span class="brand-accent">3</span> de 3</span>
+    </div>
+  </div>
+
+</body>
+</html>

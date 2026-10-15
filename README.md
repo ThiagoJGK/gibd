@@ -1,97 +1,154 @@
-# 🏛️ GIBD 2026 — Plataforma Institucional y Laboratorio de IA
+# GIBD
 
-> **Grupo de Investigación en Bases de Datos (GIBD)**  
-> *Facultad Regional Concepción del Uruguay — Universidad Tecnológica Nacional (UTN - FRCU)*  
-> Repositorio oficial de la plataforma web de difusión científica, gestión documental (CMS) y laboratorio de inferencia de modelos multimodales (Visión Computacional, NLP y Audio).
+Grupo de Investigación en Big Data — plataforma web (Noticias, Laboratorio de visión por computadora y Panel CMS).
 
----
-
-## 🧭 Centro de Control y Planificación Centralizada
-
-Toda la documentación, hojas de ruta y especificaciones técnicas se encuentran formalmente centralizadas en la carpeta [`docs/`](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs):
-
-* **👑 [Plan Maestro y Guía de Operaciones: Tech Lead & Diseñador](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/plan_maestro_tech_lead_thiago.md)**  
-  Documento rector de **Thiago Gomez Kehler** (Tech Lead, Arquitecto y Diseñador UI/UX). Define las expectativas semanales del equipo, qué pruebas intermedias y de entrega realizar, los Quality Gates y la matriz de control para las reuniones de los viernes.
-* **📚 [Índice General de Documentación](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/README.md)**  
-  Mapeo integral del repositorio documental, enlazando los planes semanales con las fases originales (`docs/fases/`).
-* **📅 Planificación Operativa por Semanas (`docs/semanas/`):**
-  1. [Semana 1: Fundación Real y Demostración](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/semanas/semana_1_fundacion_y_demostracion.md) *(Sprint Solo de Thiago)*: Inferencia real en CPU sobre marcas de ganado del GIBD, saneamiento y prototipo funcional.
-  2. [Semana 2: CMS No-Dev de Noticias y Papers](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/semanas/semana_2_cms_papers_noticias.md) *(Equipo)*: Backend Gemini AI (Renato), Formularios CMS multi-autor con 24 investigadores (Emma) y Supabase RLS (Thiago).
-  3. [Semana 3: CMS de los 6 Grupos de Investigación y Equipo](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/semanas/semana_3_grupos_investigacion_equipo.md) *(Equipo)*: G1 a G6 del Vault, gestión de docentes y becarios alumnos, Landing interactiva.
-  4. [Semana 4: Expansión Multimodal, Flat y Despliegue](file:///c:/Users/thiag/Desktop/Files/Projects/GIBD%20WEB/docs/semanas/semana_4_multimodal_ptah_despliegue.md) *(Cierre)*: PTAH-Jurídico NLP (300 consultas), auditoría mobile, Quality Gate y Vercel.
-
----
-
-## 👥 Equipo y Organización de Roles
+## Estructura del repositorio
 
 ```
-                   ┌─────────────────────────────────────────┐
-                   │          THIAGO GOMEZ KEHLER            │
-                   │   Tech Lead & Diseñador UI/UX Principal │
-                   │   • Arquitectura y Calidad Global       │
-                   │   • Design System Flat (#0A0A0A/#FF5500)│
-                   │   • Integrador Supremo (Frontend+Back)  │
-                   └────────────────────┬────────────────────┘
-                                        │
-                 ┌──────────────────────┴──────────────────────┐
-                 ▼                                             ▼
-  ┌─────────────────────────────┐               ┌─────────────────────────────┐
-  │        RENATO BONÍN         │               │      EMMANUEL DAVEZAC       │
-  │     Backend & AI Engineer   │               │     Frontend & CMS Admin    │
-  │  • Servicios FastAPI        │               │  • Vistas de Administración │
-  │  • Inferencia y Gemini AI   │               │  • Formularios y UX Admin   │
-  │  • Contratos Pydantic       │               │  • Responsividad y Estilos  │
-  └─────────────────────────────┘               └─────────────────────────────┘
+gibd/
+├── backend/          # API Gateway FastAPI (Python)
+│   ├── app/main.py   #   endpoints: health + análisis de papers con Gemini
+│   └── requirements.txt
+├── frontend/         # SPA React + Vite + TypeScript + Tailwind 4
+│   ├── src/          #   páginas, componentes, servicios (Supabase, Cloudinary)
+│   └── .env.example  #   plantilla de variables de entorno
+├── docs/             # walkthroughs y documentación de fases
+└── Contexto/         # material de contexto del proyecto
 ```
+
+## Prerrequisitos
+
+| Herramienta | Versión mínima | Verificado con |
+|-------------|----------------|----------------|
+| Python      | 3.11           | 3.14.8         |
+| Node.js     | 20             | 26.10.0        |
+| npm         | 10             | 11.19.1        |
 
 ---
 
-## 🗂️ Taxonomía del Repositorio
+## 1. Backend — API Gateway (FastAPI)
 
+Levanta el servidor de puerta de enlace que consume Gemini y expone el health check usado por el frontend.
+
+### 1.1 Instalación (una sola vez)
+
+```powershell
+cd c:\Users\Usuario\Desktop\gibd\backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1          # Windows (PowerShell)
+# source venv/bin/activate           # macOS / Linux
+pip install -r requirements.txt
 ```
-GIBD WEB/
-├── frontend/             # SPA moderna (React 18, Vite, TypeScript, Framer Motion)
-│   ├── src/pages/        # Vistas principales: Landing, Laboratorio, Papers, Admin
-│   ├── src/components/   # Componentes modulares bajo el Design System Flat
-│   ├── src/utils/        # Clientes de servicios (dbService Supabase/Mock)
-│   └── public/brands/    # Catálogo estático de marcas de ganado reales del GIBD
-│
-├── backend/              # API Gateway en FastAPI (Python 3.10+)
-│   ├── app/main.py       # Entrada principal, enrutador CORS y endpoints REST
-│   ├── app/services/     # Motores de inferencia en CPU (siamese_engine) y Gemini
-│   └── app/data/brands/  # Datasets pre-indexados y metadatos de marcas
-│
-├── docs/                 # Documentación técnica, planes semanales y guías maestras
-│   ├── semanas/          # Hojas de ruta operativas semanales (Semana 1 a 4)
-│   ├── fases/            # Planes de diseño originales armonizados
-│   ├── plan_maestro_tech_lead_thiago.md  # Guía rectora para Thiago
-│   └── README.md         # Índice general de la documentación
-│
-├── Contexto/             # Activos científicos originales del GIBD
-│   ├── GIBD_Obsidian_Vault/ # Base de conocimiento: 6 grupos MOC, proyectos y papers
-│   ├── Archivos importantes/# Notebooks ViT (Adrián Planas), base de marcas CACIC 2023
-│   └── GIBD ALLDATA/     # Archivos históricos y zips de investigación
-│
-├── scripts/              # Herramientas utilitarias y generadores de reportes PDF
-├── AGENTS.md             # Reglas universales y de orden para agentes de IA
-└── GEMINI.md             # Configuración operativa para Gemini/Antigravity
+
+> **Nota (Python 3.14):** los pines originales del `requirements.txt` (`pydantic==2.7.4`) no compilan en Python ≥ 3.13 porque `pydantic-core` no trae wheel precompilado. El archivo ya quedó actualizado con versiones probadas (`fastapi==0.142.4`, `pydantic==2.13.5`, `uvicorn==0.54.0`).
+
+### 1.2 Variables de entorno (opcional)
+
+Creá `backend/.env`:
+
+```bash
+# Sin esta clave el gateway funciona igual, pero con respuesta MOCK en /ai/analyze-paper
+GEMINI_API_KEY=tu_clave_de_google_ai_studio
 ```
+
+### 1.3 Ejecutar
+
+```powershell
+.\venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Alternativas equivalentes:
+
+```powershell
+python -m uvicorn app.main:app --reload     # con el venv activado
+python app/main.py                          # ejecuta el bloque __main__ (sin --reload)
+```
+
+### 1.4 Verificar
+
+| Qué | URL | Respuesta esperada |
+|-----|-----|--------------------|
+| Health check | <http://127.0.0.1:8000/api/v1/health> | `{"status":"healthy","gemini_active":...}` |
+| Docs interactivas (Swagger) | <http://127.0.0.1:8000/docs> | UI de endpoints |
+
+### 1.5 Endpoints
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET`  | `/api/v1/health` | Health check; indica si `GEMINI_API_KEY` está activa |
+| `POST` | `/api/v1/ai/analyze-paper` | Analiza el texto de un paper y devuelve `abstract` + `image_prompt` (Gemini `gemini-1.5-flash`; sin clave devuelve mock) |
+
+- **CORS:** el gateway solo acepta pedidos desde `http://localhost:5173` / `http://127.0.0.1:5173` (el puerto del frontend en dev).
+- **Inferencia de visión:** los endpoints `/api/v1/inference/siamese-brands` y `/api/v1/inference/soccer-crests` (modelos de las subfases 1.1 / 1.2) **todavía no están implementados en este gateway**. Hasta que se incorporen, el Laboratorio usa automáticamente el fallback local `CREST_SAMPLES` (datos de demostración).
 
 ---
 
-## 🎨 El Estándar Estético: Flat Design System
+## 2. Frontend — SPA (React + Vite)
 
-Cualquier contribución a la interfaz debe respetar incondicionalmente las directrices de diseño:
-- **Fondo:** Negro OLED puro (`#0A0A0A` / `#000000`).
-- **Acento Primario:** Naranja vibrante de alto impacto (`#FF5500`).
-- **Geometría:** Botones, selectores y pills estrictamente redondeados (`rounded-full` / `border-radius: 9999px`). Tarjetas y contenedores con radio orgánico (`rounded-[2rem]`).
-- **Cero Sombras Tradicionales:** Prohibido usar `box-shadow` difusos convencionales. La profundidad se logra mediante **microbordes de alto contraste** (`border border-white/10`) y resplandores focalizados.
-- **Microinteracciones:** Transiciones fluidas y aceleradas por hardware usando `framer-motion`.
+### 2.1 Instalación (una sola vez)
+
+```powershell
+cd c:\Users\Usuario\Desktop\gibd\frontend
+npm install
+```
+
+### 2.2 Variables de entorno
+
+Copiá la plantilla y completá los valores reales:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+| Variable | Descripción |
+|----------|-------------|
+| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Proyecto Supabase (CMS de Noticias). **Sin ellos la app entra en Mock Mode** (contenido en localStorage) |
+| `VITE_API_URL` | URL del backend, ej. `http://localhost:8000` |
+| `VITE_CLOUDINARY_CLOUD_NAME` | Cloud de Cloudinary, ej. `gqhvqr2m` |
+| `VITE_CLOUDINARY_UPLOAD_PRESET` | Preset **Unsigned**, ej. `GIBD_IMAGES` |
+
+> 📁 Las imágenes subidas desde el Laboratorio quedan en la **carpeta `GIBD`** del cloud de Cloudinary (configurada en el upload preset `GIBD_IMAGES`); se pueden ver en el *Media Library* de la consola de Cloudinary.
+
+> ⚠️ Vite solo lee `.env` **al iniciar el servidor**. Después de editar, reiniciá `npm run dev`.
+> ⚠️ Nunca pongas API keys/secretos de Cloudinary en variables `VITE_*`: quedan expuestos en el bundle del navegador.
+
+### 2.3 Ejecutar
+
+```powershell
+npm run dev
+```
+
+Abrí <http://localhost:5173>.
+
+### 2.4 Scripts disponibles
+
+| Script | Comando | Uso |
+|--------|---------|-----|
+| Dev server | `npm run dev` | Desarrollo con hot-reload |
+| Build de producción | `npm run build` | Type-check (`tsc -b`) + bundle en `dist/` |
+| Lint | `npm run lint` | ESLint sobre todo el código |
+| Preview del build | `npm run preview` | Sirve `dist/` localmente |
 
 ---
 
-## ⚡ Calidad de Código y Zero-Cost AI
+## 3. Verificación rápida (ambos levantados)
 
-1. **Datos Reales:** No se permiten mocks inventados ni simulaciones de hash (MD5) en endpoints de producción cuando existan datos científicos en `Contexto/`.
-2. **Inferencia en CPU (Zero-Cost):** Los modelos de visión de marcas y búsqueda textual están optimizados para ejecutarse en CPU local en tiempos menores a 200 ms, sin costos de nube.
-3. **Quality Gate:** Todo PR debe compilar limpiamente con `npm run build` en frontend y `python -m py_compile` en backend sin advertencias críticas antes de fusionarse a `dev`.
+1. Backend en <http://127.0.0.1:8000/api/v1/health> → JSON `healthy`.
+2. Frontend en <http://localhost:5173> carga sin errores en consola.
+3. **Laboratorio → subir imagen** → aparece el badge *"Subido a la nube"* y el spinner se detiene (subida real al cloud `gqhvqr2m` con preset `GIBD_IMAGES`; la imagen queda en la **carpeta `GIBD`** del Media Library de Cloudinary).
+4. **Laboratorio → analizar** → con el backend corriendo responde; sin modelos de inferencia, usa el fallback demo.
+5. **Noticias** → sin Supabase configurado entra en Mock Mode (guarda en localStorage).
+
+---
+
+## 4. Solución de problemas
+
+| Síntoma | Causa / solución |
+|---------|------------------|
+| `Failed building wheel for pydantic-core` | Python ≥ 3.13 con pines viejos → usá el `requirements.txt` actualizado de este repo |
+| `Upload preset must be whitelisted for unsigned uploads` | El preset en la consola de Cloudinary no está en modo **Unsigned** |
+| `Upload preset not found` | El nombre en `VITE_CLOUDINARY_UPLOAD_PRESET` no coincide exactamente con el del preset |
+| Cambios en `.env` no hacen efecto | Reiniciá `npm run dev` (Vite) o el proceso de uvicorn |
+| `403 Forbidden` / error de CORS | El backend no está en `127.0.0.1:8000`, o el frontend se abrió en un puerto distinto de 5173 |
+| El análisis de papers siempre devuelve lo mismo | Falta `GEMINI_API_KEY` en `backend/.env` → respuesta mock (verificá `gemini_active` en el health check) |
+

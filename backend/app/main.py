@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from typing import List, Optional
+from typing import List, Dict, Any, Optional
 from fastapi import FastAPI, HTTPException, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +10,8 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 
 from app.services.siamese_engine import process_brand_inference, SiameseEngine, IMAGES_DIR
+from app.services.crests_engine import crests_engine
+from app.services.cloudinary_service import upload_query_image
 
 # Cargar variables de entorno
 load_dotenv()
@@ -66,15 +68,34 @@ class BrandMatchResponse(BaseModel):
     jurisdiction: str
     description: str
 
+class CrestMatchResponse(BaseModel):
+    id: str
+    item_code: str
+    name: str
+    filename: str
+    image_url: str
+    similarity_score: float
+    distance: float
+    metadata: Dict[str, Any]
+
 # Endpoint de Salud (Health Check)
 @app.get("/api/v1/health", tags=["Mantenimiento"])
 async def health_check():
-    engine = SiameseEngine.get_instance()
+    brands_count = 0
+    try:
+        brands_engine = SiameseEngine.get_instance()
+        brands_count = len(brands_engine.catalog)
+    except Exception:
+        pass
+
+    crests_count = len(crests_engine.catalog) if hasattr(crests_engine, "catalog") else 0
+
     return {
         "status": "healthy",
         "service": "GIBD API Gateway",
         "gemini_active": gemini_key is not None,
-        "brands_indexed": len(engine.catalog),
+        "brands_indexed": brands_count,
+        "crests_indexed": crests_count,
         "inference_device": "CPU (Zero-Cost Vector Engine)"
     }
 
@@ -115,6 +136,41 @@ async def get_brands_catalog():
         "total": len(engine.catalog),
         "brands": engine.catalog
     }
+
+# Endpoint de Catálogo de Escudos
+@app.get("/api/v1/crests/catalog", tags=["Visión Computacional"])
+async def get_crests_catalog():
+    return crests_engine.catalog
+
+# Endpoint de Inferencia de Escudos de Fútbol (CONAISII 2023)
+@app.post("/api/v1/inference/soccer-crests", response_model=List[CrestMatchResponse], tags=["Visión Computacional"])
+async def soccer_crests_inference(
+    file: Optional[UploadFile] = File(None),
+    image_url: Optional[str] = Query(default=None, description="URL remota de Cloudinary o de prueba"),
+    top_k: int = Query(default=10, ge=1, le=50, description="Cantidad de escudos más similares a retornar")
+):
+    if not file and not image_url:
+        raise HTTPException(status_code=400, detail="Debe proporcionar un archivo de imagen o una image_url.")
+        
+    try:
+        if file:
+            image_bytes = await file.read()
+            if len(image_bytes) == 0:
+                raise HTTPException(status_code=400, detail="El archivo enviado está vacío.")
+        else:
+            raise HTTPException(status_code=400, detail="Soporte para image_url directa en desarrollo. Suba un archivo.")
+            
+        # Intentar subir la consulta a Cloudinary (no bloqueante, con fallback)
+        upload_query_image(image_bytes)
+        
+        # Realizar búsqueda por similitud calibrada en CPU
+        results = crests_engine.search(image_bytes, top_k=top_k)
+        return results
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error procesando la inferencia de escudos: {str(e)}")
 
 # Endpoint de Análisis de Papers Asistido por IA (Gemini)
 @app.post("/api/v1/ai/analyze-paper", response_model=PaperAnalysisResponse, tags=["Inteligencia Artificial"])
