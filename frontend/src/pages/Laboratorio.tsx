@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines } from 'lucide-react';
+import { Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RibbonSelector } from '../components/ui/RibbonSelector';
 import { CloudinaryUploader } from '../components/ui/CloudinaryUploader';
@@ -179,10 +179,10 @@ export function Laboratorio() {
   const [selectedVisionSubModel, setSelectedVisionSubModel] =
     useState<'brands' | 'soccer_crests'>('brands');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null);
   const [queryImageUrl, setQueryImageUrl] = useState<string | null>(null);
   const [results, setResults] = useState<InferenceResult[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
 
   const handleMediaTypeChange = (media: MediaType) => {
     setActiveMediaType(media);
@@ -204,11 +204,26 @@ export function Laboratorio() {
   const [topK, setTopK] = useState(10);
   const [isDragging, setIsDragging] = useState(false);
   const [activeSearchItem, setActiveSearchItem] = useState<number | null>(null);
+  const [nlpQuery, setNlpQuery] = useState('');
+  const [nlpNotice, setNlpNotice] = useState<string | null>(null);
+
+  const handleNlpSearch = () => {
+    // La búsqueda semántica (Texto/NLP) aún no tiene endpoint en el backend:
+    // se informa en la UI en lugar de no hacer nada.
+    if (!nlpQuery.trim()) {
+      setNlpNotice('Escribí una consulta para buscar en la colección documental.');
+      return;
+    }
+    setNlpNotice(
+      'La búsqueda semántica (NLP) aún no está implementada en el backend: es un placeholder visual de esta fase.'
+    );
+  };
 
   const handleAnalyze = async () => {
     if (isAnalyzing) return;
     setIsAnalyzing(true);
     setResults([]);
+    setAnalysisError(null);
     try {
       if (selectedVisionSubModel === 'brands') {
         if (!uploadedFile) return;
@@ -242,6 +257,12 @@ export function Laboratorio() {
       }
     } catch (error) {
       console.error('Error en la inferencia:', error);
+      const message = error instanceof Error ? error.message : String(error);
+      setAnalysisError(
+        message.includes('404')
+          ? 'El endpoint de inferencia no está disponible (404): el backend corrió pero no expone ese recurso. En "Marcas de Ganado" el endpoint /api/v1/inference/siamese-brands aún no está implementado en el gateway (pendiente, ver README §1.5).'
+          : `No se pudo completar la búsqueda: ${message}`
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -376,7 +397,7 @@ export function Laboratorio() {
     <div className="pt-24 pb-24 px-6 max-w-7xl mx-auto min-h-screen flex flex-col">
       {/* Lab Title */}
       <div className="text-center mb-8 flex flex-col items-center gap-2 select-none">
-        <h1 className="text-xl md:text-2xl font-black uppercase tracking-[0.2em] text-text-primary drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+        <h1 className="text-xl md:text-2xl font-black uppercase tracking-[0.2em] text-text-primary drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] mt-0 mb-0">
           Laboratorio de IA
         </h1>
         <div className="w-16 h-[2px] bg-gradient-to-r from-transparent via-[#FF5500] to-transparent mt-1 opacity-70" />
@@ -543,11 +564,11 @@ export function Laboratorio() {
                 onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
               >
                 <CloudinaryUploader
-                  onImageSelected={(file, previewUrl, url) => {
+                  onImageSelected={(file, previewUrl) => {
                     setUploadedFile(file);
                     setQueryImageUrl(previewUrl);
-                    setCloudinaryUrl(url ?? null);
                     setResults([]);
+                    setAnalysisError(null);
                   }}
                   isAnalyzing={isAnalyzing}
                   disabled={isAnalyzing}
@@ -579,12 +600,6 @@ export function Laboratorio() {
                 </button>
               </div>
 
-              {cloudinaryUrl && (
-                <span className="self-start px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono">
-                  Cloudinary: imagen lista
-                </span>
-              )}
-
               {/* Muestras rápidas de escudos (T1.3.4) */}
               {selectedVisionSubModel === 'soccer_crests' && (
                 <div className="w-full">
@@ -601,9 +616,9 @@ export function Laboratorio() {
                         transition={{ duration: 0.3, delay: index * 0.05 }}
                         onClick={() => {
                           setUploadedFile(null);
-                          setCloudinaryUrl(null);
                           setQueryImageUrl(sample.imageUrl);
                           setResults([]);
+                          setAnalysisError(null);
                         }}
                         className={`flex-shrink-0 w-24 p-2 rounded-2xl border transition-all text-left ${
                           queryImageUrl === sample.imageUrl
@@ -646,6 +661,14 @@ export function Laboratorio() {
                 </span>
                 <Search className="relative z-10 text-white w-6 h-6 md:w-8 md:h-8 drop-shadow-md" />
               </button>
+
+              {/* Error visible de inferencia (antes solo iba a console) */}
+              {analysisError && (
+                <div className="flex items-start gap-3 p-4 rounded-2xl border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+                  <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <span>{analysisError}</span>
+                </div>
+              )}
 
               {/* Results Grid */}
               <section className="mt-8 w-full">
@@ -816,16 +839,27 @@ export function Laboratorio() {
                   <div className="flex-1 w-full bg-background-base rounded-full border border-border-organic px-8 py-4 flex items-center gap-4 focus-within:border-primary-container transition-colors">
                     <TerminalSquare className="text-text-secondary w-6 h-6 shrink-0" />
                     <input 
-                      type="text" 
+                      type="text"
+                      value={nlpQuery}
+                      onChange={(e) => setNlpQuery(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleNlpSearch(); }}
                       placeholder="Busca por patrones o concepts (NLP)..." 
                       className="bg-transparent border-none outline-none focus:ring-0 w-full text-text-primary placeholder:text-text-secondary font-semibold"
                     />
                   </div>
-                  <button className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10">
+                  <button
+                    type="button"
+                    onClick={handleNlpSearch}
+                    className="w-full md:w-auto relative group bg-gradient-to-r from-primary-container to-[#ff8c00] text-white font-bold text-lg px-8 md:px-12 py-4 rounded-full whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-300 ripple overflow-hidden shadow-[0_0_15px_rgba(255,85,0,0.3)] hover:shadow-[0_0_25px_rgba(255,85,0,0.5)] border border-white/10">
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
                     <span className="relative z-10 drop-shadow-md">Buscar (NLP)</span>
                   </button>
                 </div>
+                {nlpNotice && (
+                  <p className="mt-3 text-xs md:text-sm text-primary-container font-semibold text-center md:text-left" role="status">
+                    {nlpNotice}
+                  </p>
+                )}
               </div>
             </section>
           </motion.div>

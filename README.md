@@ -107,6 +107,8 @@ Copy-Item .env.example .env
 | `VITE_CLOUDINARY_CLOUD_NAME` | Cloud de Cloudinary, ej. `gqhvqr2m` |
 | `VITE_CLOUDINARY_UPLOAD_PRESET` | Preset **Unsigned**, ej. `GIBD_IMAGES` |
 
+> 📁 Las imágenes subidas desde el Laboratorio quedan en la **carpeta `GIBD`** del cloud de Cloudinary (configurada en el upload preset `GIBD_IMAGES`); se pueden ver en el *Media Library* de la consola de Cloudinary.
+
 > ⚠️ Vite solo lee `.env` **al iniciar el servidor**. Después de editar, reiniciá `npm run dev`.
 > ⚠️ Nunca pongas API keys/secretos de Cloudinary en variables `VITE_*`: quedan expuestos en el bundle del navegador.
 
@@ -133,7 +135,7 @@ Abrí <http://localhost:5173>.
 
 1. Backend en <http://127.0.0.1:8000/api/v1/health> → JSON `healthy`.
 2. Frontend en <http://localhost:5173> carga sin errores en consola.
-3. **Laboratorio → subir imagen** → aparece el chip *"Cloudinary: imagen lista"* (subida real al cloud `gqhvqr2m` con preset `GIBD_IMAGES`).
+3. **Laboratorio → subir imagen** → aparece el badge *"Subido a la nube"* y el spinner se detiene (subida real al cloud `gqhvqr2m` con preset `GIBD_IMAGES`; la imagen queda en la **carpeta `GIBD`** del Media Library de Cloudinary).
 4. **Laboratorio → analizar** → con el backend corriendo responde; sin modelos de inferencia, usa el fallback demo.
 5. **Noticias** → sin Supabase configurado entra en Mock Mode (guarda en localStorage).
 

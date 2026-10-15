@@ -40,6 +40,10 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
       if (!cloudName || !uploadPreset) return;
 
       const uploadToCloudinary = async () => {
+        // Timeout de seguridad: si la subida se cuelga, se libera el spinner
+        // y se sigue trabajando con el archivo local (fallback).
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 30000);
         try {
           setProgress(10);
           const formData = new FormData();
@@ -47,7 +51,7 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
           formData.append('upload_preset', uploadPreset);
           const response = await fetch(
             `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            { method: 'POST', body: formData }
+            { method: 'POST', body: formData, signal: controller.signal }
           );
           if (!response.ok) throw new Error(`Cloudinary respondió ${response.status}`);
           const data = await response.json();
@@ -57,6 +61,8 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
         } catch {
           // Fallback local: el usuario sigue trabajando con el File en memoria
           setProgress(null);
+        } finally {
+          window.clearTimeout(timeoutId);
         }
       };
 
@@ -97,11 +103,11 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
               className="w-full h-full object-cover"
             />
             {cloudinaryUrl && (
-              <span className="absolute top-2 right-2 px-3 py-1 rounded-full bg-[#121214] text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-mono">
-                Cloudinary: subido
+              <span className="absolute top-2 right-2 px-3 py-1 rounded-full bg-[#121214] text-emerald-400 border border-emerald-500/30 text-xs font-mono">
+                Subido a la nube
               </span>
             )}
-            {progress !== null && (
+            {progress !== null && progress < 100 && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-8 h-8 border-2 border-[#FF5500] border-t-transparent rounded-full animate-spin" />
               </div>

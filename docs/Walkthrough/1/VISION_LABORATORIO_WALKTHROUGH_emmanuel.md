@@ -20,8 +20,9 @@
 - Uploader unificado con **drag & drop** (`react-dropzone`) y clic para seleccionar archivo; acepta `png, jpg, jpeg, webp, svg` y valida máximo **5 MB**.
 - **Previsualización instantánea**: al elegir el archivo se genera un `URL.createObjectURL` y se notifica inmediatamente al padre vía `onImageSelected(file, previewUrl)` — el usuario puede analizar sin esperar la subida.
 - **Subida en paralelo a Cloudinary** (unsigned upload) solo si existen las env vars `VITE_CLOUDINARY_CLOUD_NAME` y `VITE_CLOUDINARY_UPLOAD_PRESET`; al terminar vuelve a notificar con `onImageSelected(file, previewUrl, secure_url)`.
+- **📁 Carpeta de destino:** las imágenes subidas quedan en la **carpeta `GIBD`** del cloud de Cloudinary (visibles en el *Media Library* de la consola). La carpeta la define el **upload preset** (`GIBD_IMAGES`) configurado en Cloudinary; el código solo envía `file` + `upload_preset` (no envía el parámetro `folder`).
 - **Fallback local**: si Cloudinary no está configurado o falla, el `File` en memoria sigue siendo válido y el análisis funciona igual (estado `cloudinaryUrl` queda `null`).
-- Estados visuales: spinner de progreso sobre la preview, badge "Cloudinary: subido" y mensajes de error.
+- Estados visuales: spinner de progreso sobre la preview (se detiene al terminar la subida), badge **"Subido a la nube"** (único tag de estado, reemplaza a los antiguos "Cloudinary: subido" y "Cloudinary: imagen lista") y mensajes de error.
 
 ### 1.3 `frontend/src/components/ui/CrestResultCard.tsx` (nuevo — T1.3.2)
 - Tarjeta de resultado con clases del design system (`rounded-[2rem]`, badges `rounded-full`, paleta naranja `#FF5500`).
@@ -41,7 +42,7 @@
 - **JSX:**
   - El bloque de upload ahora renderiza `<CloudinaryUploader>` dentro del `<article>` con los handlers de drag existentes ([L539-L556](frontend/src/pages/Laboratorio.tsx#L539-L556)).
   - Selector de sub-modelo en cápsulas: **Marcas de Ganado** / **Escudos de Fútbol** con estado activo naranja ([L559-L580](frontend/src/pages/Laboratorio.tsx#L559-L580)).
-  - Chip de estado "Cloudinary: imagen lista" cuando hay URL remota ([L582](frontend/src/pages/Laboratorio.tsx#L582)).
+  - **Tags de estado unificados:** un único badge **"Subido a la nube"** vive dentro del `CloudinaryUploader` sobre la preview; se eliminó el chip duplicado "Cloudinary: imagen lista" que había en `Laboratorio.tsx`.
   - **Carrusel "Muestras Rápidas"** visible solo en modo escudos: clic en una muestra setea `queryImageUrl` y limpia resultados/archivo ([L588-L627](frontend/src/pages/Laboratorio.tsx#L588-L627)).
   - **Botón de acción dinámico**: "Buscar Similitudes" (marcas) / "Buscar Escudos Similares" (escudos) / "Analizando..."; el `disabled` exige archivo en marcas, y archivo **o** muestra en escudos ([L630-L648](frontend/src/pages/Laboratorio.tsx#L630-L648)).
   - **Grid de resultados** con `CrestResultCard` y **animación stagger** `opacity: 0, y: 15` → `opacity: 1, y: 0`, `delay: i * 0.05` (T1.3.5) ([L650-L681](frontend/src/pages/Laboratorio.tsx#L650-L681)).
@@ -49,7 +50,7 @@
 
 ### 1.6 Dependencias y entorno
 - `node_modules` no existía → se ejecutó `npm install` (187 paquetes instalados).
-- **Cloudinary configurado y verificado (E2E):** preset **unsigned `GIBD_IMAGES`** en el cloud `gqhvqr2m`; subida real probada contra `POST https://api.cloudinary.com/v1_1/gqhvqr2m/image/upload` → respuesta JSON con `secure_url`. Las variables quedaron en `frontend/.env` (ignorado por git); `.env.example` documentado.
+- **Cloudinary configurado y verificado (E2E):** preset **unsigned `GIBD_IMAGES`** en el cloud `gqhvqr2m`, con las imágenes destinadas a la **carpeta `GIBD`** del cloud (carpeta configurada en el upload preset); subida real probada contra `POST https://api.cloudinary.com/v1_1/gqhvqr2m/image/upload` → respuesta JSON con `secure_url`. Las variables quedaron en `frontend/.env` (ignorado por git); `.env.example` documentado.
 - **Backend:** `backend/requirements.txt` actualizado a versiones probadas (`fastapi==0.142.4`, `pydantic==2.13.5`, `uvicorn==0.54.0`) porque los pines originales (`pydantic==2.7.4`) no compilaban en Python 3.14. Guía completa de instalación y ejecución agregada al `README.md` del repo.
 
 ---
@@ -82,9 +83,9 @@ En el proyecto conviven **dos mecanismos de respaldo distintos** que no conviene
 ### B) Fallbacks locales del Laboratorio (visión) → degradación por capas
 Estos dos respaldos son propios de esta implementación (T1.3) y funcionan **sin importar el estado de Supabase**:
 
-1. **Cloudinary sin configurar o con error** → `CloudinaryUploader` trabaja con el `File` en memoria (preview instantánea); no aparece el chip "Cloudinary: imagen lista" ni el badge "Cloudinary: subido". **El análisis funciona igual.**
+1. **Cloudinary sin configurar o con error** → `CloudinaryUploader` trabaja con el `File` en memoria (preview instantánea); no aparece el badge "Subido a la nube". **El análisis funciona igual.**
 2. **Endpoint de escudos caído / backend apagado** → `handleAnalyze` cae a `CREST_SAMPLES` local con scores simulados decrecientes. En consola se ve: `Endpoint de escudos no disponible; se usan muestras locales.` (demo intencional T1.3.3/T1.3.4).
-3. **Marcas sin backend** → **no hay fallback**: solo `console.error` y el grid queda vacío (limitación conocida; ver paso 7 de la sección 5).
+3. **Marcas sin backend / endpoint 404** → ahora se muestra un **banner de error visible en la UI** (`analysisError`) además del `console.error` en consola; el grid queda vacío (el endpoint `/api/v1/inference/siamese-brands` sigue pendiente de integración en el gateway).
 
 ### Resumen rápido de estados
 
@@ -120,8 +121,8 @@ npm run dev
 3. **Abrir el Laboratorio** en `http://localhost:5173/#/laboratorio` y seleccionar el medio **Imagen** en el dial.
 4. **Flujo de Marcas (default):**
    - Subir una foto de marca/ganado (clic o drag & drop). Verificar preview inmediata.
-   - Si `.env` tiene `VITE_CLOUDINARY_CLOUD_NAME` + `VITE_CLOUDINARY_UPLOAD_PRESET`: aparece el badge "Cloudinary: subido" y el chip "Cloudinary: imagen lista". Sin esas variables, verificar que igualmente funciona con el archivo local.
-   - Ajustar el slider **Top-K**, clic en **BUSCAR SIMILITUDES**. Con backend corriendo (`localhost:8000`) se ven resultados reales; sin backend, revisar la consola.
+   - Si `.env` tiene `VITE_CLOUDINARY_CLOUD_NAME` + `VITE_CLOUDINARY_UPLOAD_PRESET`: aparece el badge **"Subido a la nube"** y el spinner de carga se detiene al terminar. La imagen queda almacenada en la **carpeta `GIBD`** del cloud (verificar en el Media Library de la consola de Cloudinary). Sin esas variables, verificar que igualmente funciona con el archivo local.
+   - Ajustar el slider **Top-K**, clic en **BUSCAR SIMILITUDES**. Con backend corriendo (`localhost:8000`) se ven resultados reales; si el endpoint devuelve 404, debe mostrarse el **banner de error** bajo el botón (no solo el error en consola).
 5. **Flujo de Escudos:**
    - Cambiar a **ESCUDOS DE FÚTBOL**. Verificar que aparece el carrusel **Muestras Rápidas**.
    - **Caso A (endpoint activo):** subir una imagen de escudo y clic en **BUSCAR ESCUDOS SIMILARES** → grid con resultados de `/api/v1/inference/soccer-crests`.
@@ -161,6 +162,7 @@ npm run dev
 - [x] Subida a Cloudinary verificada E2E con `upload_preset=GIBD_IMAGES` (`secure_url` en respuesta).
 - [x] Backend verificado: `GET /api/v1/health` → `healthy` con `requirements.txt` apto para Python 3.14.
 - [x] `README.md` con guías de instalación/ejecución de backend y frontend + troubleshooting.
+- [x] Aclaración documentada en walkthrough, `README.md` y `.env.example`: las imágenes subidas al Laboratorio quedan en la **carpeta `GIBD`** del cloud de Cloudinary (definida en el upload preset `GIBD_IMAGES`).
 - [ ] Prueba manual E2E de la UI con backend corriendo (3 casos de la sección 4).
 - [x] Commit y push de los 5 archivos + docs (`a205944`) y segundo commit de documentación (`63f13d5`: README + requirements + esta actualización).
 - [ ] PR hacia la rama base y review.
