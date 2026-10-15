@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines, X, Upload, CheckCircle2, Sliders, RefreshCw, Eye, Zap } from 'lucide-react';
+import { Microscope, Search, Archive, Database, FileText, History, Network, Scale, Sparkles, TerminalSquare, Video, AudioLines, X, Upload, CheckCircle2, Sliders, RefreshCw, Eye, Zap, Box } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RibbonSelector } from '../components/ui/RibbonSelector';
 import { BRANDS_CATALOG } from '../data/brandsCatalog';
 import type { VisionModelType, VisionMatchResult, VisionSampleItem } from '../types/vision';
 import { VISION_MODEL_OPTIONS, brandItemToVisionMatch } from '../types/vision';
+import type { ProjectionDataset, ProjectionReductionMethod } from '../types/projection';
+import { DATASET_3D_OPTIONS } from '../types/projection';
 import { playMechanicalClick, playGearTick } from '../utils/audio';
 import { processImageUpload } from '../utils/cloudinary';
 
@@ -283,6 +285,31 @@ export function Laboratorio() {
   const [engineSource, setEngineSource] = useState<string | null>(null);
   const [queryLatency, setQueryLatency] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // --- Estado para Visualizador 3D del Espacio Latente (G5 - Sprint 2) ---
+  const [is3DModalOpen, setIs3DModalOpen] = useState(false);
+  const [selected3DDataset, setSelected3DDataset] = useState<ProjectionDataset>('brands');
+  const [selected3DMethod, setSelected3DMethod] = useState<ProjectionReductionMethod>('PCA');
+  const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(null);
+
+  const handleOpen3DModal = (dataset?: ProjectionDataset, nodeId?: string) => {
+    if (dataset) {
+      setSelected3DDataset(dataset);
+    } else {
+      setSelected3DDataset(selectedVisionModel === 'brands' ? 'brands' : 'soccer_crests');
+    }
+    if (nodeId) {
+      setHighlightedNodeId(nodeId);
+    }
+    setIs3DModalOpen(true);
+    playMechanicalClick();
+  };
+
+  const handleClose3DModal = () => {
+    setIs3DModalOpen(false);
+    setHighlightedNodeId(null);
+    playMechanicalClick();
+  };
 
   const activeModelOption = VISION_MODEL_OPTIONS.find((opt) => opt.id === selectedVisionModel) || VISION_MODEL_OPTIONS[0];
 
@@ -934,13 +961,23 @@ export function Laboratorio() {
                           : 'Ordenadas por similitud convolucional calibrada (τ=0.82, T=0.04)'}
                       </p>
                     </div>
-                    <button
-                      onClick={handleClearQuery}
-                      type="button"
-                      className="text-xs font-bold px-4 py-2 rounded-full border border-white/10 hover:border-primary-container text-text-secondary hover:text-primary-container transition-colors self-start sm:self-auto cursor-pointer"
-                    >
-                      Nueva Consulta
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                      <button
+                        onClick={() => handleOpen3DModal(selectedVisionModel === 'brands' ? 'brands' : 'soccer_crests')}
+                        type="button"
+                        className="text-xs font-bold px-4 py-2 rounded-full bg-primary-container/10 border border-primary-container/40 text-primary-container hover:bg-primary-container hover:text-white transition-all flex items-center gap-2 cursor-pointer shadow-none"
+                      >
+                        <Box className="w-3.5 h-3.5" />
+                        <span>Ver en Espacio 3D (G5)</span>
+                      </button>
+                      <button
+                        onClick={handleClearQuery}
+                        type="button"
+                        className="text-xs font-bold px-4 py-2 rounded-full border border-white/10 hover:border-primary-container text-text-secondary hover:text-primary-container transition-colors cursor-pointer"
+                      >
+                        Nueva Consulta
+                      </button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 w-full">
@@ -992,15 +1029,26 @@ export function Laboratorio() {
                             </p>
                           </div>
 
-                          {/* Action Button */}
-                          <button
-                            onClick={() => setSelectedModalBrand(item)}
-                            type="button"
-                            className="w-full py-2.5 rounded-full border border-white/10 group-hover:border-primary-container/50 group-hover:text-primary-container text-xs font-bold text-text-secondary transition-all flex items-center justify-center gap-2 bg-white/[0.02] cursor-pointer"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span>Comparar con Consulta</span>
-                          </button>
+                          {/* Action Buttons */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setSelectedModalBrand(item)}
+                              type="button"
+                              className="flex-1 py-2.5 rounded-full border border-white/10 group-hover:border-primary-container/50 group-hover:text-primary-container text-xs font-bold text-text-secondary transition-all flex items-center justify-center gap-2 bg-white/[0.02] cursor-pointer"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>Comparar</span>
+                            </button>
+                            <button
+                              onClick={() => handleOpen3DModal(selectedVisionModel === 'brands' ? 'brands' : 'soccer_crests', item.id)}
+                              type="button"
+                              title="Proyectar y enfocar en el espacio latente 3D"
+                              className="px-3 py-2.5 rounded-full border border-white/10 hover:border-primary-container hover:text-primary-container text-xs font-bold text-text-secondary transition-all flex items-center justify-center gap-1.5 bg-white/[0.02] cursor-pointer"
+                            >
+                              <Box className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">3D</span>
+                            </button>
+                          </div>
                         </div>
                       );
                     })}
@@ -1162,6 +1210,153 @@ export function Laboratorio() {
                   >
                     Entendido, Cerrar Inspección
                   </button>
+                </div>
+              </div>
+            )}
+
+            {/* Modal de Espacio Latente Tridimensional G5 (Sprint 2) */}
+            {is3DModalOpen && (
+              <div
+                className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6"
+                onClick={handleClose3DModal}
+              >
+                <div
+                  className="card-glass-purple rounded-[2.5rem] p-6 sm:p-8 max-w-5xl w-full max-h-[92vh] border border-primary-container/40 flex flex-col gap-5 relative overflow-hidden bg-[#0A0A0A]/95 shadow-none"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-organic">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-primary-container px-2.5 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/30">
+                          Grupo G5 · Reducción Dimensional
+                        </span>
+                        <span className="text-[11px] font-mono text-text-secondary px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
+                          {selected3DMethod} (256-D → 3-D)
+                        </span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-text-primary mt-1 flex items-center gap-2">
+                        <Box className="w-6 h-6 text-primary-container" />
+                        <span>Espacio Latente Vectorial Interactivo</span>
+                      </h3>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Dataset Selector */}
+                      <div className="flex items-center gap-1 p-1 bg-black/60 rounded-full border border-white/10 text-xs">
+                        {DATASET_3D_OPTIONS.map((ds) => (
+                          <button
+                            key={ds.id}
+                            type="button"
+                            onClick={() => {
+                              setSelected3DDataset(ds.id);
+                              playMechanicalClick();
+                            }}
+                            className={`px-3 py-1.5 rounded-full font-bold transition-all cursor-pointer ${
+                              selected3DDataset === ds.id
+                                ? 'bg-primary-container text-white'
+                                : 'text-text-secondary hover:text-white'
+                            }`}
+                          >
+                            {ds.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Method Switcher */}
+                      <div className="flex items-center gap-1 p-1 bg-black/60 rounded-full border border-white/10 text-xs">
+                        {(['PCA', 'UMAP'] as const).map((method) => (
+                          <button
+                            key={method}
+                            type="button"
+                            onClick={() => {
+                              setSelected3DMethod(method);
+                              playMechanicalClick();
+                            }}
+                            className={`px-2.5 py-1.5 rounded-full font-mono font-bold transition-all cursor-pointer ${
+                              selected3DMethod === method
+                                ? 'bg-white/20 text-white'
+                                : 'text-text-secondary hover:text-white'
+                            }`}
+                          >
+                            {method}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={handleClose3DModal}
+                        type="button"
+                        aria-label="Cerrar modal 3D"
+                        className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white transition-colors cursor-pointer"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 3D Canvas Viewport Shell */}
+                  <div className="relative w-full h-[50vh] sm:h-[56vh] rounded-[1.8rem] bg-black/80 border border-white/10 overflow-hidden flex items-center justify-center group">
+                    {/* Grid de Fondo Cyberpunk Científico */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,85,0,0.08)_0,transparent_70%)] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+
+                    {/* HUD Overlay / Estado */}
+                    <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 pointer-events-none">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[11px] font-mono font-bold text-text-secondary">
+                          Motor CPU Zero-Cost Activo
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono text-text-secondary/70">
+                        Nodos: {selected3DDataset === 'brands' ? '80 marcas' : selected3DDataset === 'soccer_crests' ? '150 clubes' : '64 tatuajes'}
+                        {highlightedNodeId && ` · Enfocando: #${highlightedNodeId}`}
+                      </span>
+                    </div>
+
+                    {/* Slot reservado para EmbeddingViewer3D (Desarrollo de Emmanuel en Sprint 2) */}
+                    <div className="text-center p-6 flex flex-col items-center max-w-md z-10">
+                      <div className="w-16 h-16 rounded-full bg-primary-container/10 border border-primary-container/30 flex items-center justify-center mb-4 text-primary-container">
+                        <Box className="w-8 h-8 animate-pulse" />
+                      </div>
+                      <h4 className="font-bold text-text-primary text-base mb-1">
+                        Viewport 3D WebGL / Canvas Preparado
+                      </h4>
+                      <p className="text-xs text-text-secondary leading-relaxed mb-4">
+                        Espacio latente calibrado para renderizado en 60 FPS. Emmanuel integrará el componente interactivo de Three.js (<code className="text-primary-container font-mono">EmbeddingViewer3D.tsx</code>) sobre este contenedor durante el Sprint 2.
+                      </p>
+                      <div className="flex items-center gap-2 text-[11px] text-text-secondary/80 font-mono bg-white/[0.03] px-3.5 py-1.5 rounded-full border border-white/5">
+                        <span>Contrato formal:</span>
+                        <span className="text-primary-container font-bold">LatentSpacePayload</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer / Controls legend */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 text-xs text-text-secondary">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#71717A]" />
+                        <span>Nodos de Catálogo</span>
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
+                        <span>Top-K Similares</span>
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping" />
+                        <span>Consulta Actual</span>
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleClose3DModal}
+                      type="button"
+                      className="px-6 py-2 rounded-full bg-primary-container text-white font-bold text-xs hover:scale-[1.02] transition-transform cursor-pointer"
+                    >
+                      Cerrar Espacio 3D
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
